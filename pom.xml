@@ -7,7 +7,7 @@
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
     <version>1.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <!--<packaging>pom</packaging>-->
 
     <name>Page Content Tester</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
