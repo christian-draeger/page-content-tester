@@ -31,14 +31,33 @@ public class FetchedPage {
 
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 
+    /**
+     *
+     * @param url
+     * @return FetchedPage including the connection response and some meta and config data.
+     */
     public static FetchedPage fetchPage(String url) {
         return fetchedPages(url, Method.GET, Collections.emptyMap(), false, DESKTOP);
     }
 
+    /**
+     *
+     * @param url
+     * @return FetchedPage including the connection response and some meta and config data.
+     * will send the fetch page request with mobile user-agent to emulate mobile device behaviour.
+     */
     public static FetchedPage fetchPageAsMobileDevice(String url) {
         return fetchedPages(url, Method.GET, Collections.emptyMap(), true, MOBILE);
     }
 
+    /**
+     *
+     * @param url
+     * @param method
+     * @param data
+     * @return FetchedPage including the connection response and some meta and config data.
+     * can perform e.g. POST with request body (@param data)
+     */
     public static FetchedPage performAjaxRequest(String url, Method method, Map<String, String> data) {
         return fetchedPages(url, method, data, false, DESKTOP);
     }
