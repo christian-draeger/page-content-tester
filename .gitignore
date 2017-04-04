@@ -1,0 +1,14 @@
+.classpath
+.project
+.settings
+target/
+lib/
+node/
+.surefire-*
+.checkstyle
+*.iml
+*.ipr
+*.iws
+.idea/
+*.log
+?/
