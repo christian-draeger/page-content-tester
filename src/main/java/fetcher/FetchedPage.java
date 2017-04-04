@@ -6,12 +6,17 @@ import static org.jsoup.Connection.Method;
 import static org.jsoup.Connection.Response;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsoup.nodes.Document;
 
-import configurations.TestConfig;
+import configurations.Config;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,36 +27,41 @@ public class FetchedPage {
         MOBILE
     }
 
-    TestConfig config = new TestConfig();
+    private static Config config = new Config();
+
+    private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 
     public static FetchedPage fetchPage(String url) {
-        Fetcher fetcher = Fetcher.builder().deviceType(DESKTOP).build();
-        try {
-            return new FetchedPage(url, fetcher.fetch(url), false);
-        } catch (IOException e) {
-            log.error("Exception while trying to fetch page: ", e);
-        }
-        return null;
+        return fetchedPages(url, Method.GET, Collections.emptyMap(), false, DESKTOP);
     }
 
     public static FetchedPage fetchPageAsMobileDevice(String url) {
-        Fetcher fetcher = Fetcher.builder().deviceType(MOBILE).build();
-        try {
-            return new FetchedPage(url, fetcher.fetch(url), true);
-        } catch (IOException e) {
-            log.error("Exception while trying to fetch mobile page: ", e);
-        }
-        return null;
+        return fetchedPages(url, Method.GET, Collections.emptyMap(), true, MOBILE);
     }
 
     public static FetchedPage performAjaxRequest(String url, Method method, Map<String, String> data) {
-        Fetcher fetcher = Fetcher.builder().deviceType(DESKTOP).method(method).data(data).build();
-        try {
-            return new FetchedPage(url, fetcher.fetch(url), false);
-        } catch (IOException e) {
-            log.error("Exception while trying to fetch ajax call: ", e);
+        return fetchedPages(url, method, data, false, DESKTOP);
+    }
+
+    @SneakyThrows
+    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> data, boolean mobile, DeviceType device) {
+        CacheKey cacheKey = new CacheKey(urlToFetch, device);
+        if (fetchedPageCache.containsKey(cacheKey)) {
+            log.warn("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
+            return fetchedPageCache.get(cacheKey);
+        } else {
+            Fetcher fetcher = Fetcher.builder().deviceType(device).method(method).data(data).build();
+            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
+            fetchedPageCache.put(cacheKey, fetchedPage);
+            return fetchedPage;
         }
-        return null;
+    }
+
+    @Value
+    @AllArgsConstructor
+    private static class CacheKey {
+        String url;
+        DeviceType device;
     }
 
     private final String url;
@@ -68,7 +78,7 @@ public class FetchedPage {
 
     public synchronized Document getDocument() {
         if (!document.isPresent()) {
-           try {
+            try {
                 document = Optional.of(response.parse());
             } catch (IOException e) {
                 throw new RuntimeException(e);

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import fetcher.FetchedPage.DeviceType;
 
-public class TestConfig {
+public class Config {
 
     private final TypedProperties configs = new TypedProperties("/config.properties");
 

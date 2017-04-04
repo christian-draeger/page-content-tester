@@ -13,7 +13,7 @@ import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 
-import configurations.TestConfig;
+import configurations.Config;
 import fetcher.FetchedPage.DeviceType;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 public class Fetcher {
 
-    private final TestConfig config = new TestConfig();
+    private final Config config = new Config();
     private final DeviceType deviceType;
     private final Method method;
     private final Map<String, String> data;
@@ -32,7 +32,7 @@ public class Fetcher {
         log.info("fetching {} ", url);
         setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
 
-        int retryCount = 1;
+        int retryCount = config.getMaxRetryCount();
 
         while(true) {
             try {
