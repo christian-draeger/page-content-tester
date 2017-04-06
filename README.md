@@ -17,7 +17,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 </dependencies>
 ```
 
-
+### Let the Framework do the annoying setup stuff
 - to use all the power and parallelization of PageContentTester add this parent pom to your pom.xml
   - this will setup all the configurations for an efficient parallelization of your jUnit tests automatically, you don't need to configure jUnit yourself anymore
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section in the [PageContentTester pom.xml](https://github.com/christian-draeger/page-content-tester/blob/master/pom.xml)
