@@ -1,3 +1,4 @@
+[![N|Solid](https://travis-ci.org/christian-draeger/page-content-tester.svg?branch=master)](https://travis-ci.org/christian-draeger/page-content-tester)
 ## About
 
 The PageContentTester is a framework for non-blocking and highly parallelized Dom testing. Since it's using the jSoup Framework to scrape the DOM you can use all the provieded methods of [jSoup](https://jsoup.org/) (server-side CSS3 selector driven DOM API). Beside that the Page Content Tester has a bunch of convenient methods on top of jsoup including test config meta data and easy access to request data (like cookies, headers, etc.) and Dom checks (like isElementPresent, follow url by css-selector, get value of html tags / attributes, etc.)
@@ -17,9 +18,9 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 </dependencies>
 ```
 
-### Let the Framework do the annoying setup stuff
-- to use all the power and parallelization of PageContentTester add this parent pom to your pom.xml
-  - this will setup all the configurations for an efficient parallelization of your jUnit tests automatically, you don't need to configure jUnit yourself anymore
+#### don't loose time
+- to get the best parallelization result of PageContentTester and don't having the overhead of finding the best setup add this parent pom to your pom.xml
+  - it will setup all the configurations for an efficient parallelization of your jUnit tests automatically, you don't need to configure jUnit yourself anymore
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section in the [PageContentTester pom.xml](https://github.com/christian-draeger/page-content-tester/blob/master/pom.xml)
   - if you want to setup jUnit yourself just don't use the parent pom
 
