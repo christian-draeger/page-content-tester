@@ -37,7 +37,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 
 ## configure the page fetcher
 - the page fetcher is using a [default config](https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/config.properties)
-- it's possible to overwrite the default values by placing a config.properties file under src/main/resources/ and adjust the several properties until it fits your needs
+- it's possible to overwrite the default values by placing a config.properties file under src/main/resources/ in your project and adjust several properties until it fits your needs
 
 ## Example Project
 To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing and checking dom elements of ±1000 urls is getting done in less than 10sec. with a proper internet connection) 
