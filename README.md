@@ -21,7 +21,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 - to use all the power and parallelization of PageContentTester add this parent pom to your pom.xml
   - this will setup all the configurations for an efficient parallelization of your jUnit tests automatically, you don't need to configure jUnit yourself anymore
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section in the [PageContentTester pom.xml](https://github.com/christian-draeger/page-content-tester/blob/master/pom.xml)
-  - if you want to setup junit yourself just don't use the parent pom
+  - if you want to setup jUnit yourself just don't use the parent pom
 
 ```
 <parent>
@@ -32,4 +32,4 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 ```
 
 ## Example Project
-To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing the dom of ±1000 urls is getting done less than 10sec. with a proper internet connection) 
+To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing and checking dom elements of ±1000 urls is getting done in less than 10sec. with a proper internet connection) 
