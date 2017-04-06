@@ -27,12 +27,6 @@ public class Fetcher {
     private final Method method;
     private final Map<String, String> data;
 
-    /**
-     *
-     * @param url
-     * @return Response of jSoup
-     * @throws IOException
-     */
     public Connection.Response fetch(String url) throws IOException {
 
         log.info("fetching {} ", url);
