@@ -35,7 +35,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 </parent>
 ```
 
-## configure the page fetcher
+## Configure the Page-Fetcher
 - the page fetcher is using a [default config](https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/config.properties)
 - it's possible to overwrite the default values by placing a config.properties file under src/main/resources/ in your project and adjust several properties until it fits your needs
 
