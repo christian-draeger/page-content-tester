@@ -11,7 +11,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
         <dependency>
             <groupId>io.github.christian-draeger</groupId>
             <artifactId>page-content-tester</artifactId>
-            <version>1.3</version>
+            <version>1.0.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -26,7 +26,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 ```
     <parent>
         <groupId>io.github.christian-draeger</groupId>
-        <artifactId>page-content-tester</artifactId>
+        <artifactId>page-content-tester-parent</artifactId>
         <version>1.0</version>
     </parent>
 ```
