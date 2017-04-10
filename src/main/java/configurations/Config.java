@@ -2,8 +2,6 @@ package configurations;
 
 import static fetcher.FetchedPage.DeviceType.MOBILE;
 
-import org.apache.commons.lang3.StringUtils;
-
 import fetcher.FetchedPage.DeviceType;
 
 public class Config {
@@ -25,14 +23,6 @@ public class Config {
         return configs.getStringValue("desktop.userAgent");
     }
 
-    public String getProtocol() {
-        if (StringUtils.isNotBlank(configs.getStringValue("protocol"))) {
-            return configs.getStringValue("protocol");
-        } else {
-            return "http";
-        }
-    }
-
     public boolean isFollowingRedirects() {
         return configs.getBooleanValue("follow.redirects");
     }
@@ -43,5 +33,9 @@ public class Config {
 
     public String getReferrer() {
         return configs.getStringValue("referrer");
+    }
+
+    public boolean isCacheDuplicatesActive() {
+        return configs.getBooleanValue("cache.duplicates");
     }
 }
