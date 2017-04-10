@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.0.1</version>
+    <version>1.4</version>
 
     <name>Page Content Tester</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
@@ -36,6 +36,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <autoReleaseAfterClose>false</autoReleaseAfterClose>
+
+        <jSoupVersion>1.10.2</jSoupVersion>
+        <jUnitToolboxVersion>2.2</jUnitToolboxVersion>
+        <junitVersion>4.12</junitVersion>
+        <lombokVersion>1.16.14</lombokVersion>
+        <apacheCommonsLang3Version>3.5</apacheCommonsLang3Version>
     </properties>
 
     <dependencies>
@@ -43,22 +49,22 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.10.2</version>
+            <version>${jSoupVersion}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.junit-toolbox</groupId>
             <artifactId>junit-toolbox</artifactId>
-            <version>2.2</version>
+            <version>${jUnitToolboxVersion}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junitVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.14</version>
+            <version>${lombokVersion}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -68,8 +74,9 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.5</version>
+            <version>${apacheCommonsLang3Version}</version>
         </dependency>
+
     </dependencies>
 
     <distributionManagement>
