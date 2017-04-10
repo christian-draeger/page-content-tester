@@ -9,9 +9,7 @@ import java.io.IOException;
 import org.jsoup.Connection;
 import org.junit.Test;
 
-import runner.AbstractTest;
-
-public class FetcherTest extends AbstractTest{
+public class FetcherTest {
 
     Fetcher fetcher = Fetcher.builder().deviceType(DESKTOP).build();
 

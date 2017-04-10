@@ -10,21 +10,19 @@ import static org.hamcrest.Matchers.is;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import runner.AbstractTest;
-
-public class FetchedPageTest extends AbstractTest {
+public class FetchedPageTest {
 
     private static FetchedPage fetchedPage;
     private static FetchedPage fetchedMobilePage;
+
+    private static final String VALID_URL = "https://github.com/christian-draeger";
+    private static final String VALID_SELECTOR = "h1";
 
     @BeforeClass
     public static void fetcher() {
         fetchedPage = fetchPage(VALID_URL);
         fetchedMobilePage = fetchPageAsMobileDevice(VALID_URL);
     }
-
-    private static final String VALID_URL = "https://github.com/christian-draeger";
-    private static final String VALID_SELECTOR = "h1";
 
     @Test
     public void fetcher_should_return_fetched_desktop_page_for_valid_url() {

@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.4</version>
+    <version>1.4.1</version>
 
     <name>Page Content Tester</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
@@ -37,11 +37,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <autoReleaseAfterClose>false</autoReleaseAfterClose>
 
-        <jSoupVersion>1.10.2</jSoupVersion>
-        <jUnitToolboxVersion>2.2</jUnitToolboxVersion>
-        <junitVersion>4.12</junitVersion>
-        <lombokVersion>1.16.14</lombokVersion>
-        <apacheCommonsLang3Version>3.5</apacheCommonsLang3Version>
+        <version.jSoup>1.10.2</version.jSoup>
+        <version.jUnitToolbox>2.2</version.jUnitToolbox>
+        <version.junit>4.12</version.junit>
+        <version.lombok>1.16.14</version.lombok>
+        <version.apacheCommonsLang3>3.5</version.apacheCommonsLang3>
+        <version.logback>1.2.1</version.logback>
     </properties>
 
     <dependencies>
@@ -49,32 +50,49 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>${jSoupVersion}</version>
+            <version>${version.jSoup}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.junit-toolbox</groupId>
             <artifactId>junit-toolbox</artifactId>
-            <version>${jUnitToolboxVersion}</version>
+            <version>${version.jUnitToolbox}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-library</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junitVersion}</version>
+            <version>${version.junit}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-junit</artifactId>
+            <version>2.0.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombokVersion}</version>
+            <version>${version.lombok}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.1</version>
+            <version>${version.logback}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apacheCommonsLang3Version}</version>
+            <version>${version.apacheCommonsLang3}</version>
         </dependency>
 
     </dependencies>
