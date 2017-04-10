@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import configurations.Config;
 import lombok.AllArgsConstructor;
@@ -135,11 +137,35 @@ public class FetchedPage {
         return response.hasHeader(header);
     }
 
-    public String getReferrer() {
-        return config.getReferrer();
+    public Config getConfig() {
+        return config;
     }
 
-    public boolean isCacheDuplicatesActive() {
-        return config.isCacheDuplicatesActive();
+    public Elements getElements(String cssSelector) {
+        return getDocument().select(cssSelector);
+    }
+
+    public Element getElement(String cssSelector) {
+        return getDocument().select(cssSelector).first();
+    }
+
+    public Element getElementLastOf(String cssSelector) {
+        return getDocument().select(cssSelector).last();
+    }
+
+    public Element getElementNthOf(String cssSelector, int index) {
+        return getDocument().select(cssSelector).get(index);
+    }
+
+    public boolean isElementPresent(String cssSelector) {
+        return getElementCount(cssSelector) > 0;
+    }
+
+    public boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences) {
+        return getElementCount(cssSelector) == numberOfOccurrences;
+    }
+
+    public int getElementCount(String cssSelector) {
+        return getDocument().select(cssSelector).size();
     }
 }
