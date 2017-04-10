@@ -25,6 +25,9 @@ public class ProxySetup {
     }
 
     private int getPort() {
-        return configs.getIntValue("proxy.port");
+        if (isProxyEnabled()) {
+            return configs.getIntValue("proxy.port");
+        }
+        return 8080;
     }
 }
