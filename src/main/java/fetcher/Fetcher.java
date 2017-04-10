@@ -14,6 +14,7 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 
 import configurations.Config;
+import configurations.ProxySetup;
 import fetcher.FetchedPage.DeviceType;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +24,15 @@ import lombok.extern.slf4j.Slf4j;
 public class Fetcher {
 
     private final Config config = new Config();
+    private final ProxySetup proxySetup = new ProxySetup();
+
     private final DeviceType deviceType;
     private final Method method;
     private final Map<String, String> data;
 
     public Connection.Response fetch(String url) throws IOException {
 
-        log.info("fetching {} ", url);
+        log.info("fetching {} (UserAgent: {})", url, deviceType);
         setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
 
         int retryCount = config.getMaxRetryCount();
@@ -41,6 +44,7 @@ public class Fetcher {
                         .timeout(config.getTimeoutValue())
                         .userAgent(deviceType.equals(MOBILE) ? config.getUserAgent(MOBILE) : config.getUserAgent(DESKTOP))
                         .ignoreHttpErrors(true)
+                        .proxy(proxySetup.getProxy())
                         .followRedirects(config.isFollowingRedirects())
                         .ignoreContentType(config.isIgnoringContentType())
                         .method(method)
