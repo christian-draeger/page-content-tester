@@ -11,4 +11,4 @@ node/
 *.iws
 .idea/
 *.log
-?/
+*.versionsBackup
