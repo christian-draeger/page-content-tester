@@ -21,7 +21,10 @@ public class ProxySetup {
     }
 
     private String getHost() {
-        return configs.getStringValue("proxy.host");
+        if (isProxyEnabled()) {
+            return configs.getStringValue("proxy.host");
+        }
+        return "";
     }
 
     private int getPort() {

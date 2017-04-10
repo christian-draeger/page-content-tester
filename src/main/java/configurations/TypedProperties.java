@@ -25,8 +25,7 @@ public class TypedProperties {
 	}
 
 	public int getIntValue(final String key) {
-		String value = getStringValue(key);
-		return !value.equals(null) ? parseInt(getStringValue(key)) : 0;
+		return parseInt(getStringValue(key));
 	}
 
 	public boolean getBooleanValue(final String key) {
