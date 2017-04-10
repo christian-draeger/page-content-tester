@@ -43,4 +43,9 @@ public class ConfigTest {
     public void should_return_follow_redirects_config() {
         assertThat(config.isFollowingRedirects(), is(true));
     }
+
+    @Test
+    public void should_return_caching_config() {
+        assertThat(config.isCacheDuplicatesActive(), is(true));
+    }
 }
