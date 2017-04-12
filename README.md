@@ -35,6 +35,41 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 </parent>
 ```
 
+## Example Test
+
+```
+    @Test
+    @FetchPage(GITHUB_URL)
+    @FetchPage(GOOGLE_URL)
+    public void fetch_multiple_pages_via_annotation_and_get_pages_by_index() {
+        assertThat(page.get(0).isElementPresent("h1"), is(true));
+        assertThat(page.get(0).getUrl(), equalTo(GITHUB_URL));
+
+        assertThat(page.get(1).isElementPresent("#footer"), is(true));
+        assertThat(page.get(1).getUrl(), equalTo(GOOGLE_URL));
+    }
+
+    @Test
+    @FetchPage(GITHUB_URL)
+    @FetchPage(GOOGLE_URL)
+    public void fetch_multiple_pages_via_annotation_and_get_pages_by_url_snippet() {
+        assertThat(page.get("github").isElementPresent("h1"), is(true));
+        assertThat(page.get("google").isElementPresent("#footer"), is(true));
+    }
+
+    @Test
+    public void fetch_multiple_pages_in_test_method() {
+        FetchedPage github = fetchPage(GITHUB_URL);
+        FetchedPage google = fetchPage(GOOGLE_URL);
+
+        assertThat(github.isElementPresent("h1"), is(true));
+        assertThat(github.getUrl(), equalTo(GITHUB_URL));
+
+        assertThat(google.isElementPresent("#footer"), is(true));
+        assertThat(google.getUrl(), equalTo(GOOGLE_URL));
+    }
+```
+
 ## Configure the Page-Fetcher
 - the page fetcher is using a [default config](https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/config.properties)
 - it's possible to overwrite the default values by placing a config.properties file under src/main/resources/ in your project and adjust several properties until it fits your needs
