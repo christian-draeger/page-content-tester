@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsoup.nodes.Document;
@@ -53,7 +54,8 @@ public class FetchedPage {
             return fetchedPageCache.get(cacheKey);
         } else {
             Fetcher fetcher = Fetcher.builder().deviceType(device).method(method).data(data).build();
-            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
+            final CompletableFuture<Response> responseCompletableFuture = fetcher.fetchAsync(urlToFetch);
+            FetchedPage fetchedPage = new FetchedPage(urlToFetch, responseCompletableFuture.get(), mobile);
             fetchedPageCache.put(cacheKey, fetchedPage);
             return fetchedPage;
         }
