@@ -44,7 +44,6 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @FetchPage("http://www.idealo.de")
     public void fetcher_should_return_cookie_value() {
         assertThat(fetchedPage.getCookieValue("logged_in"), equalTo("no"));
     }
