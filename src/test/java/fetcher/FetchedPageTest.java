@@ -8,13 +8,12 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 
 import annotations.FetchPage;
-import annotations.FetcherRule;
+import runner.PageContentTester;
 
-public class FetchedPageTest {
+public class FetchedPageTest extends PageContentTester {
 
     private static FetchedPage fetchedPage;
     private static FetchedPage fetchedMobilePage;
@@ -22,9 +21,6 @@ public class FetchedPageTest {
     private static final String GITHUB_URL = "https://github.com/christian-draeger";
     private static final String GOOGLE_URL = "http://www.google.de";
     private static final String VALID_SELECTOR = "h1";
-
-    @Rule
-    public FetcherRule page = new FetcherRule();
 
     @BeforeClass
     public static void fetcher() {
@@ -79,7 +75,6 @@ public class FetchedPageTest {
         assertThat(page.get().getElementCount(VALID_SELECTOR), is(1));
     }
 
-    // fetch multiple pages by annotation
     @Test
     @FetchPage(GITHUB_URL)
     @FetchPage(GOOGLE_URL)
