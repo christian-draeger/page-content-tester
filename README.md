@@ -17,7 +17,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
     <dependency>
         <groupId>io.github.christian-draeger</groupId>
         <artifactId>page-content-tester</artifactId>
-        <version>1.0.1</version>
+        <version>1.5.0</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
