@@ -26,6 +26,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 #### Configure the Page-Fetcher
 - place a config.properties file under src/test/resources/ in your project
 - the properties file needs to contain the following entries
+
 ```
 # telling the fetcher the max response time in millis.
 # if a timeout occures a retry will be performed (if configured).
@@ -55,6 +56,7 @@ proxy.port=8080
 follow.redirects=true
 ignore.content-type=true
 ```
+
 - adjust several properties until it fits your needs
 
 
