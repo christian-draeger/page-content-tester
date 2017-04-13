@@ -8,7 +8,7 @@
 
 The PageContentTester is a framework for non-blocking and highly parallelized Dom testing. Since it's using the jSoup Framework to scrape the DOM you can use all the provieded methods of [jSoup](https://jsoup.org/) (server-side CSS3 selector driven DOM API). Beside that the Page Content Tester has a bunch of convenient methods on top of jsoup including test config meta data and easy access to request data (like cookies, headers, etc.) and Dom checks (like isElementPresent, follow url by css-selector, get value of html tags / attributes, etc.)
 
-## How To Use
+## Setup
 
 * add the following dependency to your pom.xml to use the convenient methods of the PageContentTester
 
@@ -22,6 +22,41 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
     </dependency>
 </dependencies>
 ```
+
+#### Configure the Page-Fetcher
+- place a config.properties file under src/test/resources/ in your project
+- the properties file needs to contain the following entries
+```
+# telling the fetcher the max response time in millis.
+# if a timeout occures a retry will be performed (if configured).
+# if timeout is reached and no more retries left the fetcher will give up and throw a SocketTimeoutException.
+timeout=10000
+
+# number of retries if something went wrong while fetching
+max.retry.count=2
+
+# if activated every url that have already been fetched will be taken from cache
+cache.duplicates=true
+
+# user-agent that will be used for a standart get page call
+desktop.userAgent=Mozilla/5.0 (X11\\; Ubuntu\\; Linux x86_64\\; rv\\:25.0)
+
+# user-agent that will be used to emulate mobile device
+mobile.userAgent=Mozilla/5.0 (iPhone\\; CPU iPhone OS 6_1_4 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B350 Safari/8536.25
+
+# referrer that will be send with the request
+referrer=http://www.google.com
+
+# proxy
+proxy.enabled=false
+proxy.host=127.0.0.1
+proxy.port=8080
+
+follow.redirects=true
+ignore.content-type=true
+```
+- adjust several properties until it fits your needs
+
 
 #### don't loose time
 - to get the best parallelization result of PageContentTester and don't having the overhead of finding the best setup add this parent pom to your pom.xml
@@ -98,10 +133,6 @@ public class ExampleUsageTest extends PageContentTester {
 
 }
 ```
-
-## Configure the Page-Fetcher
-- the page fetcher is using a [default config](https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/config.properties)
-- it's possible to overwrite the default values by placing a config.properties file under src/main/resources/ in your project and adjust several properties until it fits your needs
 
 ## Example Project
 To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing and checking dom elements of ±1000 urls is getting done in less than 10sec. with a proper internet connection) 
