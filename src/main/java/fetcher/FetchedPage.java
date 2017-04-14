@@ -52,7 +52,7 @@ public class FetchedPage {
     private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> data, boolean mobile, DeviceType device) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
-            log.warn("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
+            log.info("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
             return fetchedPageCache.get(cacheKey);
         } else {
             Fetcher fetcher = Fetcher.builder().deviceType(device).method(method).data(data).build();

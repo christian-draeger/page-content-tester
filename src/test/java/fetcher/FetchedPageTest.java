@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.jsoup.Connection.Method.POST;
 
-import java.util.HashMap;
+import java.util.Collections;
 
 import org.json.JSONObject;
 import org.junit.BeforeClass;
@@ -110,8 +110,7 @@ public class FetchedPageTest extends PageContentTester {
 
     @Test
     public void do_post_request_and_check_response() throws Exception {
-        HashMap<String, String> data = new HashMap<>();
-        JSONObject responseBody = call("http://httpbin.org/post", DESKTOP, POST, data).getJsonResponse();
+        JSONObject responseBody = call("http://httpbin.org/post", DESKTOP, POST, Collections.emptyMap()).getJsonResponse();
         assertThat(responseBody.get("data"), equalTo(""));
     }
 
