@@ -132,7 +132,19 @@ public class ExampleUsageTest extends PageContentTester {
         assertThat(google.isElementPresent("#footer"), is(true));
         assertThat(google.getUrl(), equalTo(GOOGLE_URL));
     }
+    
+    @Test
+    @Fetch(url = "http://whatsmyuseragent.org/", device = MOBILE)
+    public void fetch_page_and_emulate_mobile_device_by_annotation() {
+        String ua = page.get().getElement("p.intro-text").text();
+        assertThat(ua, containsString(page.get().getConfig().getUserAgent(MOBILE)));
+    }
 
+    @Test
+    public void do_post_request_and_check_response() throws Exception {
+        JSONObject responseBody = call("http://httpbin.org/post", DESKTOP, POST, Collections.emptyMap()).getJsonResponse();
+        assertThat(responseBody.get("url"), equalTo("http://httpbin.org/post"));
+    }
 }
 ```
 
