@@ -8,6 +8,7 @@ import static fetcher.FetchedPage.fetchPageAsMobileDevice;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.jsoup.Connection.Method.POST;
@@ -16,6 +17,7 @@ import java.util.Collections;
 
 import org.json.JSONObject;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import annotations.Fetch;
@@ -62,8 +64,28 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
+    public void fetcher_should_return_cookie() {
+        assertThat(fetchedPage.hasCookie("logged_in"), is(true));
+    }
+
+    @Test
+    public void fetcher_should_return_content_type() {
+        assertThat(fetchedPage.getContentType(), equalTo("text/html; charset=utf-8"));
+    }
+
+    @Test
     public void fetcher_should_return_element() {
         assertThat(fetchedPage.getElement(VALID_SELECTOR).hasText(), is(true));
+    }
+
+    @Test
+    public void fetcher_should_return_page_body() {
+        assertThat(fetchedPage.getPageBody(), containsString(VALID_SELECTOR));
+    }
+
+    @Test
+    public void fetcher_should_return_status_message() {
+        assertThat(fetchedPage.getStatusMessage(), equalTo("OK"));
     }
 
     @Test
@@ -77,9 +99,39 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
+    public void fetcher_should_return_elements_by_selector() {
+        assertThat(fetchedPage.getElements(VALID_SELECTOR).size(), greaterThanOrEqualTo(1));
+    }
+
+    @Test
+    public void fetcher_should_return_last_matching_element_by_selector() {
+        assertThat(fetchedPage.getElementLastOf(VALID_SELECTOR).text(), containsString("christian-draeger"));
+    }
+
+    @Test
+    public void fetcher_should_return_nth_matching_element_by_selector() {
+        assertThat(fetchedPage.getElement(VALID_SELECTOR, 0).text(), containsString("christian-draeger"));
+    }
+
+    @Test
     @Fetch(url = GITHUB_URL)
     public void fetcher_should_return_count_of_certain_element() {
         assertThat(page.get().getElementCount(VALID_SELECTOR), is(1));
+    }
+
+    @Test
+    public void fetcher_should_return_headers() {
+        assertThat(fetchedPage.getHeaders(), hasEntry("Server", "GitHub.com"));
+    }
+
+    @Test
+    public void fetcher_should_return_certain_header() {
+        assertThat(fetchedPage.getHeader("Server"), equalTo("GitHub.com"));
+    }
+
+    @Test
+    public void fetcher_should_check_is_certain_header_is_present() {
+        assertThat(fetchedPage.hasHeader("Server"), is(true));
     }
 
     @Test
@@ -106,6 +158,14 @@ public class FetchedPageTest extends PageContentTester {
     public void fetch_as_mobile_device_by_annotation() {
         String ua = page.get().getElement("p.intro-text").text();
         assertThat(ua, containsString(page.get().getConfig().getUserAgent(MOBILE)));
+    }
+
+    @Ignore("TODO: fix setting custom referrer by annotation")
+    @Test
+    @Fetch(url = GITHUB_URL, referrer = "my.custom.referrer")
+    public void fetch_page_by_setting_custom_referrer() {
+        String referrer = page.get().getConfig().getReferrer();
+        assertThat(referrer, equalTo("my.custom.referrer"));
     }
 
     @Test
