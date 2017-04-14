@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
@@ -18,7 +17,6 @@ import configurations.Config;
 import configurations.ProxySetup;
 import fetcher.FetchedPage.DeviceType;
 import lombok.Builder;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,19 +29,7 @@ public class Fetcher {
     private final DeviceType deviceType;
     private final Method method;
     private final Map<String, String> data;
-
-    @SneakyThrows
-    public CompletableFuture<Connection.Response> fetchAsync(String url) {
-        final CompletableFuture<Connection.Response> response = CompletableFuture.supplyAsync(() -> {
-            try {
-                return fetch(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        });
-        return response;
-    }
+    private final String referrer;
 
     public Connection.Response fetch(String url) throws IOException {
 
@@ -64,7 +50,7 @@ public class Fetcher {
                         .ignoreContentType(config.isIgnoringContentType())
                         .method(method)
                         .data(data)
-                        .referrer(config.getReferrer())
+                        .referrer(referrer)
                         .execute();
 
             } catch(SocketTimeoutException ste) {
@@ -80,5 +66,6 @@ public class Fetcher {
         private DeviceType device = DESKTOP;
         private Method method = Method.GET;
         private Map<String, String> data = Collections.emptyMap();
+        private String referrer = "http://www.google.com/";
     }
 }

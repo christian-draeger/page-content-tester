@@ -1,6 +1,6 @@
 package annotations;
 
-import static fetcher.FetchedPage.call;
+import static fetcher.FetchedPage.annotationCall;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -9,12 +9,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Connection;
+import org.jsoup.Connection.Method;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 import fetcher.FetchedPage;
+import fetcher.FetchedPage.DeviceType;
 
 public class FetcherRule implements MethodRule {
 
@@ -33,9 +34,10 @@ public class FetcherRule implements MethodRule {
                     if (annotation instanceof Fetch) {
                         Fetch fetchPage = (Fetch) annotation;
                         String url = fetchPage.url();
-                        Connection.Method method = fetchPage.method();
-                        FetchedPage.DeviceType device = fetchPage.device();
-                        fetchedPage = call(url, device, method, Collections.emptyMap());
+                        Method method = fetchPage.method();
+                        DeviceType device = fetchPage.device();
+                        String referrer = fetchPage.referrer();
+                        fetchedPage = annotationCall(url, device, method, Collections.emptyMap(), referrer);
                     }
                     if (annotation instanceof FetchPages) {
                         FetchPages fetchPages = (FetchPages) annotation;
@@ -50,12 +52,17 @@ public class FetcherRule implements MethodRule {
 
     private void fetchFromAnnotation(Fetch... fetches) {
         for (Fetch fetchPage : fetches) {
-            fetchedPages.add(fetch(fetchPage.url(), fetchPage.device(), fetchPage.method(), Collections.emptyMap()));
+            fetchedPages.add(fetch( fetchPage.url(),
+                                    fetchPage.device(),
+                                    fetchPage.method(),
+                                    Collections.emptyMap(),
+                                    fetchPage.referrer()
+            ));
         }
     }
 
-    private FetchedPage fetch(String url, FetchedPage.DeviceType device, Connection.Method method, Map<String, String> data) {
-        return call(url, device, method, data);
+    private FetchedPage fetch(String url, DeviceType device, Method method, Map<String, String> data, String referrer) {
+        return annotationCall(url, device, method, data, referrer);
     }
 
     public FetchedPage get() {

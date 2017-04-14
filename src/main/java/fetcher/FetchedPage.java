@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONObject;
@@ -36,28 +35,39 @@ public class FetchedPage {
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 
     public static FetchedPage fetchPage(String url) {
-        return fetchedPages(url, Method.GET, Collections.emptyMap(), false, DESKTOP);
+        return fetchedPages(url, Method.GET, Collections.emptyMap(), false, DESKTOP, config.getReferrer());
     }
 
     public static FetchedPage fetchPageAsMobileDevice(String url) {
-        return fetchedPages(url, Method.GET, Collections.emptyMap(), true, MOBILE);
+        return fetchedPages(url, Method.GET, Collections.emptyMap(), true, MOBILE, config.getReferrer());
     }
 
     public static FetchedPage call(String url, DeviceType device, Method method, Map<String, String> data) {
         boolean mobile = device.equals(MOBILE) ? true : false;
-        return fetchedPages(url, method, Collections.emptyMap(), mobile, device);
+        return fetchedPages(url, method, Collections.emptyMap(), mobile, device, config.getReferrer());
     }
 
+    public static FetchedPage annotationCall(String url, DeviceType device, Method method, Map<String, String> data, String referrer) {
+        boolean mobile = device.equals(MOBILE) ? true : false;
+        return fetchedPages(url, method, Collections.emptyMap(), mobile, device, referrer);
+    }
+
+
+
     @SneakyThrows
-    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> data, boolean mobile, DeviceType device) {
+    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> data, boolean mobile, DeviceType device, String referrer) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
             log.info("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
             return fetchedPageCache.get(cacheKey);
         } else {
-            Fetcher fetcher = Fetcher.builder().deviceType(device).method(method).data(data).build();
-            final CompletableFuture<Response> responseCompletableFuture = fetcher.fetchAsync(urlToFetch);
-            FetchedPage fetchedPage = new FetchedPage(urlToFetch, responseCompletableFuture.get(), mobile);
+            Fetcher fetcher = Fetcher.builder()
+                                    .deviceType(device)
+                                    .method(method)
+                                    .data(data)
+                                    .referrer(referrer)
+                                    .build();
+            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
             fetchedPageCache.put(cacheKey, fetchedPage);
             return fetchedPage;
         }
@@ -105,10 +115,6 @@ public class FetchedPage {
         return mobile;
     }
 
-    public String getCookieValue(String cookieName) {
-        return response.cookie(cookieName);
-    }
-
     public String getContentType() {
         return response.contentType();
     }
@@ -121,7 +127,7 @@ public class FetchedPage {
         return new JSONObject(response.body());
     }
 
-    public String getCustomHeader(String header) {
+    public String getHeader(String header) {
         return response.header(header);
     }
 
@@ -129,20 +135,24 @@ public class FetchedPage {
         return response.headers();
     }
 
+    public boolean hasHeader(String header) {
+        return response.hasHeader(header);
+    }
+
     public Map<String, String> getCookies() {
         return response.cookies();
     }
 
-    public String getStatusMessage() {
-        return response.statusMessage();
+    public String getCookieValue(String cookieName) {
+        return response.cookie(cookieName);
     }
 
     public boolean hasCookie(String cookieName) {
         return response.hasCookie(cookieName);
     }
 
-    public boolean hasHeader(String header) {
-        return response.hasHeader(header);
+    public String getStatusMessage() {
+        return response.statusMessage();
     }
 
     public Config getConfig() {
@@ -161,7 +171,7 @@ public class FetchedPage {
         return getDocument().select(cssSelector).last();
     }
 
-    public Element getElementNthOf(String cssSelector, int index) {
+    public Element getElement(String cssSelector, int index) {
         return getDocument().select(cssSelector).get(index);
     }
 
