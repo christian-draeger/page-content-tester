@@ -6,7 +6,7 @@ addons:
   sonarqube:
     organization: "sonarsource"
     token:
-      secure: SONAR_TOKEN
+      secure: $SONAR_TOKEN
 
 jdk:
   - oraclejdk8
