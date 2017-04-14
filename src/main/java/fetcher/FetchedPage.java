@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -42,8 +43,9 @@ public class FetchedPage {
         return fetchedPages(url, Method.GET, Collections.emptyMap(), true, MOBILE);
     }
 
-    public static FetchedPage performAjaxRequest(String url, Method method, Map<String, String> data) {
-        return fetchedPages(url, method, data, false, DESKTOP);
+    public static FetchedPage call(String url, DeviceType device, Method method, Map<String, String> data) {
+        boolean mobile = device.equals(MOBILE) ? true : false;
+        return fetchedPages(url, method, Collections.emptyMap(), mobile, device);
     }
 
     @SneakyThrows
@@ -113,6 +115,10 @@ public class FetchedPage {
 
     public String getPageBody() {
         return response.body();
+    }
+
+    public JSONObject getJsonResponse() {
+        return new JSONObject(response.body());
     }
 
     public String getCustomHeader(String header) {
