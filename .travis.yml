@@ -4,7 +4,7 @@ install: true
 
 addons:
   sonarqube:
-    organization: "sonarsource"
+    organization: "christian-draeger-github"
     token:
       secure: $SONAR_TOKEN
 
