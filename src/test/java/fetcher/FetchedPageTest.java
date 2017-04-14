@@ -80,7 +80,7 @@ public class FetchedPageTest extends PageContentTester {
 
     @Test
     public void fetcher_should_return_page_body() {
-        assertThat(fetchedPage.getPageBody(), containsString(VALID_SELECTOR));
+        assertThat(fetchedPage.getPageBody(), containsString("<!DOCTYPE html>"));
     }
 
     @Test
