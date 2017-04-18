@@ -35,28 +35,29 @@ public class FetchedPage {
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 
     public static FetchedPage fetchPage(String url) {
-        return fetchedPages(url, Method.GET, Collections.emptyMap(), false, DESKTOP, config.getReferrer());
+        return fetchedPages(url, Method.GET, Collections.emptyMap(), DESKTOP, config.getReferrer());
     }
 
     public static FetchedPage fetchPageAsMobileDevice(String url) {
-        return fetchedPages(url, Method.GET, Collections.emptyMap(), true, MOBILE, config.getReferrer());
+        return fetchedPages(url, Method.GET, Collections.emptyMap(), MOBILE, config.getReferrer());
     }
 
-    public static FetchedPage call(String url, DeviceType device, Method method, Map<String, String> data) {
-        boolean mobile = device.equals(MOBILE) ? true : false;
-        return fetchedPages(url, method, Collections.emptyMap(), mobile, device, config.getReferrer());
+    public static FetchedPage call(String url, Method method, Map<String, String> data) {
+        data = Collections.emptyMap();
+        return fetchedPages(url, method, data, DESKTOP, config.getReferrer());
     }
 
     public static FetchedPage annotationCall(String url, DeviceType device, Method method, Map<String, String> data, String referrer) {
-        boolean mobile = device.equals(MOBILE) ? true : false;
-        return fetchedPages(url, method, Collections.emptyMap(), mobile, device, referrer);
+        data = Collections.emptyMap();
+        return fetchedPages(url, method, data , device, referrer);
     }
 
 
 
     @SneakyThrows
-    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> data, boolean mobile, DeviceType device, String referrer) {
+    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> data, DeviceType device, String referrer) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
+        boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
             log.info("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
             return fetchedPageCache.get(cacheKey);

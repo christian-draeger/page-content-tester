@@ -1,6 +1,5 @@
 package fetcher;
 
-import static fetcher.FetchedPage.DeviceType.DESKTOP;
 import static fetcher.FetchedPage.DeviceType.MOBILE;
 import static fetcher.FetchedPage.call;
 import static fetcher.FetchedPage.fetchPage;
@@ -170,7 +169,7 @@ public class FetchedPageTest extends PageContentTester {
 
     @Test
     public void do_post_request_and_check_response() throws Exception {
-        JSONObject responseBody = call("http://httpbin.org/post", DESKTOP, POST, Collections.emptyMap()).getJsonResponse();
+        JSONObject responseBody = call("http://httpbin.org/post", POST, Collections.emptyMap()).getJsonResponse();
         assertThat(responseBody.get("data"), equalTo(""));
     }
 
