@@ -43,7 +43,6 @@ public class FetchedPage {
     }
 
     public static FetchedPage call(String url, Method method, Map<String, String> data) {
-        data = Collections.emptyMap();
         return fetchedPages(url, method, data, DESKTOP, config.getReferrer());
     }
 
