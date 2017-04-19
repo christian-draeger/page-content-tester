@@ -18,7 +18,7 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
     <dependency>
         <groupId>io.github.christian-draeger</groupId>
         <artifactId>page-content-tester</artifactId>
-        <version>1.5.0</version>
+        <version>1.5.2</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -143,7 +143,8 @@ public class ExampleUsageTest extends PageContentTester {
 
     @Test
     public void do_post_request_and_check_response() throws Exception {
-        JSONObject responseBody = call("http://httpbin.org/post", DESKTOP, POST, Collections.emptyMap()).getJsonResponse();
+        FetchedPage somePost = call("http://httpbin.org/post", POST, Collections.emptyMap());
+        JSONObject responseBody = somePost.getJsonResponse();
         assertThat(responseBody.get("url"), equalTo("http://httpbin.org/post"));
     }
 }
