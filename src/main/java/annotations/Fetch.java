@@ -21,6 +21,6 @@ public @interface Fetch {
     String url();
     DeviceType device() default DESKTOP;
     Method method() default GET;
-    String referrer() default "http://www.google.com/";
+    String referrer() default "referrer";
 
 }

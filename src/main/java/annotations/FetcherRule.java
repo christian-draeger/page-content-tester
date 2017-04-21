@@ -14,6 +14,7 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
+import configurations.Config;
 import fetcher.FetchedPage;
 import fetcher.FetchedPage.DeviceType;
 
@@ -21,6 +22,7 @@ public class FetcherRule implements MethodRule {
 
     private FetchedPage fetchedPage;
     private List<FetchedPage> fetchedPages = new ArrayList<>();
+    private Config config = new Config();
 
 
     @Override
@@ -36,7 +38,7 @@ public class FetcherRule implements MethodRule {
                         String url = fetchPage.url();
                         Method method = fetchPage.method();
                         DeviceType device = fetchPage.device();
-                        String referrer = fetchPage.referrer();
+                        String referrer = fetchPage.referrer().equals("referrer") ? config.getReferrer() : fetchPage.referrer();
                         fetchedPage = annotationCall(url, device, method, Collections.emptyMap(), referrer);
                     }
                     if (annotation instanceof FetchPages) {

@@ -42,31 +42,31 @@ public class FetchedPage {
         return fetchedPages(url, Method.GET, Collections.emptyMap(), MOBILE, config.getReferrer());
     }
 
-    public static FetchedPage call(String url, Method method, Map<String, String> data) {
-        return fetchedPages(url, method, data, DESKTOP, config.getReferrer());
+    public static FetchedPage call(String url, Method method, Map<String, String> requestBody) {
+        return fetchedPages(url, method, requestBody, DESKTOP, config.getReferrer());
     }
 
-    public static FetchedPage annotationCall(String url, DeviceType device, Method method, Map<String, String> data, String referrer) {
-        data = Collections.emptyMap();
-        return fetchedPages(url, method, data , device, referrer);
+    public static FetchedPage annotationCall(String url, DeviceType device, Method method, Map<String, String> requestBody, String referrer) {
+        requestBody = Collections.emptyMap();
+        return fetchedPages(url, method, requestBody, device, referrer);
     }
-
-
 
     @SneakyThrows
-    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> data, DeviceType device, String referrer) {
+    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
-            log.info("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
+            if (config.isCacheDuplicatesLogActive()) {
+                log.info("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
+            }
             return fetchedPageCache.get(cacheKey);
         } else {
             Fetcher fetcher = Fetcher.builder()
-                                    .deviceType(device)
-                                    .method(method)
-                                    .data(data)
-                                    .referrer(referrer)
-                                    .build();
+                    .deviceType(device)
+                    .method(method)
+                    .requestBody(requestBody)
+                    .referrer(referrer)
+                    .build();
             FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
             fetchedPageCache.put(cacheKey, fetchedPage);
             return fetchedPage;

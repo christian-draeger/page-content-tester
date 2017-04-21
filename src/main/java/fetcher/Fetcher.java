@@ -14,7 +14,6 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 
 import configurations.Config;
-import configurations.ProxySetup;
 import fetcher.FetchedPage.DeviceType;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 public class Fetcher {
 
-    private final Config config = new Config();
-    private final ProxySetup proxySetup = new ProxySetup();
+    private static final Config CONFIG = new Config();
 
     private final DeviceType deviceType;
     private final Method method;
-    private final Map<String, String> data;
+    private final Map<String, String> requestBody;
     private final String referrer;
 
     public Connection.Response fetch(String url) throws IOException {
@@ -36,25 +34,25 @@ public class Fetcher {
         log.info("fetching {} (UserAgent: {})", url, deviceType);
         setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
 
-        int retryCount = config.getMaxRetryCount();
+        int retryCount = CONFIG.getMaxRetryCount();
 
         while(true) {
             try {
                 return Jsoup.connect(url)
                         .validateTLSCertificates(false)
-                        .timeout(config.getTimeoutValue())
-                        .userAgent(deviceType.equals(MOBILE) ? config.getUserAgent(MOBILE) : config.getUserAgent(DESKTOP))
+                        .timeout(CONFIG.getTimeoutValue())
+                        .userAgent(deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP))
                         .ignoreHttpErrors(true)
-                        .proxy(proxySetup.getProxy())
-                        .followRedirects(config.isFollowingRedirects())
-                        .ignoreContentType(config.isIgnoringContentType())
+                        .proxy(CONFIG.getProxy())
+                        .followRedirects(CONFIG.isFollowingRedirects())
+                        .ignoreContentType(CONFIG.isIgnoringContentType())
                         .method(method)
-                        .data(data)
+                        .data(requestBody)
                         .referrer(referrer)
                         .execute();
 
             } catch(SocketTimeoutException ste) {
-                if(retryCount > config.getMaxRetryCount()) {
+                if(retryCount > CONFIG.getMaxRetryCount()) {
                     throw ste;
                 }
                 log.warn("SocketRead time out after {}. try", retryCount++);
@@ -65,7 +63,7 @@ public class Fetcher {
     public static class FetcherBuilder {
         private DeviceType device = DESKTOP;
         private Method method = Method.GET;
-        private Map<String, String> data = Collections.emptyMap();
-        private String referrer = "http://www.google.com/";
+        private Map<String, String> requestBody = Collections.emptyMap();
+        private String referrer = CONFIG.getReferrer();
     }
 }

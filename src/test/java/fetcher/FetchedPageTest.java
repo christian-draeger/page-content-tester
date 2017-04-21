@@ -16,7 +16,6 @@ import java.util.Collections;
 
 import org.json.JSONObject;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import annotations.Fetch;
@@ -159,12 +158,18 @@ public class FetchedPageTest extends PageContentTester {
         assertThat(ua, containsString(page.get().getConfig().getUserAgent(MOBILE)));
     }
 
-    @Ignore("TODO: fix setting custom referrer by annotation")
     @Test
-    @Fetch(url = GITHUB_URL, referrer = "my.custom.referrer")
+    @Fetch(url = "https://www.whatismyreferer.com/", referrer = "my.custom.referrer")
     public void fetch_page_by_setting_custom_referrer() {
-        String referrer = page.get().getConfig().getReferrer();
+        String referrer = page.get().getElement("strong").text();
         assertThat(referrer, equalTo("my.custom.referrer"));
+    }
+
+    @Test
+    @Fetch(url = "https://www.whatismyreferer.com/")
+    public void fetch_page_should_use_referrer_from_properties_by_default() {
+        String referrer = page.get().getElement("strong").text();
+        assertThat(referrer, equalTo(config.getReferrer()));
     }
 
     @Test

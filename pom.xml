@@ -38,11 +38,13 @@
         <autoReleaseAfterClose>false</autoReleaseAfterClose>
 
         <version.jSoup>1.10.2</version.jSoup>
-        <version.jUnitToolbox>2.2</version.jUnitToolbox>
+        <version.jUnitToolbox>2.3</version.jUnitToolbox>
         <version.junit>4.12</version.junit>
         <version.lombok>1.16.14</version.lombok>
         <version.apacheCommonsLang3>3.5</version.apacheCommonsLang3>
         <version.logback>1.2.1</version.logback>
+
+        <surefire.rerunFailingTestsCount>2</surefire.rerunFailingTestsCount>
     </properties>
 
     <dependencies>
@@ -99,7 +101,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>${version.apacheCommonsLang3}</version>
         </dependency>
-
     </dependencies>
 
     <distributionManagement>

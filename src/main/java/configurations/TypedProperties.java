@@ -1,7 +1,6 @@
 package configurations;
 
 import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +23,12 @@ public class TypedProperties {
 	    return System.getProperty(key, properties.getProperty(key));
 	}
 
+	public boolean hasProperty(final String key) {
+		return getStringValue(key) != null;
+	}
+
 	public int getIntValue(final String key) {
-		return parseInt(getStringValue(key));
+		return Integer.parseInt(getStringValue(key));
 	}
 
 	public boolean getBooleanValue(final String key) {
