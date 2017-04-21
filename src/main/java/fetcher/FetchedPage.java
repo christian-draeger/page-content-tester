@@ -100,7 +100,7 @@ public class FetchedPage {
                 throw new RuntimeException(e);
             }
         }
-        return document.get();
+        return document.get(); //NOSONAR
     }
 
     public String getUrl() {
