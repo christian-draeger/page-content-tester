@@ -61,9 +61,9 @@ public class Fetcher {
     }
 
     public static class FetcherBuilder { //NOSONAR
-        private DeviceType device = DESKTOP;
-        private Method method = Method.GET;
-        private Map<String, String> requestBody = Collections.emptyMap();
-        private String referrer = CONFIG.getReferrer();
+        private DeviceType device = DESKTOP; //NOSONAR
+        private Method method = Method.GET; //NOSONAR
+        private Map<String, String> requestBody = Collections.emptyMap(); //NOSONAR
+        private String referrer = CONFIG.getReferrer(); //NOSONAR
     }
 }
