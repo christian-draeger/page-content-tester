@@ -60,7 +60,7 @@ public class Fetcher {
         }
     }
 
-    public static class FetcherBuilder {
+    public static class FetcherBuilder { //NOSONAR
         private DeviceType device = DESKTOP;
         private Method method = Method.GET;
         private Map<String, String> requestBody = Collections.emptyMap();

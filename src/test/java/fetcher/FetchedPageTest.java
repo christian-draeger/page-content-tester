@@ -92,8 +92,13 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    public void fetcher_should_return_true_if_certain_element_is_present() {
+    public void should_return_true_if_certain_element_is_present() {
         assertThat(fetchedPage.isElementPresent(VALID_SELECTOR), is(true));
+    }
+
+    @Test
+    public void should_return_false_if_certain_element_is_not_present() {
+        assertThat(fetchedPage.isElementPresent("dgfhkdgs"), is(false));
     }
 
     @Test
@@ -191,8 +196,13 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    public void fetcher_should_return_true_for_certain_count_of_certain_element() {
+    public void should_return_true_for_certain_count_of_certain_element() {
         assertThat(fetchedPage.isElementPresentNthTimes(VALID_SELECTOR, 1), is(true));
+    }
+
+    @Test
+    public void should_return_false_for_invalid_count_of_certain_element() {
+        assertThat(fetchedPage.isElementPresentNthTimes(VALID_SELECTOR, 100), is(false));
     }
 
 }

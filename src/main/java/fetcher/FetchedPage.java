@@ -46,9 +46,8 @@ public class FetchedPage {
         return fetchedPages(url, method, requestBody, DESKTOP, config.getReferrer());
     }
 
-    public static FetchedPage annotationCall(String url, DeviceType device, Method method, Map<String, String> requestBody, String referrer) {
-        requestBody = Collections.emptyMap();
-        return fetchedPages(url, method, requestBody, device, referrer);
+    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer) {
+        return fetchedPages(url, method, Collections.emptyMap(), device, referrer);
     }
 
     @SneakyThrows

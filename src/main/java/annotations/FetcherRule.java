@@ -5,9 +5,7 @@ import static fetcher.FetchedPage.annotationCall;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Connection.Method;
 import org.junit.rules.MethodRule;
@@ -39,7 +37,7 @@ public class FetcherRule implements MethodRule {
                         Method method = fetchPage.method();
                         DeviceType device = fetchPage.device();
                         String referrer = fetchPage.referrer().equals("referrer") ? config.getReferrer() : fetchPage.referrer();
-                        fetchedPage = annotationCall(url, device, method, Collections.emptyMap(), referrer);
+                        fetchedPage = annotationCall(url, device, method, referrer);
                     }
                     if (annotation instanceof FetchPages) {
                         FetchPages fetchPages = (FetchPages) annotation;
@@ -57,14 +55,13 @@ public class FetcherRule implements MethodRule {
             fetchedPages.add(fetch( fetchPage.url(),
                                     fetchPage.device(),
                                     fetchPage.method(),
-                                    Collections.emptyMap(),
                                     fetchPage.referrer()
             ));
         }
     }
 
-    private FetchedPage fetch(String url, DeviceType device, Method method, Map<String, String> data, String referrer) {
-        return annotationCall(url, device, method, data, referrer);
+    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer) {
+        return annotationCall(url, device, method, referrer);
     }
 
     public FetchedPage get() {
@@ -76,9 +73,9 @@ public class FetcherRule implements MethodRule {
     }
 
     public FetchedPage get(String urlSnippet) {
-        for (FetchedPage fetchedPage : fetchedPages){
-            if (fetchedPage.getUrl().contains(urlSnippet)){
-                return fetchedPage;
+        for (FetchedPage recentlyFetchedPage : fetchedPages){
+            if (recentlyFetchedPage.getUrl().contains(urlSnippet)){
+                return recentlyFetchedPage;
             }
         }
         return fetchedPages.get(0);
