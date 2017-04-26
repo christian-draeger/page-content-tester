@@ -34,7 +34,7 @@ public class Fetcher {
         log.info("fetching {} (UserAgent: {})", url, deviceType);
         setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
 
-        int retryCount = CONFIG.getMaxRetryCount();
+        int retryCount = CONFIG.getTimeoutMaxRetryCount();
 
         while(true) {
             try {
@@ -52,7 +52,7 @@ public class Fetcher {
                         .execute();
 
             } catch(SocketTimeoutException ste) {
-                if(retryCount > CONFIG.getMaxRetryCount()) {
+                if(retryCount > CONFIG.getTimeoutMaxRetryCount()) {
                     throw ste;
                 }
                 log.warn("SocketRead time out after {}. try", retryCount++);

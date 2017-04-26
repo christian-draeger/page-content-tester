@@ -16,7 +16,7 @@ public class Config {
         return getIntValue("timeout");
     }
 
-    public int getMaxRetryCount() {
+    public int getTimeoutMaxRetryCount() {
         return getIntValue("timeout.max.retry.count");
     }
 

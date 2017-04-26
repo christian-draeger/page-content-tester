@@ -26,7 +26,7 @@ public class ConfigTest {
 
     @Test
     public void should_return_max_retry_count() {
-        assertThat(config.getMaxRetryCount(), is(3));
+        assertThat(config.getTimeoutMaxRetryCount(), is(3));
     }
 
     @Test
