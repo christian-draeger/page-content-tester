@@ -18,50 +18,16 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
     <dependency>
         <groupId>io.github.christian-draeger</groupId>
         <artifactId>page-content-tester</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
 ```
 
 #### Configure the Page-Fetcher
-- place a config.properties file under src/test/resources/ in your project
-- the properties file needs to contain the following entries
+- place a pagecontent.properties file under src/test/resources/ in your project
+- override values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your pagecontent.properties file until they fit your needs
 
-```
-# telling the fetcher the max response time in millis.
-# if a timeout occures a retry will be performed (if configured).
-# if timeout is reached and no more retries left the fetcher will give up and throw a SocketTimeoutException.
-timeout=10000
-
-# number of retries if something went wrong while fetching
-max.retry.count=2
-
-# if activated every url that have already been fetched will be taken from cache
-cache.duplicates=true
-
-# user-agent that will be used for a standart get page call
-desktop.userAgent=Mozilla/5.0 (X11\\; Ubuntu\\; Linux x86_64\\; rv\\:25.0)
-
-# user-agent that will be used to emulate mobile device
-mobile.userAgent=Mozilla/5.0 (iPhone\\; CPU iPhone OS 6_1_4 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B350 Safari/8536.25
-
-# referrer that will be send with the request
-referrer=http://www.google.com
-
-# proxy
-proxy.enabled=false
-proxy.host=127.0.0.1
-proxy.port=8080
-
-follow.redirects=true
-ignore.content-type=true
-```
-
-- adjust several properties until it fits your needs
-
-
-#### don't loose time
 - to get the best parallelization result of PageContentTester and don't having the overhead of finding the best setup add this parent pom to your pom.xml
   - it will setup all the configurations for an efficient parallelization of your jUnit tests automatically, you don't need to configure jUnit yourself anymore
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section of the [parent pom](https://search.maven.org/#artifactdetails%7Cio.github.christian-draeger%7Cpage-content-tester-parent%7C1.0%7Cpom)
