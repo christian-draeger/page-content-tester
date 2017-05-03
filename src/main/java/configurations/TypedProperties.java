@@ -14,7 +14,7 @@ public class TypedProperties {
 		final InputStream inputStream = getClass().getResourceAsStream(resourceName);
 		try {
 			properties.load(inputStream);
-		} catch (final IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
