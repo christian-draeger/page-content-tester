@@ -36,7 +36,7 @@ public class FetcherRule implements MethodRule {
                         String url = fetchPage.url();
                         Method method = fetchPage.method();
                         DeviceType device = fetchPage.device();
-                        String referrer = fetchPage.referrer().equals("referrer") ? config.getReferrer() : fetchPage.referrer();
+                        String referrer = "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
                         fetchedPage = annotationCall(url, device, method, referrer);
                     }
                     if (annotation instanceof FetchPages) {
