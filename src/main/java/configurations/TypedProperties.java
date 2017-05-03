@@ -10,7 +10,7 @@ public class TypedProperties {
 
 	private final Properties properties = new Properties();
 
-	public TypedProperties(String resourceName) {
+	TypedProperties(String resourceName) {
 		final InputStream inputStream = getClass().getResourceAsStream(resourceName);
 		try {
 			properties.load(inputStream);
@@ -19,19 +19,23 @@ public class TypedProperties {
 		}
 	}
 
-	public String getStringValue(final String key) {
+	String getStringValue(final String key) {
 	    return System.getProperty(key, properties.getProperty(key));
 	}
 
-	public boolean hasProperty(final String key) {
+	boolean hasProperty(final String key) {
 		return getStringValue(key) != null;
 	}
 
-	public int getIntValue(final String key) {
+	int getIntValue(final String key) {
 		return Integer.parseInt(getStringValue(key));
 	}
 
-	public boolean getBooleanValue(final String key) {
+	boolean getBooleanValue(final String key) {
+		String value = getStringValue(key);
+		if (!("true".equals(value) || "false".equals(value))){
+			throw new RuntimeException("trying to parse non boolean value as boolean");
+		}
 		return parseBoolean(getStringValue(key));
 	}
 }
