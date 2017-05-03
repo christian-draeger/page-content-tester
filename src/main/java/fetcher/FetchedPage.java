@@ -96,7 +96,7 @@ public class FetchedPage {
             try {
                 document = Optional.of(response.parse());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new ParseDocumentException("could not parse document", e);
             }
         }
         return document.get(); //NOSONAR

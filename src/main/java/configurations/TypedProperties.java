@@ -15,7 +15,7 @@ public class TypedProperties {
 		try {
 			properties.load(inputStream);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ConfigurationException("could not read " + resourceName, e);
 		}
 	}
 
@@ -34,7 +34,7 @@ public class TypedProperties {
 	boolean getBooleanValue(final String key) {
 		String value = getStringValue(key);
 		if (!("true".equals(value) || "false".equals(value))){
-			throw new RuntimeException("trying to parse non boolean value as boolean");
+			throw new ConfigurationException("trying to parse non boolean value as boolean");
 		}
 		return parseBoolean(getStringValue(key));
 	}
