@@ -19,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import annotations.Fetch;
+import annotations.GetFetchedPageException;
 import runner.PageContentTester;
 
 public class FetchedPageTest extends PageContentTester {
@@ -154,6 +155,18 @@ public class FetchedPageTest extends PageContentTester {
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_url_snippet() {
         assertThat(page.get("github").isElementPresent("h1"), is(true));
         assertThat(page.get("google").isElementPresent("#footer"), is(true));
+    }
+
+    @Test(expected = GetFetchedPageException.class)
+    @Fetch(url = GITHUB_URL)
+    public void fetch_page_via_annotation_and_try_to_get_fetched_page_by_unknown_url_snippet() {
+        page.get("unknown");
+    }
+
+    @Test(expected = GetFetchedPageException.class)
+    @Fetch(url = GITHUB_URL)
+    public void fetch_page_via_annotation_and_try_to_get_fetched_page_by_invalid_index() {
+        page.get(1);
     }
 
     @Test

@@ -85,7 +85,7 @@ public class FetchedPage {
 
     private Optional<Document> document = Optional.empty();
 
-    private FetchedPage(String url, Response response, boolean mobile) {
+    FetchedPage(String url, Response response, boolean mobile) {
         this.url = url;
         this.response = response;
         this.mobile = mobile;

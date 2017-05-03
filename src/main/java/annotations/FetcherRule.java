@@ -69,7 +69,11 @@ public class FetcherRule implements MethodRule {
     }
 
     public FetchedPage get(int index) {
-        return fetchedPages.get(index);
+        try {
+            return fetchedPages.get(index);
+        } catch (IndexOutOfBoundsException e) { // NOSONAR
+            throw new GetFetchedPageException("could not find fetched page with index \"" + index + "\"");
+        }
     }
 
     public FetchedPage get(String urlSnippet) {
@@ -78,6 +82,6 @@ public class FetcherRule implements MethodRule {
                 return recentlyFetchedPage;
             }
         }
-        return fetchedPages.get(0);
+        throw new GetFetchedPageException("could not find fetched page with url-snippet \"" + urlSnippet + "\"");
     }
 }
