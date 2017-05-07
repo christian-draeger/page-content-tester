@@ -28,6 +28,7 @@ public class Fetcher {
     private final Method method;
     private final Map<String, String> requestBody;
     private final String referrer;
+    private final int timeout;
 
     public Connection.Response fetch(String url) throws IOException {
 
@@ -40,7 +41,7 @@ public class Fetcher {
             try {
                 return Jsoup.connect(url)
                         .validateTLSCertificates(false)
-                        .timeout(CONFIG.getTimeoutValue())
+                        .timeout(timeout)
                         .userAgent(deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP))
                         .ignoreHttpErrors(true)
                         .proxy(CONFIG.getProxy())
@@ -65,5 +66,6 @@ public class Fetcher {
         private Method method = Method.GET; //NOSONAR
         private Map<String, String> requestBody = Collections.emptyMap(); //NOSONAR
         private String referrer = CONFIG.getReferrer(); //NOSONAR
+        private int timeout = CONFIG.getTimeoutValue(); //NOSONAR
     }
 }

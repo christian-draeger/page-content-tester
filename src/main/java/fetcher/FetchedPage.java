@@ -35,23 +35,47 @@ public class FetchedPage {
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 
     public static FetchedPage fetchPage(String url) {
-        return fetchedPages(url, Method.GET, Collections.emptyMap(), DESKTOP, config.getReferrer());
+        return fetchedPages(url,
+                            Method.GET,
+                            Collections.emptyMap(),
+                            DESKTOP,
+                            config.getReferrer(),
+                            config.getTimeoutValue()
+        );
     }
 
     public static FetchedPage fetchPageAsMobileDevice(String url) {
-        return fetchedPages(url, Method.GET, Collections.emptyMap(), MOBILE, config.getReferrer());
+        return fetchedPages(url,
+                            Method.GET,
+                            Collections.emptyMap(),
+                            MOBILE,
+                            config.getReferrer(),
+                            config.getTimeoutValue()
+        );
     }
 
     public static FetchedPage call(String url, Method method, Map<String, String> requestBody) {
-        return fetchedPages(url, method, requestBody, DESKTOP, config.getReferrer());
+        return fetchedPages(url,
+                            method,
+                            requestBody,
+                            DESKTOP,
+                            config.getReferrer(),
+                            config.getTimeoutValue()
+        );
     }
 
-    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer) {
-        return fetchedPages(url, method, Collections.emptyMap(), device, referrer);
+    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout) {
+        return fetchedPages(url,
+                            method,
+                            Collections.emptyMap(),
+                            device,
+                            referrer,
+                            timeout
+        );
     }
 
     @SneakyThrows
-    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer) {
+    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer, int timeout) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
@@ -65,6 +89,7 @@ public class FetchedPage {
                     .method(method)
                     .requestBody(requestBody)
                     .referrer(referrer)
+                    .timeout(timeout)
                     .build();
             FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
             fetchedPageCache.put(cacheKey, fetchedPage);

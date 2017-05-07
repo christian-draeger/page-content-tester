@@ -22,5 +22,6 @@ public @interface Fetch {
     DeviceType device() default DESKTOP;
     Method method() default GET;
     String referrer() default "referrer";
+    int timeout() default 0;
 
 }

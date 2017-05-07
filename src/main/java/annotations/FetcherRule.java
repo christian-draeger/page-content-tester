@@ -33,11 +33,14 @@ public class FetcherRule implements MethodRule {
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof Fetch) {
                         Fetch fetchPage = (Fetch) annotation;
+
                         String url = fetchPage.url();
                         Method method = fetchPage.method();
                         DeviceType device = fetchPage.device();
                         String referrer = "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
-                        fetchedPage = annotationCall(url, device, method, referrer);
+                        int timeout = fetchPage.timeout() == 0 ? config.getTimeoutValue() : fetchPage.timeout();
+
+                        fetchedPage = annotationCall(url, device, method, referrer, timeout);
                     }
                     if (annotation instanceof FetchPages) {
                         FetchPages fetchPages = (FetchPages) annotation;
@@ -55,13 +58,14 @@ public class FetcherRule implements MethodRule {
             fetchedPages.add(fetch( fetchPage.url(),
                                     fetchPage.device(),
                                     fetchPage.method(),
-                                    fetchPage.referrer()
+                                    fetchPage.referrer(),
+                                    fetchPage.timeout()
             ));
         }
     }
 
-    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer) {
-        return annotationCall(url, device, method, referrer);
+    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout) {
+        return annotationCall(url, device, method, referrer, timeout);
     }
 
     public FetchedPage get() {
