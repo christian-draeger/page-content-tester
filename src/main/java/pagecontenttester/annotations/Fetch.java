@@ -1,6 +1,6 @@
-package annotations;
+package pagecontenttester.annotations;
 
-import static fetcher.FetchedPage.DeviceType.DESKTOP;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static org.jsoup.Connection.Method.GET;
 
 import java.lang.annotation.ElementType;
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 import org.jsoup.Connection.Method;
 
-import fetcher.FetchedPage.DeviceType;
+import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })

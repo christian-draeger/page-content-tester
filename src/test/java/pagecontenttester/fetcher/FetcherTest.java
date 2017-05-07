@@ -1,6 +1,6 @@
-package fetcher;
+package pagecontenttester.fetcher;
 
-import static fetcher.FetchedPage.DeviceType.DESKTOP;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import org.jsoup.Connection;
 import org.junit.Test;
+
+import pagecontenttester.fetcher.Fetcher;
 
 public class FetcherTest {
 

@@ -1,10 +1,12 @@
-package configurations;
+package pagecontenttester.configurations;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 
 import org.junit.Test;
+
+import pagecontenttester.configurations.TypedProperties;
 
 public class TypedPropertiesTest {
 

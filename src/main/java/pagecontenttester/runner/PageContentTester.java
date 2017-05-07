@@ -1,12 +1,12 @@
-package runner;
+package pagecontenttester.runner;
 
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 import com.googlecode.junittoolbox.ParallelRunner;
 
-import annotations.FetcherRule;
-import configurations.Config;
+import pagecontenttester.annotations.FetcherRule;
+import pagecontenttester.configurations.Config;
 
 @RunWith(ParallelRunner.class)
 public class PageContentTester {

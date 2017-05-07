@@ -1,6 +1,6 @@
-package annotations;
+package pagecontenttester.annotations;
 
-import static fetcher.FetchedPage.annotationCall;
+import static pagecontenttester.fetcher.FetchedPage.annotationCall;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import configurations.Config;
-import fetcher.FetchedPage;
-import fetcher.FetchedPage.DeviceType;
+import pagecontenttester.configurations.Config;
+import pagecontenttester.fetcher.FetchedPage;
+import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 public class FetcherRule implements MethodRule {
 

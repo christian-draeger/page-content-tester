@@ -1,7 +1,7 @@
-package fetcher;
+package pagecontenttester.fetcher;
 
-import static fetcher.FetchedPage.DeviceType.DESKTOP;
-import static fetcher.FetchedPage.DeviceType.MOBILE;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 import static java.lang.System.setProperty;
 
 import java.io.IOException;
@@ -13,8 +13,8 @@ import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 
-import configurations.Config;
-import fetcher.FetchedPage.DeviceType;
+import pagecontenttester.configurations.Config;
+import pagecontenttester.fetcher.FetchedPage.DeviceType;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 

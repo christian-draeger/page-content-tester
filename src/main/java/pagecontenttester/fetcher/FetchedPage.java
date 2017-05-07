@@ -1,7 +1,7 @@
-package fetcher;
+package pagecontenttester.fetcher;
 
-import static fetcher.FetchedPage.DeviceType.DESKTOP;
-import static fetcher.FetchedPage.DeviceType.MOBILE;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 import static org.jsoup.Connection.Method;
 import static org.jsoup.Connection.Response;
 
@@ -16,7 +16,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import configurations.Config;
+import pagecontenttester.configurations.Config;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.Value;

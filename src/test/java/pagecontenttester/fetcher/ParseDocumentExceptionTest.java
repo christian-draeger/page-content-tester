@@ -1,6 +1,8 @@
-package fetcher;
+package pagecontenttester.fetcher;
 
 import org.junit.Test;
+
+import pagecontenttester.fetcher.ParseDocumentException;
 
 public class ParseDocumentExceptionTest {
 
