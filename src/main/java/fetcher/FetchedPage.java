@@ -40,7 +40,8 @@ public class FetchedPage {
                             Collections.emptyMap(),
                             DESKTOP,
                             config.getReferrer(),
-                            config.getTimeoutValue()
+                            config.getTimeoutValue(),
+                            config.getTimeoutMaxRetryCount()
         );
     }
 
@@ -50,7 +51,8 @@ public class FetchedPage {
                             Collections.emptyMap(),
                             MOBILE,
                             config.getReferrer(),
-                            config.getTimeoutValue()
+                            config.getTimeoutValue(),
+                            config.getTimeoutMaxRetryCount()
         );
     }
 
@@ -60,22 +62,24 @@ public class FetchedPage {
                             requestBody,
                             DESKTOP,
                             config.getReferrer(),
-                            config.getTimeoutValue()
+                            config.getTimeoutValue(),
+                            config.getTimeoutMaxRetryCount()
         );
     }
 
-    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout) {
+    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout) {
         return fetchedPages(url,
                             method,
                             Collections.emptyMap(),
                             device,
                             referrer,
-                            timeout
+                            timeout,
+                            retriesOnTimeout
         );
     }
 
     @SneakyThrows
-    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer, int timeout) {
+    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer, int timeout, int retriesOnTimeout) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
@@ -90,6 +94,7 @@ public class FetchedPage {
                     .requestBody(requestBody)
                     .referrer(referrer)
                     .timeout(timeout)
+                    .retriesOnTimeout(retriesOnTimeout)
                     .build();
             FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
             fetchedPageCache.put(cacheKey, fetchedPage);

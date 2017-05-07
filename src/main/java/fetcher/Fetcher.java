@@ -29,13 +29,15 @@ public class Fetcher {
     private final Map<String, String> requestBody;
     private final String referrer;
     private final int timeout;
+    private final int retriesOnTimeout;
+
 
     public Connection.Response fetch(String url) throws IOException {
 
         log.info("fetching {} (UserAgent: {})", url, deviceType);
         setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
 
-        int retryCount = CONFIG.getTimeoutMaxRetryCount();
+        int retryCount = 0;
 
         while(true) {
             try {
@@ -53,7 +55,7 @@ public class Fetcher {
                         .execute();
 
             } catch(SocketTimeoutException ste) {
-                if(retryCount > CONFIG.getTimeoutMaxRetryCount()) {
+                if(retryCount > retriesOnTimeout) {
                     throw ste;
                 }
                 log.warn("SocketRead time out after {}. try", retryCount++);
@@ -67,5 +69,6 @@ public class Fetcher {
         private Map<String, String> requestBody = Collections.emptyMap(); //NOSONAR
         private String referrer = CONFIG.getReferrer(); //NOSONAR
         private int timeout = CONFIG.getTimeoutValue(); //NOSONAR
+        private int retriesOnTimeout = CONFIG.getTimeoutMaxRetryCount(); //NOSONAR
     }
 }

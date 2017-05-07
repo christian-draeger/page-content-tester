@@ -37,10 +37,17 @@ public class FetcherRule implements MethodRule {
                         String url = fetchPage.url();
                         Method method = fetchPage.method();
                         DeviceType device = fetchPage.device();
-                        String referrer = "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
-                        int timeout = fetchPage.timeout() == 0 ? config.getTimeoutValue() : fetchPage.timeout();
+                        String referrer = getReferrer(fetchPage);
+                        int timeout = getTimeout(fetchPage);
+                        int retriesOnTimeout = getRetryCount(fetchPage);
 
-                        fetchedPage = annotationCall(url, device, method, referrer, timeout);
+                        fetchedPage = annotationCall(   url,
+                                                        device,
+                                                        method,
+                                                        referrer,
+                                                        timeout,
+                                                        retriesOnTimeout
+                        );
                     }
                     if (annotation instanceof FetchPages) {
                         FetchPages fetchPages = (FetchPages) annotation;
@@ -59,13 +66,20 @@ public class FetcherRule implements MethodRule {
                                     fetchPage.device(),
                                     fetchPage.method(),
                                     fetchPage.referrer(),
-                                    fetchPage.timeout()
+                                    fetchPage.timeout(),
+                                    fetchPage.retriesOnTimeout()
             ));
         }
     }
 
-    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout) {
-        return annotationCall(url, device, method, referrer, timeout);
+    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout) {
+        return annotationCall(  url,
+                                device,
+                                method,
+                                referrer,
+                                timeout,
+                                retriesOnTimeout
+        );
     }
 
     public FetchedPage get() {
@@ -87,5 +101,17 @@ public class FetcherRule implements MethodRule {
             }
         }
         throw new GetFetchedPageException("could not find fetched page with url-snippet \"" + urlSnippet + "\"");
+    }
+
+    private int getRetryCount(Fetch fetchPage) {
+        return fetchPage.retriesOnTimeout() == 0 ? config.getTimeoutMaxRetryCount() : fetchPage.retriesOnTimeout();
+    }
+
+    private int getTimeout(Fetch fetchPage) {
+        return fetchPage.timeout() == 0 ? config.getTimeoutValue() : fetchPage.timeout();
+    }
+
+    private String getReferrer(Fetch fetchPage) {
+        return "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
     }
 }
