@@ -1,7 +1,7 @@
 package pagecontenttester.annotations;
 
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static org.jsoup.Connection.Method.GET;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -24,5 +24,6 @@ public @interface Fetch {
     String referrer() default "referrer";
     int timeout() default 0; // in milliseconds
     int retriesOnTimeout() default 0;
+    Cookie[] setCookies() default @Cookie();
 
 }

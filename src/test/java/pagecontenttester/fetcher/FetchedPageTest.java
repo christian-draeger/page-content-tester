@@ -1,6 +1,7 @@
 package pagecontenttester.fetcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import pagecontenttester.annotations.Cookie;
 import pagecontenttester.annotations.Fetch;
 import pagecontenttester.annotations.GetFetchedPageException;
 import pagecontenttester.runner.PageContentTester;
@@ -31,6 +33,7 @@ public class FetchedPageTest extends PageContentTester {
     private static final String GOOGLE_URL = "http://www.google.de";
     private static final String VALID_SELECTOR = "h1";
 
+    @Fetch(url = "http://www.google.de")
     @BeforeClass
     public static void fetcher() {
         fetchedPage = fetchPage(GITHUB_URL);
@@ -188,6 +191,27 @@ public class FetchedPageTest extends PageContentTester {
     public void fetch_page_should_use_referrer_from_properties_by_default() {
         String referrer = page.get().getElement("strong").text();
         assertThat(referrer, equalTo(config.getReferrer()));
+    }
+
+    @Test
+    @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
+            setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
+    public void can_set_cookie_via_annotation() throws Exception {
+        assertThat(page.get().getDocument().body().text(),
+                both(containsString("page-content-tester"))
+                        .and(containsString("wtf-666")));
+    }
+
+    @Test
+    @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
+            setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),
+                            @Cookie(name = "some-other-cookie", value = "666-wtf") })
+    public void can_set__multiple_cookies_via_annotation() throws Exception {
+        String body = page.get().getDocument().body().text();
+        assertThat(body, both(containsString("page-content-tester"))
+                        .and(containsString("wtf-666")));
+        assertThat(body, both(containsString("some-other-cookie"))
+                        .and(containsString("666-wtf")));
     }
 
     @Test

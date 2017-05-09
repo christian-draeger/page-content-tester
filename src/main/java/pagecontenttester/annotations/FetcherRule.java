@@ -5,7 +5,10 @@ import static pagecontenttester.fetcher.FetchedPage.annotationCall;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Connection.Method;
 import org.junit.rules.MethodRule;
@@ -21,7 +24,7 @@ public class FetcherRule implements MethodRule {
     private FetchedPage fetchedPage;
     private List<FetchedPage> fetchedPages = new ArrayList<>();
     private Config config = new Config();
-
+    Map<String, String> cookie;
 
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
@@ -40,13 +43,16 @@ public class FetcherRule implements MethodRule {
                         String referrer = getReferrer(fetchPage);
                         int timeout = getTimeout(fetchPage);
                         int retriesOnTimeout = getRetryCount(fetchPage);
+                        Cookie[] cookieAnnotation = fetchPage.setCookies();
+                        cookie = getCookies(cookieAnnotation);
 
                         fetchedPage = annotationCall(   url,
                                                         device,
                                                         method,
                                                         referrer,
                                                         timeout,
-                                                        retriesOnTimeout
+                                                        retriesOnTimeout,
+                                                        cookie
                         );
                     }
                     if (annotation instanceof FetchPages) {
@@ -67,18 +73,20 @@ public class FetcherRule implements MethodRule {
                                     fetchPage.method(),
                                     fetchPage.referrer(),
                                     fetchPage.timeout(),
-                                    fetchPage.retriesOnTimeout()
+                                    fetchPage.retriesOnTimeout(),
+                                    cookie
             ));
         }
     }
 
-    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout) {
+    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie) {
         return annotationCall(  url,
                                 device,
                                 method,
                                 referrer,
                                 timeout,
-                                retriesOnTimeout
+                                retriesOnTimeout,
+                                cookie
         );
     }
 
@@ -113,5 +121,18 @@ public class FetcherRule implements MethodRule {
 
     private String getReferrer(Fetch fetchPage) {
         return "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
+    }
+
+    private Map<String, String> getCookies(Cookie[] annotationCookies) {
+
+        HashMap<String, String> cookies = new HashMap<>();
+
+        for (Cookie cookie : annotationCookies) {
+            if ("1e97fa4a-34d3-11e7-a919-92ebcb67fe33".equals(cookie.name())) {
+                return Collections.emptyMap();
+            }
+            cookies.put(cookie.name(), cookie.value());
+        }
+        return cookies;
     }
 }

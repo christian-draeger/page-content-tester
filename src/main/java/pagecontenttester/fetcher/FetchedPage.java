@@ -1,12 +1,13 @@
 package pagecontenttester.fetcher;
 
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 import static org.jsoup.Connection.Method;
 import static org.jsoup.Connection.Response;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,11 +17,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import pagecontenttester.configurations.Config;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import pagecontenttester.configurations.Config;
 
 @Slf4j
 public class FetchedPage {
@@ -31,6 +32,7 @@ public class FetchedPage {
     }
 
     private static Config config = new Config();
+    private static Map<String, String> defaultCookie = new HashMap<String, String>() {{put("null","");}};
 
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 
@@ -41,7 +43,8 @@ public class FetchedPage {
                             DESKTOP,
                             config.getReferrer(),
                             config.getTimeoutValue(),
-                            config.getTimeoutMaxRetryCount()
+                            config.getTimeoutMaxRetryCount(),
+                            defaultCookie
         );
     }
 
@@ -52,7 +55,8 @@ public class FetchedPage {
                             MOBILE,
                             config.getReferrer(),
                             config.getTimeoutValue(),
-                            config.getTimeoutMaxRetryCount()
+                            config.getTimeoutMaxRetryCount(),
+                            defaultCookie
         );
     }
 
@@ -63,23 +67,25 @@ public class FetchedPage {
                             DESKTOP,
                             config.getReferrer(),
                             config.getTimeoutValue(),
-                            config.getTimeoutMaxRetryCount()
+                            config.getTimeoutMaxRetryCount(),
+                            defaultCookie
         );
     }
 
-    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout) {
+    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie) {
         return fetchedPages(url,
                             method,
                             Collections.emptyMap(),
                             device,
                             referrer,
                             timeout,
-                            retriesOnTimeout
+                            retriesOnTimeout,
+                            cookie
         );
     }
 
     @SneakyThrows
-    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer, int timeout, int retriesOnTimeout) {
+    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer, int timeout, int retriesOnTimeout, Map<String,String> cookie) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
@@ -95,6 +101,7 @@ public class FetchedPage {
                     .referrer(referrer)
                     .timeout(timeout)
                     .retriesOnTimeout(retriesOnTimeout)
+                    .cookie(cookie)
                     .build();
             FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
             fetchedPageCache.put(cacheKey, fetchedPage);

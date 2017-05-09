@@ -1,8 +1,8 @@
 package pagecontenttester.fetcher;
 
+import static java.lang.System.setProperty;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
-import static java.lang.System.setProperty;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -13,10 +13,10 @@ import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 
-import pagecontenttester.configurations.Config;
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import pagecontenttester.configurations.Config;
+import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 @Slf4j
 @Builder
@@ -30,7 +30,7 @@ public class Fetcher {
     private final String referrer;
     private final int timeout;
     private final int retriesOnTimeout;
-
+    private final Map<String, String> cookie;
 
     public Connection.Response fetch(String url) throws IOException {
 
@@ -41,7 +41,7 @@ public class Fetcher {
 
         while(true) {
             try {
-                return Jsoup.connect(url)
+                final Connection connection = Jsoup.connect(url)
                         .validateTLSCertificates(false)
                         .timeout(timeout)
                         .userAgent(deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP))
@@ -51,8 +51,13 @@ public class Fetcher {
                         .ignoreContentType(CONFIG.isIgnoringContentType())
                         .method(method)
                         .data(requestBody)
-                        .referrer(referrer)
-                        .execute();
+                        .referrer(referrer);
+
+                if (!cookie.isEmpty()){
+                    connection.cookies(cookie);
+                }
+
+                return connection.execute();
 
             } catch(SocketTimeoutException ste) {
                 if(retryCount > retriesOnTimeout) {
@@ -70,5 +75,6 @@ public class Fetcher {
         private String referrer = CONFIG.getReferrer(); //NOSONAR
         private int timeout = CONFIG.getTimeoutValue(); //NOSONAR
         private int retriesOnTimeout = CONFIG.getTimeoutMaxRetryCount(); //NOSONAR
+        private Map<String,String> cookie = null; //NOSONAR
     }
 }
