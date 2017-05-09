@@ -113,6 +113,27 @@ public class ExampleUsageTest extends PageContentTester {
         JSONObject responseBody = somePost.getJsonResponse();
         assertThat(responseBody.get("url"), equalTo("http://httpbin.org/post"));
     }
+    
+    @Test
+    @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
+            setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
+    public void can_set_cookie_via_annotation() {
+        assertThat(page.get().getPageBody(), both(containsString("page-content-tester"))
+                                            .and(containsString("wtf-666")));
+    }
+
+    @Test
+    @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
+            setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),
+                            @Cookie(name = "some-other-cookie", value = "666-wtf")})
+    public void can_set__multiple_cookies_via_annotation() {
+        String body = page.get().getPageBody();
+        
+        assertThat(body, both(containsString("page-content-tester"))
+                        .and(containsString("wtf-666")));
+        assertThat(body, both(containsString("some-other-cookie"))
+                        .and(containsString("666-wtf")));
+    }
 }
 ```
 
