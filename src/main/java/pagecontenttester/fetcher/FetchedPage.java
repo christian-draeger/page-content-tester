@@ -32,7 +32,7 @@ public class FetchedPage {
     }
 
     private static Config config = new Config();
-    private static Map<String, String> defaultCookie = new HashMap<String, String>() {{put("null","");}};
+    private static Map<String, String> defaultCookie = new HashMap<>();
 
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 

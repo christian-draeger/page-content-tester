@@ -127,11 +127,11 @@ public class FetcherRule implements MethodRule {
 
         HashMap<String, String> cookies = new HashMap<>();
 
-        for (Cookie cookie : annotationCookies) {
-            if ("1e97fa4a-34d3-11e7-a919-92ebcb67fe33".equals(cookie.name())) {
+        for (Cookie annotationCookie : annotationCookies) {
+            if ("1e97fa4a-34d3-11e7-a919-92ebcb67fe33".equals(annotationCookie.name())) {
                 return Collections.emptyMap();
             }
-            cookies.put(cookie.name(), cookie.value());
+            cookies.put(annotationCookie.name(), annotationCookie.value());
         }
         return cookies;
     }
