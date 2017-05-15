@@ -1,13 +1,11 @@
-package pagecontenttester.configurations;
+package PageContentTester.configurations;
 
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.MOBILE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 import org.junit.Test;
-
-import pagecontenttester.configurations.Config;
 
 public class ConfigTest {
 

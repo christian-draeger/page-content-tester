@@ -1,4 +1,4 @@
-package pagecontenttester.fetcher;
+package PageContentTester.fetcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.both;
@@ -8,10 +8,10 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.jsoup.Connection.Method.POST;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
-import static pagecontenttester.fetcher.FetchedPage.call;
-import static pagecontenttester.fetcher.FetchedPage.fetchPage;
-import static pagecontenttester.fetcher.FetchedPage.fetchPageAsMobileDevice;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.MOBILE;
+import static PageContentTester.fetcher.FetchedPage.call;
+import static PageContentTester.fetcher.FetchedPage.fetchPage;
+import static PageContentTester.fetcher.FetchedPage.fetchPageAsMobileDevice;
 
 import java.util.Collections;
 
@@ -19,10 +19,10 @@ import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pagecontenttester.annotations.Cookie;
-import pagecontenttester.annotations.Fetch;
-import pagecontenttester.annotations.GetFetchedPageException;
-import pagecontenttester.runner.PageContentTester;
+import PageContentTester.annotations.cookie.Cookie;
+import PageContentTester.annotations.fetch.Fetch;
+import PageContentTester.annotations.fetch.GetFetchedPageException;
+import PageContentTester.runner.PageContentTester;
 
 public class FetchedPageTest extends PageContentTester {
 
@@ -142,6 +142,11 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
+    public void fetcher_should_check_is_certain_header_with_value_is_present() {
+        assertThat(fetchedPage.hasHeader("Server", "GitHub.com"), is(true));
+    }
+
+    @Test
     @Fetch(url = GITHUB_URL)
     @Fetch(url = GOOGLE_URL)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_index() {
@@ -196,7 +201,7 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
-    public void can_set_cookie_via_annotation() throws Exception {
+    public void can_set_cookie_via_annotation() {
         assertThat(page.get().getDocument().body().text(),
                 both(containsString("page-content-tester"))
                         .and(containsString("wtf-666")));
@@ -206,12 +211,20 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),
                             @Cookie(name = "some-other-cookie", value = "666-wtf") })
-    public void can_set__multiple_cookies_via_annotation() throws Exception {
+    public void can_set_multiple_cookies_via_annotation() {
         String body = page.get().getDocument().body().text();
         assertThat(body, both(containsString("page-content-tester"))
                         .and(containsString("wtf-666")));
         assertThat(body, both(containsString("some-other-cookie"))
                         .and(containsString("666-wtf")));
+    }
+
+    @Test
+    @Fetch(url = "http://www.html-kit.com/tools/cookietester/", setCookies = @Cookie(name = "", value = ""))
+    public void try_to_set_empty_cookie_via_annotation() {
+        String body = page.get().getDocument().body().text();
+        assertThat(body, both(containsString("Number of cookies received: 0"))
+                .and(containsString("This page did not receive any cookies.")));
     }
 
     @Test

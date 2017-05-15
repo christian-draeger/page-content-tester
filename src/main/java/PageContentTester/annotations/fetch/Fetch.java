@@ -1,7 +1,7 @@
-package pagecontenttester.annotations;
+package PageContentTester.annotations.fetch;
 
 import static org.jsoup.Connection.Method.GET;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -11,7 +11,8 @@ import java.lang.annotation.Target;
 
 import org.jsoup.Connection.Method;
 
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import PageContentTester.annotations.cookie.Cookie;
+import PageContentTester.fetcher.FetchedPage.DeviceType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })

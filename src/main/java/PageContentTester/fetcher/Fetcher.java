@@ -1,8 +1,8 @@
-package pagecontenttester.fetcher;
+package PageContentTester.fetcher;
 
 import static java.lang.System.setProperty;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -15,8 +15,8 @@ import org.jsoup.Jsoup;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import pagecontenttester.configurations.Config;
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import PageContentTester.configurations.Config;
+import PageContentTester.fetcher.FetchedPage.DeviceType;
 
 @Slf4j
 @Builder

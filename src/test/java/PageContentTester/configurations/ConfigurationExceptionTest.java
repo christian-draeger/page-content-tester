@@ -1,8 +1,6 @@
-package pagecontenttester.configurations;
+package PageContentTester.configurations;
 
 import org.junit.Test;
-
-import pagecontenttester.configurations.ConfigurationException;
 
 public class ConfigurationExceptionTest {
 

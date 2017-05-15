@@ -1,4 +1,4 @@
-package pagecontenttester.configurations;
+package PageContentTester.configurations;
 
 public class ConfigurationException extends RuntimeException {
 

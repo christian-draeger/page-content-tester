@@ -1,4 +1,4 @@
-package pagecontenttester.fetcher;
+package PageContentTester.fetcher;
 
 public class ParseDocumentException extends RuntimeException {
 

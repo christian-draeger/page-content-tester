@@ -1,8 +1,8 @@
-package pagecontenttester.fetcher;
+package PageContentTester.fetcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.io.IOException;
 import java.util.Collections;

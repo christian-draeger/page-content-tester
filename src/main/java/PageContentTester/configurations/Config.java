@@ -1,11 +1,11 @@
-package pagecontenttester.configurations;
+package PageContentTester.configurations;
 
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
+import static PageContentTester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import PageContentTester.fetcher.FetchedPage.DeviceType;
 
 public class Config {
 
