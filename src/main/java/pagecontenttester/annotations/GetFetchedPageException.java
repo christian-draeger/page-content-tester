@@ -1,4 +1,4 @@
-package PageContentTester.annotations.fetch;
+package pagecontenttester.annotations;
 
 public class GetFetchedPageException extends NullPointerException {
 

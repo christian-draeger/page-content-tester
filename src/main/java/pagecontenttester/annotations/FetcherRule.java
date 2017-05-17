@@ -1,6 +1,6 @@
-package PageContentTester.annotations.fetch;
+package pagecontenttester.annotations;
 
-import static PageContentTester.fetcher.FetchedPage.annotationCall;
+import static pagecontenttester.fetcher.FetchedPage.annotationCall;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -15,10 +15,9 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import PageContentTester.annotations.cookie.Cookie;
-import PageContentTester.configurations.Config;
-import PageContentTester.fetcher.FetchedPage;
-import PageContentTester.fetcher.FetchedPage.DeviceType;
+import pagecontenttester.configurations.Config;
+import pagecontenttester.fetcher.FetchedPage;
+import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 public class FetcherRule implements MethodRule {
 
@@ -129,7 +128,7 @@ public class FetcherRule implements MethodRule {
         HashMap<String, String> cookies = new HashMap<>();
 
         for (Cookie annotationCookie : annotationCookies) {
-            if ("".equals(annotationCookie.name())) {
+            if ("1e97fa4a-34d3-11e7-a919-92ebcb67fe33".equals(annotationCookie.name())) {
                 return Collections.emptyMap();
             }
             cookies.put(annotationCookie.name(), annotationCookie.value());

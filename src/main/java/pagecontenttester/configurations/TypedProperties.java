@@ -1,4 +1,4 @@
-package PageContentTester.configurations;
+package pagecontenttester.configurations;
 
 import static java.lang.Boolean.parseBoolean;
 

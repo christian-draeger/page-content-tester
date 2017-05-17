@@ -1,9 +1,9 @@
-package PageContentTester.fetcher;
+package pagecontenttester.fetcher;
 
 import static org.jsoup.Connection.Method;
 import static org.jsoup.Connection.Response;
-import static PageContentTester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static PageContentTester.fetcher.FetchedPage.DeviceType.MOBILE;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import PageContentTester.configurations.Config;
+import pagecontenttester.configurations.Config;
 
 @Slf4j
 public class FetchedPage {
@@ -173,14 +173,6 @@ public class FetchedPage {
 
     public boolean hasHeader(String header) {
         return response.hasHeader(header);
-    }
-
-    public boolean hasHeader(String header, String value) {
-        boolean hasHeader = response.hasHeader(header);
-        if (hasHeader) {
-            return getHeader(header).equals(value);
-        }
-        return false;
     }
 
     public Map<String, String> getCookies() {
