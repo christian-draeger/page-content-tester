@@ -3,6 +3,7 @@
 <a href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22"><img src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg"/></a>
 <a href="https://github.com/christian-draeger/page-content-tester/issues"><img src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg"/></a>
 <a href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester"><img src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg"/></a>
+<a href="https://gratipay.com/~christian-draeger/"><img src="https://img.shields.io/gratipay/user/christian-draeger.svg"/></a>
 </p>
 
 ## About
