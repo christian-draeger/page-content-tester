@@ -27,8 +27,8 @@ import pagecontenttester.runner.PageContentTester;
 @Fetch(url= "http://www.google.de")
 public class FetchedPageTest extends PageContentTester {
 
-    private static FetchedPage fetchedPage;
-    private static FetchedPage fetchedMobilePage;
+    private static Page fetchedPage;
+    private static Page fetchedMobilePage;
 
     private static final String GITHUB_URL = "https://github.com/christian-draeger";
     private static final String GOOGLE_URL = "http://www.google.de";

@@ -25,7 +25,7 @@ import pagecontenttester.annotations.Fetch;
 import pagecontenttester.configurations.Config;
 
 @Slf4j
-public class FetchedPage {
+public class FetchedPage implements Page {
 
     public enum DeviceType {
         DESKTOP,
@@ -133,12 +133,13 @@ public class FetchedPage {
 
     private Optional<Document> document = Optional.empty();
 
-    FetchedPage(String url, Response response, boolean mobile) {
+    private FetchedPage(String url, Response response, boolean mobile) {
         this.url = url;
         this.response = response;
         this.mobile = mobile;
     }
 
+    @Override
     public synchronized Document getDocument() {
         if (!document.isPresent()) {
             try {
@@ -150,86 +151,107 @@ public class FetchedPage {
         return document.get(); //NOSONAR
     }
 
+    @Override
     public String getUrl() {
         return url;
     }
 
+    @Override
     public int getStatusCode() {
         return response.statusCode();
     }
 
+    @Override
     public boolean isMobile() {
         return mobile;
     }
 
+    @Override
     public String getContentType() {
         return response.contentType();
     }
 
+    @Override
     public String getPageBody() {
         return response.body();
     }
 
+    @Override
     public JSONObject getJsonResponse() {
         return new JSONObject(response.body());
     }
 
+    @Override
     public String getHeader(String header) {
         return response.header(header);
     }
 
+    @Override
     public Map<String, String> getHeaders() {
         return response.headers();
     }
 
+    @Override
     public boolean hasHeader(String header) {
         return response.hasHeader(header);
     }
 
+    @Override
     public Map<String, String> getCookies() {
         return response.cookies();
     }
 
+    @Override
     public String getCookieValue(String cookieName) {
         return response.cookie(cookieName);
     }
 
+    @Override
     public boolean hasCookie(String cookieName) {
         return response.hasCookie(cookieName);
     }
 
+    @Override
     public String getStatusMessage() {
         return response.statusMessage();
     }
 
+    @Override
     public Config getConfig() {
         return config;
     }
 
+    @Override
     public Elements getElements(String cssSelector) {
         return getDocument().select(cssSelector);
     }
 
+    @Override
     public Element getElement(String cssSelector) {
         return getDocument().select(cssSelector).first();
     }
 
+    @Override
     public Element getElementLastOf(String cssSelector) {
         return getDocument().select(cssSelector).last();
     }
 
+    @Override
     public Element getElement(String cssSelector, int index) {
         return getDocument().select(cssSelector).get(index);
     }
 
+    @Override
     public boolean isElementPresent(String cssSelector) {
         return getElementCount(cssSelector) > 0;
     }
 
+    @Override
     public boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences) {
         return getElementCount(cssSelector) == numberOfOccurrences;
     }
 
+    @Override
     public int getElementCount(String cssSelector) {
         return getDocument().select(cssSelector).size();
     }
