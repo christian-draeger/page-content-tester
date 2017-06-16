@@ -27,12 +27,18 @@ import pagecontenttester.configurations.Config;
 @Slf4j
 public class FetchedPage implements Page {
 
+    private final String url;
+    private final boolean mobile;
+    private final Response response;
+    private Optional<Document> document = Optional.empty();
+
     public enum DeviceType {
         DESKTOP,
         MOBILE
-    }
 
+    }
     private static Config config = new Config();
+
     private static Map<String, String> defaultCookie = new HashMap<>();
 
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
@@ -87,7 +93,6 @@ public class FetchedPage implements Page {
                             cookie
         );
     }
-
     @SneakyThrows
     private static FetchedPage fetchedPages(String urlToFetch,
                                             Method method,
@@ -123,15 +128,10 @@ public class FetchedPage implements Page {
     @Value
     @AllArgsConstructor
     private static class CacheKey {
-        String url;
-        DeviceType device;
+        private String url;
+        private DeviceType device;
+
     }
-
-    private final String url;
-    private final boolean mobile;
-    private final Response response;
-
-    private Optional<Document> document = Optional.empty();
 
     private FetchedPage(String url, Response response, boolean mobile) {
         this.url = url;
