@@ -27,7 +27,8 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
 
 #### Configure the Page-Fetcher
 - place a pagecontent.properties file under src/test/resources/ in your project
-- override values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your pagecontent.properties file until they fit your needs
+- in the pagecontent.properties you can override all values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) until they fit your needs
+    - these settings will be used global, but most of them can be overritten/set for certain tests via Annotation as well
 
 - to get the best parallelization result of PageContentTester and don't having the overhead of finding the best setup add this parent pom to your pom.xml
   - it will setup all the configurations for an efficient parallelization of your jUnit tests automatically, you don't need to configure jUnit yourself anymore
@@ -54,6 +55,12 @@ public class ExampleUsageTest extends PageContentTester {
     @FetchPage(GITHUB_URL)
     public void fetch_url_via_annotation() {
         assertThat(page.get().getElementCount("h1"), is(1));
+    }
+    
+    @Test
+    @Fetch(protocol = Fetch.Protocol.HTTPS, urlPrefix = "en", url = "wikipedia.org")
+    public void fetch_page_via_annotation_and_build_url() {
+        assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org"));
     }
 
     @Test
