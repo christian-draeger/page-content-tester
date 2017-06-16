@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import pagecontenttester.annotations.Fetch;
 import pagecontenttester.configurations.Config;
 
 @Slf4j
@@ -72,8 +73,11 @@ public class FetchedPage {
         );
     }
 
-    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie) {
-        return fetchedPages(url,
+    public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout,
+                                            int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol,
+                                            String urlPrefix, String port) {
+        String prefix = urlPrefix.isEmpty() ? urlPrefix : urlPrefix + ".";
+        return fetchedPages(protocol.value + prefix + url,
                             method,
                             Collections.emptyMap(),
                             device,
@@ -85,7 +89,14 @@ public class FetchedPage {
     }
 
     @SneakyThrows
-    private static FetchedPage fetchedPages(String urlToFetch, Method method, Map<String, String> requestBody, DeviceType device, String referrer, int timeout, int retriesOnTimeout, Map<String,String> cookie) {
+    private static FetchedPage fetchedPages(String urlToFetch,
+                                            Method method,
+                                            Map<String, String> requestBody,
+                                            DeviceType device,
+                                            String referrer,
+                                            int timeout,
+                                            int retriesOnTimeout,
+                                            Map<String,String> cookie) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {

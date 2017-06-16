@@ -24,6 +24,7 @@ import pagecontenttester.annotations.Fetch;
 import pagecontenttester.annotations.GetFetchedPageException;
 import pagecontenttester.runner.PageContentTester;
 
+@Fetch(url= "http://www.google.de")
 public class FetchedPageTest extends PageContentTester {
 
     private static FetchedPage fetchedPage;
@@ -38,6 +39,11 @@ public class FetchedPageTest extends PageContentTester {
     public static void fetcher() {
         fetchedPage = fetchPage(GITHUB_URL);
         fetchedMobilePage = fetchPageAsMobileDevice(GITHUB_URL);
+    }
+
+    @Test
+    public void can_fetch_fron_class_annotation() {
+        assertThat(page.get().getUrl(), containsString("google"));
     }
 
     @Test
@@ -164,6 +170,12 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = GITHUB_URL)
     public void fetch_page_via_annotation_and_try_to_get_fetched_page_by_unknown_url_snippet() {
         page.get("unknown");
+    }
+
+    @Test
+    @Fetch(protocol = Fetch.Protocol.HTTPS, urlPrefix = "en", url = "wikipedia.org")
+    public void fetch_page_via_annotation_and_build_url() {
+        assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org"));
     }
 
     @Test(expected = GetFetchedPageException.class)

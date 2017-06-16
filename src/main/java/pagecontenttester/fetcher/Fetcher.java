@@ -31,6 +31,9 @@ public class Fetcher {
     private final int timeout;
     private final int retriesOnTimeout;
     private final Map<String, String> cookie;
+    private final String protocol;
+    private final String urlPrefix;
+    private final String port;
 
     public Connection.Response fetch(String url) throws IOException {
 
@@ -72,9 +75,13 @@ public class Fetcher {
         private DeviceType device = DESKTOP; //NOSONAR
         private Method method = Method.GET; //NOSONAR
         private Map<String, String> requestBody = Collections.emptyMap(); //NOSONAR
+        private Map<String,String> cookie = Collections.emptyMap(); //NOSONAR
+        // take property values if not set via annotation
         private String referrer = CONFIG.getReferrer(); //NOSONAR
         private int timeout = CONFIG.getTimeoutValue(); //NOSONAR
         private int retriesOnTimeout = CONFIG.getTimeoutMaxRetryCount(); //NOSONAR
-        private Map<String,String> cookie = null; //NOSONAR
+        private String protocol = CONFIG.getProtocol(); //NOSONAR
+        private String urlPrefix = CONFIG.getUrlPrefix(); //NOSONAR
+        private String port = CONFIG.getPort(); //NOSONAR
     }
 }

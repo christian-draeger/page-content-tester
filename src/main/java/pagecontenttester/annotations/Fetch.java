@@ -1,6 +1,7 @@
 package pagecontenttester.annotations;
 
 import static org.jsoup.Connection.Method.GET;
+import static pagecontenttester.annotations.Fetch.Protocol.NONE;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.lang.annotation.ElementType;
@@ -14,16 +15,31 @@ import org.jsoup.Connection.Method;
 import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Repeatable(FetchPages.class)
 public @interface Fetch {
 
+    enum Protocol {
+        HTTP("http://"),
+        HTTPS("https://"),
+        FTP("ftp://"),
+        NONE("");
+
+        public final String value;
+
+        Protocol(String value) {
+            this.value = value;
+        }
+    }
+
+    Protocol protocol() default NONE;
+    String urlPrefix() default "";
     String url();
+    String port() default "";
     DeviceType device() default DESKTOP;
     Method method() default GET;
     String referrer() default "referrer";
     int timeout() default 0; // in milliseconds
     int retriesOnTimeout() default 0;
     Cookie[] setCookies() default @Cookie();
-
 }

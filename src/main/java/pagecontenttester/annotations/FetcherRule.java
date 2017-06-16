@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class FetcherRule implements MethodRule {
     private FetchedPage fetchedPage;
     private List<FetchedPage> fetchedPages = new ArrayList<>();
     private Config config = new Config();
-    Map<String, String> cookie;
+    private Map<String, String> cookie = new HashMap<>();
 
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
@@ -32,12 +33,15 @@ public class FetcherRule implements MethodRule {
             @Override
             public void evaluate() throws Throwable {
 
-                List<Annotation> annotations = Arrays.asList(method.getAnnotations());
+                List<Annotation> annotations = new LinkedList<>();
+                annotations.addAll(Arrays.asList(method.getDeclaringClass().getAnnotations()));
+                annotations.addAll(Arrays.asList(method.getAnnotations()));
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof Fetch) {
                         Fetch fetchPage = (Fetch) annotation;
 
                         String url = fetchPage.url();
+
                         Method method = fetchPage.method();
                         DeviceType device = fetchPage.device();
                         String referrer = getReferrer(fetchPage);
@@ -45,6 +49,9 @@ public class FetcherRule implements MethodRule {
                         int retriesOnTimeout = getRetryCount(fetchPage);
                         Cookie[] cookieAnnotation = fetchPage.setCookies();
                         cookie = getCookies(cookieAnnotation);
+                        Fetch.Protocol protocol = fetchPage.protocol();
+                        String urlPrefix = fetchPage.urlPrefix();
+                        String port = fetchPage.port();
 
                         fetchedPage = annotationCall(   url,
                                                         device,
@@ -52,7 +59,10 @@ public class FetcherRule implements MethodRule {
                                                         referrer,
                                                         timeout,
                                                         retriesOnTimeout,
-                                                        cookie
+                                                        cookie,
+                                                        protocol,
+                                                        urlPrefix,
+                                                        port
                         );
                     }
                     if (annotation instanceof FetchPages) {
@@ -74,19 +84,25 @@ public class FetcherRule implements MethodRule {
                                     fetchPage.referrer(),
                                     fetchPage.timeout(),
                                     fetchPage.retriesOnTimeout(),
-                                    cookie
+                                    cookie,
+                                    fetchPage.protocol(),
+                                    fetchPage.urlPrefix(),
+                                    fetchPage.port()
             ));
         }
     }
 
-    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie) {
+    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol, String urlPrefix, String port) {
         return annotationCall(  url,
                                 device,
                                 method,
                                 referrer,
                                 timeout,
                                 retriesOnTimeout,
-                                cookie
+                                cookie,
+                                protocol,
+                                urlPrefix,
+                                port
         );
     }
 

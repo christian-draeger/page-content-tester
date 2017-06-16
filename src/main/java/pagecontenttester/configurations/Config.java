@@ -57,6 +57,18 @@ public class Config {
         }
     }
 
+    public String getUrlPrefix() {
+        return getStringValue("urlPreFix");
+    }
+
+    public String getProtocol() {
+        return getStringValue("protocol");
+    }
+
+    public String getPort() {
+        return getStringValue("port");
+    }
+
     private int getIntValue(String key) {
         if (configs.hasProperty(key)) {
             return configs.getIntValue(key);
