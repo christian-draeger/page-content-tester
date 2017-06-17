@@ -4,6 +4,7 @@
 <a href="https://github.com/christian-draeger/page-content-tester/issues"><img src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg"/></a>
 <a href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester"><img src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg"/></a>
 <a href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436"><img src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg"/></a>
+<a href="https://codecov.io/gh/christian-draeger/page-content-tester"><img src="https://img.shields.io/codecov/c/github/christian-draeger/page-content-tester/master.svg"/></a>
 <a href="https://gratipay.com/~christian-draeger/"><img src="https://img.shields.io/gratipay/user/christian-draeger.svg"/></a>
 </p>
 
