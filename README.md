@@ -21,14 +21,14 @@ The PageContentTester is a framework for non-blocking and highly parallelized Do
     <dependency>
         <groupId>io.github.christian-draeger</groupId>
         <artifactId>page-content-tester</artifactId>
-        <version>1.5.5</version>
+        <version>1.5.6</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
 ```
 
 #### Configure the Page-Fetcher
-- place a pagecontent.properties file under src/test/resources/ in your project
+- you have the option to place a pagecontent.properties file in your project under src/test/resources/
 - in the pagecontent.properties you can override all values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) until they fit your needs
     - these settings will be used global, but most of them can be overritten/set for certain tests via Annotation as well
 
