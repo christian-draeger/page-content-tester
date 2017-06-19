@@ -6,7 +6,10 @@ import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ConfigTest {
 
     private static final String DESKTOP_USER_AGENT = "Mozilla/5.0 (X11\\; Ubuntu\\; Linux x86_64\\; rv\\:25.0)";
@@ -47,5 +50,12 @@ public class ConfigTest {
     @Test
     public void should_return_caching_config() {
         assertThat(config.isCacheDuplicatesActive(), is(true));
+    }
+
+    @Test
+    public void should_return_values_from_page_content_properties() {
+        assertThat(config.getIntValue("testing.int"), is(42));
+        assertThat(config.getBooleanValue("testing.boolean"), is(true));
+        assertThat(config.getStringValue("testing.string"), is("test"));
     }
 }

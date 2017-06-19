@@ -69,21 +69,21 @@ public class Config {
         return getStringValue("port");
     }
 
-    private int getIntValue(String key) {
+    int getIntValue(String key) {
         if (configs.hasProperty(key)) {
             return configs.getIntValue(key);
         }
         return defaults.getIntValue(key);
     }
 
-    private String getStringValue(String key) {
+    String getStringValue(String key) {
         if (configs.hasProperty(key)) {
             return configs.getStringValue(key);
         }
         return defaults.getStringValue(key);
     }
 
-    private boolean getBooleanValue(String key) {
+    boolean getBooleanValue(String key) {
         if (configs.hasProperty(key)) {
             return configs.getBooleanValue(key);
         }
