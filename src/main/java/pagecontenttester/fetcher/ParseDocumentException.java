@@ -1,16 +1,16 @@
 package pagecontenttester.fetcher;
 
-public class ParseDocumentException extends RuntimeException {
+class ParseDocumentException extends RuntimeException {
 
-    public ParseDocumentException(String message) {
+    ParseDocumentException(String message) {
         super(message);
     }
 
-    public ParseDocumentException(Throwable cause) {
+    ParseDocumentException(Throwable cause) {
         super(cause);
     }
 
-    public ParseDocumentException(String message, Throwable cause) {
+    ParseDocumentException(String message, Throwable cause) {
         super(message, cause);
     }
 }

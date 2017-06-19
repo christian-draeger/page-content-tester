@@ -2,7 +2,7 @@ package pagecontenttester.annotations;
 
 public class GetFetchedPageException extends NullPointerException {
 
-    public GetFetchedPageException(String message) {
+    GetFetchedPageException(String message) {
         super(message);
     }
 }
