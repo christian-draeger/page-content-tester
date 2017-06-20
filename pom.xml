@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.5.8</version>
+    <version>1.5.9</version>
 
     <name>Page Content Tester</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
@@ -36,6 +36,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <autoReleaseAfterClose>false</autoReleaseAfterClose>
+        <protocol/>
+        <urlPrefix/>
+        <port/>
 
         <version.jSoup>1.10.3</version.jSoup>
         <version.jUnitToolbox>2.3</version.jUnitToolbox>
