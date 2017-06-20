@@ -58,14 +58,26 @@ public class Config {
     }
 
     public String getUrlPrefix() {
+        final String urlPrefix = System.getProperty("urlPrefix");
+        if (urlPrefix != null) {
+            return urlPrefix + ".";
+        }
         return getStringValue("urlPreFix");
     }
 
     public String getProtocol() {
+        final String protocol = System.getProperty("protocol");
+        if (protocol != null) {
+            return protocol + "://";
+        }
         return getStringValue("protocol");
     }
 
     public String getPort() {
+        final String port = System.getProperty("port");
+        if (port != null) {
+            return ":" + port;
+        }
         return getStringValue("port");
     }
 

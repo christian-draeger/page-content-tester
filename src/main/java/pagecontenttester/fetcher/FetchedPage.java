@@ -43,6 +43,7 @@ public class FetchedPage implements Page {
 
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
 
+    @Deprecated
     public static FetchedPage fetchPage(String url) {
         return fetchedPages(url,
                             Method.GET,
@@ -55,6 +56,7 @@ public class FetchedPage implements Page {
         );
     }
 
+    @Deprecated
     public static FetchedPage fetchPageAsMobileDevice(String url) {
         return fetchedPages(url,
                             Method.GET,
@@ -82,6 +84,7 @@ public class FetchedPage implements Page {
     public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout,
                                             int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol,
                                             String urlPrefix, String port) {
+
         String prefix = urlPrefix.isEmpty() ? urlPrefix : urlPrefix + ".";
         return fetchedPages(protocol.value + prefix + url,
                             method,
@@ -93,6 +96,7 @@ public class FetchedPage implements Page {
                             cookie
         );
     }
+
     @SneakyThrows
     private static FetchedPage fetchedPages(String urlToFetch,
                                             Method method,

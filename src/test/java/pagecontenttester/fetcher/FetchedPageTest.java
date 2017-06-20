@@ -42,7 +42,7 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    public void can_fetch_fron_class_annotation() {
+    public void can_fetch_from_class_annotation() {
         assertThat(page.get().getUrl(), containsString("google"));
     }
 
