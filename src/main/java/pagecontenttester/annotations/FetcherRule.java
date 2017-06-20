@@ -34,7 +34,7 @@ public class FetcherRule implements MethodRule {
             public void evaluate() throws Throwable {
 
                 List<Annotation> annotations = new LinkedList<>();
-                annotations.addAll(Arrays.asList(method.getDeclaringClass().getAnnotations()));
+                annotations.addAll(Arrays.asList(method.getMethod().getDeclaringClass().getAnnotations()));
                 annotations.addAll(Arrays.asList(method.getAnnotations()));
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof Fetch) {
