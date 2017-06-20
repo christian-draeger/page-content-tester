@@ -37,7 +37,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <autoReleaseAfterClose>false</autoReleaseAfterClose>
 
-        <version.jSoup>1.10.2</version.jSoup>
+        <version.jSoup>1.10.3</version.jSoup>
         <version.jUnitToolbox>2.3</version.jUnitToolbox>
         <version.junit>4.12</version.junit>
         <version.lombok>1.16.14</version.lombok>
