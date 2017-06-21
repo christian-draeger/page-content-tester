@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.5.9</version>
+    <version>1.6.0</version>
 
     <name>Page Content Tester</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
@@ -121,12 +121,6 @@
     </distributionManagement>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
@@ -196,6 +190,12 @@
 
     <profiles>
         <profile>
+            <id>auto</id>
+            <properties>
+                <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </properties>
+        </profile>
+        <profile>
             <id>release</id>
             <build>
                 <plugins>
@@ -252,12 +252,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-        <profile>
-            <id>auto</id>
-            <properties>
-                <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </properties>
         </profile>
     </profiles>
 

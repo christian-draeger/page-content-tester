@@ -38,6 +38,11 @@ public class ConfigTest {
     }
 
     @Test
+    public void should_return_url_prefix() {
+        assertThat(config.getUrlPrefix(), is(""));
+    }
+
+    @Test
     public void should_return_ignore_contenttype_config() {
         assertThat(config.isIgnoringContentType(), is(true));
     }

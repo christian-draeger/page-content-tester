@@ -50,8 +50,8 @@ public class FetcherRule implements MethodRule {
                         Cookie[] cookieAnnotation = fetchPage.setCookies();
                         cookie = getCookies(cookieAnnotation);
                         Fetch.Protocol protocol = fetchPage.protocol();
-                        String urlPrefix = fetchPage.urlPrefix();
-                        String port = fetchPage.port();
+                        String urlPrefix = fetchPage.urlPrefix().isEmpty() ? config.getUrlPrefix() : fetchPage.urlPrefix();
+                        String port = fetchPage.port().isEmpty() ? config.getPort() : fetchPage.port();
 
                         fetchedPage = annotationCall(   url,
                                                         device,
