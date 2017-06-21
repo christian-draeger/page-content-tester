@@ -19,39 +19,48 @@ public interface Page {
 
     /**
      * get DOM Element of first CSS-selector match
+     * @param cssSelector to pick DOM-element
      * @return Element
      */
     Element getElement(String cssSelector);
 
     /**
      * get DOM Element of CSS-selector match by index
+     * @param cssSelector to pick DOM-element
+     * @param index - number of element, starting from 0 and from top to bottom of the DOM
      * @return Element
      */
     Element getElement(String cssSelector, int index);
 
     /**
      * get DOM Elements of matching CSS-selectors
+     * @param cssSelector to pick DOM-element
      * @return Elements
      */
     Elements getElements(String cssSelector);
 
     /**
      * get last DOM Element of matching CSS-selector
+     * @param cssSelector to pick DOM-element
      * @return Element
      */
     Element getElementLastOf(String cssSelector);
 
     /**
+     * @param cssSelector to pick DOM-element
      * @return true if Element is present in DOM
      */
     boolean isElementPresent(String cssSelector);
 
     /**
+     * @param cssSelector to pick DOM-element
+     * @param numberOfOccurrences - number of CSS-selector matches in the DOM
      * @return true if Element is present nth times in DOM
      */
     boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences);
 
     /**
+     * @param cssSelector to pick DOM-element
      * @return number of matching CSS-selectors
      */
     int getElementCount(String cssSelector);

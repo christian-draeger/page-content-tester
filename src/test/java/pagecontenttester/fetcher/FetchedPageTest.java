@@ -34,7 +34,6 @@ public class FetchedPageTest extends PageContentTester {
     private static final String GOOGLE_URL = "http://www.google.de";
     private static final String VALID_SELECTOR = "h1";
 
-    @Fetch(url = "http://www.google.de")
     @BeforeClass
     public static void fetcher() {
         fetchedPage = fetchPage(GITHUB_URL);
