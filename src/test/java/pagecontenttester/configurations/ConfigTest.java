@@ -57,10 +57,4 @@ public class ConfigTest {
         assertThat(config.isCacheDuplicatesActive(), is(true));
     }
 
-    @Test
-    public void should_return_values_from_page_content_properties() {
-        assertThat(config.getIntValue("testing.int"), is(42));
-        assertThat(config.getBooleanValue("testing.boolean"), is(true));
-        assertThat(config.getStringValue("testing.string"), is("test"));
-    }
 }
