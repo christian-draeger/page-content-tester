@@ -1,7 +1,7 @@
 package pagecontenttester.annotations;
 
 import static org.jsoup.Connection.Method.GET;
-import static pagecontenttester.annotations.Fetch.Protocol.NONE;
+import static pagecontenttester.annotations.Fetch.Protocol.HTTP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.lang.annotation.ElementType;
@@ -32,7 +32,7 @@ public @interface Fetch {
         }
     }
 
-    Protocol protocol() default NONE;
+    Protocol protocol() default HTTP;
     String urlPrefix() default "";
     String url();
     String port() default "";

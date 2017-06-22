@@ -25,20 +25,20 @@ import pagecontenttester.annotations.Fetch;
 import pagecontenttester.annotations.GetFetchedPageException;
 import pagecontenttester.runner.PageContentTester;
 
-@Fetch(url= "http://www.google.de")
+@Fetch(url= "www.google.de")
 public class FetchedPageTest extends PageContentTester {
 
     private static Page fetchedPage;
     private static Page fetchedMobilePage;
 
-    private static final String GITHUB_URL = "https://github.com/christian-draeger";
-    private static final String GOOGLE_URL = "http://www.google.de";
+    private static final String GITHUB_URL = "github.com/christian-draeger";
+    private static final String GOOGLE_URL = "www.google.de";
     private static final String VALID_SELECTOR = "h1";
 
     @BeforeClass
     public static void fetcher() {
-        fetchedPage = fetchPage(GITHUB_URL);
-        fetchedMobilePage = fetchPageAsMobileDevice(GITHUB_URL);
+        fetchedPage = fetchPage("http://github.com/christian-draeger");
+        fetchedMobilePage = fetchPageAsMobileDevice("http://www.google.de");
     }
 
     @Test
@@ -153,10 +153,10 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = GOOGLE_URL)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_index() {
         assertThat(page.get(0).isElementPresent("h1"), is(true));
-        assertThat(page.get(0).getUrl(), equalTo(GITHUB_URL));
+        assertThat(page.get(0).getUrl(), equalTo("http://" + GITHUB_URL));
 
         assertThat(page.get(1).isElementPresent("#footer"), is(true));
-        assertThat(page.get(1).getUrl(), equalTo(GOOGLE_URL));
+        assertThat(page.get(1).getUrl(), equalTo("http://" + GOOGLE_URL));
     }
 
     @Test
@@ -186,21 +186,21 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(url = "http://whatsmyuseragent.org/", device = MOBILE)
+    @Fetch(url = "whatsmyuseragent.org/", device = MOBILE)
     public void fetch_as_mobile_device_by_annotation() {
         String ua = page.get().getElement("p.intro-text").text();
         assertThat(ua, containsString(page.get().getConfig().getUserAgent(MOBILE)));
     }
 
     @Test
-    @Fetch(url = "https://www.whatismyreferer.com/", referrer = "my.custom.referrer")
+    @Fetch(url = "www.whatismyreferer.com/", referrer = "my.custom.referrer")
     public void fetch_page_by_setting_custom_referrer() {
         String referrer = page.get().getElement("strong").text();
         assertThat(referrer, equalTo("my.custom.referrer"));
     }
 
     @Test
-    @Fetch(url = "https://www.whatismyreferer.com/")
+    @Fetch(url = "www.whatismyreferer.com/")
     public void fetch_page_should_use_referrer_from_properties_by_default() {
         String referrer = page.get().getElement("strong").text();
         assertThat(referrer, equalTo(config.getReferrer()));
@@ -208,7 +208,7 @@ public class FetchedPageTest extends PageContentTester {
 
     @Ignore("html-kit.com is down atm")
     @Test
-    @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
+    @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
     public void can_set_cookie_via_annotation() throws Exception {
         assertThat(page.get().getDocument().body().text(),
@@ -218,7 +218,7 @@ public class FetchedPageTest extends PageContentTester {
 
     @Ignore("html-kit.com is down atm")
     @Test
-    @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
+    @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),
                             @Cookie(name = "some-other-cookie", value = "666-wtf") })
     public void can_set__multiple_cookies_via_annotation() throws Exception {
@@ -237,14 +237,14 @@ public class FetchedPageTest extends PageContentTester {
 
     @Test
     public void fetch_multiple_pages_in_test_method() {
-        FetchedPage github = fetchPage(GITHUB_URL);
-        FetchedPage google = fetchPage(GOOGLE_URL);
+        FetchedPage github = fetchPage("http://github.com/christian-draeger");
+        FetchedPage google = fetchPage("http://www.google.de");
 
         assertThat(github.isElementPresent("h1"), is(true));
-        assertThat(github.getUrl(), equalTo(GITHUB_URL));
+        assertThat(github.getUrl(), equalTo("http://github.com/christian-draeger"));
 
         assertThat(google.isElementPresent("#footer"), is(true));
-        assertThat(google.getUrl(), equalTo(GOOGLE_URL));
+        assertThat(google.getUrl(), equalTo("http://www.google.de"));
     }
 
     @Test
