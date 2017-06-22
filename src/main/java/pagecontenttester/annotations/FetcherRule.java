@@ -78,6 +78,8 @@ public class FetcherRule implements MethodRule {
 
     private void fetchFromAnnotation(Fetch... fetches) {
         for (Fetch fetchPage : fetches) {
+            String urlPrefix = fetchPage.urlPrefix().isEmpty() ? config.getUrlPrefix() : fetchPage.urlPrefix();
+            String port = fetchPage.port().isEmpty() ? config.getPort() : fetchPage.port();
             fetchedPages.add(fetch( fetchPage.url(),
                                     fetchPage.device(),
                                     fetchPage.method(),
@@ -86,8 +88,8 @@ public class FetcherRule implements MethodRule {
                                     fetchPage.retriesOnTimeout(),
                                     cookie,
                                     fetchPage.protocol(),
-                                    fetchPage.urlPrefix(),
-                                    fetchPage.port()
+                                    urlPrefix,
+                                    port
             ));
         }
     }

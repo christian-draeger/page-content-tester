@@ -28,6 +28,7 @@ import pagecontenttester.configurations.Config;
 public class FetchedPage implements Page {
 
     private final String url;
+    private final String urlPrefix;
     private final boolean mobile;
     private final Response response;
     private Optional<Document> document = Optional.empty();
@@ -52,7 +53,8 @@ public class FetchedPage implements Page {
                             config.getReferrer(),
                             config.getTimeoutValue(),
                             config.getTimeoutMaxRetryCount(),
-                            defaultCookie
+                            defaultCookie,
+                            config.getUrlPrefix()
         );
     }
 
@@ -65,7 +67,8 @@ public class FetchedPage implements Page {
                             config.getReferrer(),
                             config.getTimeoutValue(),
                             config.getTimeoutMaxRetryCount(),
-                            defaultCookie
+                            defaultCookie,
+                            config.getUrlPrefix()
         );
     }
 
@@ -77,7 +80,8 @@ public class FetchedPage implements Page {
                             config.getReferrer(),
                             config.getTimeoutValue(),
                             config.getTimeoutMaxRetryCount(),
-                            defaultCookie
+                            defaultCookie,
+                            config.getUrlPrefix()
         );
     }
 
@@ -93,7 +97,8 @@ public class FetchedPage implements Page {
                             referrer,
                             timeout,
                             retriesOnTimeout,
-                            cookie
+                            cookie,
+                            urlPrefix
         );
     }
 
@@ -105,12 +110,13 @@ public class FetchedPage implements Page {
                                             String referrer,
                                             int timeout,
                                             int retriesOnTimeout,
-                                            Map<String,String> cookie) {
+                                            Map<String,String> cookie,
+                                            String urlPrefix) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
             if (config.isCacheDuplicatesLogActive()) {
-                log.info("duplicate call for fetched page: {}\n\t{}", cacheKey, Thread.currentThread().getStackTrace()[3]);
+                log.info("duplicate call for fetched page: {}\n\t{}\n\twill take page from cache", cacheKey, Thread.currentThread().getStackTrace()[3]);
             }
             return fetchedPageCache.get(cacheKey);
         } else {
@@ -123,7 +129,7 @@ public class FetchedPage implements Page {
                     .retriesOnTimeout(retriesOnTimeout)
                     .cookie(cookie)
                     .build();
-            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile);
+            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile, urlPrefix);
             fetchedPageCache.put(cacheKey, fetchedPage);
             return fetchedPage;
         }
@@ -137,10 +143,11 @@ public class FetchedPage implements Page {
 
     }
 
-    private FetchedPage(String url, Response response, boolean mobile) {
+    private FetchedPage(String url, Response response, boolean mobile, String urlPrefix) {
         this.url = url;
         this.response = response;
         this.mobile = mobile;
+        this.urlPrefix = urlPrefix;
     }
 
     @Override
@@ -158,6 +165,11 @@ public class FetchedPage implements Page {
     @Override
     public String getUrl() {
         return url;
+    }
+
+    @Override
+    public String getUrlPrefix() {
+        return urlPrefix;
     }
 
     @Override
@@ -193,6 +205,11 @@ public class FetchedPage implements Page {
     @Override
     public Map<String, String> getHeaders() {
         return response.headers();
+    }
+
+    @Override
+    public String getLocation() {
+        return response.header("Location");
     }
 
     @Override

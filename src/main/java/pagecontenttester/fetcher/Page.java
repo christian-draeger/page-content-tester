@@ -65,6 +65,8 @@ public interface Page {
      */
     int getElementCount(String cssSelector);
 
+    String getUrlPrefix();
+
     /**
      * @return HTTP status code of fetched page
      */
@@ -109,6 +111,11 @@ public interface Page {
      * @return headers
      */
     Map<String, String> getHeaders();
+
+    /**
+     * @return Location header
+     */
+    String getLocation();
 
     /**
      * Check if a header is present
