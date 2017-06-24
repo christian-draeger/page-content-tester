@@ -17,7 +17,6 @@ import java.util.Collections;
 
 import org.json.JSONObject;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import pagecontenttester.annotations.Cookie;
@@ -206,7 +205,6 @@ public class FetchedPageTest extends PageContentTester {
         assertThat(referrer, equalTo(config.getReferrer()));
     }
 
-    @Ignore("html-kit.com is down atm")
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
@@ -216,7 +214,6 @@ public class FetchedPageTest extends PageContentTester {
                         .and(containsString("wtf-666")));
     }
 
-    @Ignore("html-kit.com is down atm")
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),

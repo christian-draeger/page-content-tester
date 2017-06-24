@@ -7,9 +7,10 @@ import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+import pagecontenttester.runner.RetryRunner;
+
+@RunWith(RetryRunner.class)
 public class ConfigTest {
 
     private static final String DESKTOP_USER_AGENT = "Mozilla/5.0 (X11\\; Ubuntu\\; Linux x86_64\\; rv\\:25.0)";
