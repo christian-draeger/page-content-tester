@@ -2,10 +2,6 @@ language: java
 sudo: true
 install: true
 
-before_install:
-  - sudo apt-get install jq
-  - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
-
 addons:
   sonarqube:
     organization: "christian-draeger-github"
@@ -23,7 +19,6 @@ before_script:
 
 after_success:
   - codecov
-  - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
 
 cache:
   directories:
