@@ -129,6 +129,24 @@ public class FetcherRule implements MethodRule {
         throw new GetFetchedPageException("could not find fetched page with url-snippet \"" + urlSnippet + "\"");
     }
 
+    public FetchedPage get(DeviceType deviceType) {
+        for (FetchedPage recentlyFetchedPage : fetchedPages){
+            if (recentlyFetchedPage.getDeviceType().equals(deviceType)){
+                return recentlyFetchedPage;
+            }
+        }
+        throw new GetFetchedPageException("could not find fetched page with deviceType \"" + deviceType + "\"");
+    }
+
+    public FetchedPage get(String urlSnippet, DeviceType deviceType) {
+        for (FetchedPage recentlyFetchedPage : fetchedPages){
+            if (recentlyFetchedPage.getUrl().contains(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
+                return recentlyFetchedPage;
+            }
+        }
+        throw new GetFetchedPageException("could not find fetched page with url-snippet: \"" + urlSnippet + "\" (" + deviceType + ")");
+    }
+
     private int getRetryCount(Fetch fetchPage) {
         return fetchPage.retriesOnTimeout() == 0 ? config.getTimeoutMaxRetryCount() : fetchPage.retriesOnTimeout();
     }

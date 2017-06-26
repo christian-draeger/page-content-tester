@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.jsoup.Connection.Method.POST;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 import static pagecontenttester.fetcher.FetchedPage.call;
 import static pagecontenttester.fetcher.FetchedPage.fetchPage;
@@ -53,6 +54,16 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     public void fetcher_should_return_fetched_mobile_page_for_valid_url() {
         assertThat(fetchedMobilePage.isMobile(), is(true));
+    }
+
+    @Test
+    public void fetcher_should_return_device_type_for_fetched_mobile_page() {
+        assertThat(fetchedMobilePage.getDeviceType(), equalTo(MOBILE));
+    }
+
+    @Test
+    public void fetcher_should_return_device_type_for_fetched_desktop_page() {
+        assertThat(fetchedPage.getDeviceType(), equalTo(DESKTOP));
     }
 
     @Test
@@ -183,6 +194,23 @@ public class FetchedPageTest extends PageContentTester {
     public void fetch_page_via_annotation_and_try_to_get_fetched_page_by_invalid_index() {
         page.get(1);
     }
+
+    @Test
+    @Fetch(url = GITHUB_URL)
+    @Fetch(url = GITHUB_URL, device = MOBILE)
+    public void fetch_as_desktop_and_mobile_device_by_annotation() {
+        assertThat(page.get(GITHUB_URL, DESKTOP).getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get(GITHUB_URL, MOBILE).getDeviceType(), equalTo(MOBILE));
+    }
+
+    @Test
+    @Fetch(url = GITHUB_URL)
+    @Fetch(url = GITHUB_URL, device = MOBILE)
+    public void can_pick_fetched_page_by_device_type() {
+        assertThat(page.get(DESKTOP).getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get(MOBILE).getDeviceType(), equalTo(MOBILE));
+    }
+
 
     @Test
     @Fetch(url = "whatsmyuseragent.org/", device = MOBILE)

@@ -29,7 +29,7 @@ public class FetchedPage implements Page {
 
     private final String url;
     private final String urlPrefix;
-    private final boolean mobile;
+    private final DeviceType deviceType;
     private final Response response;
     private Optional<Document> document = Optional.empty();
 
@@ -113,7 +113,6 @@ public class FetchedPage implements Page {
                                             Map<String,String> cookie,
                                             String urlPrefix) {
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
-        boolean mobile = device.equals(MOBILE);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
             if (config.isCacheDuplicatesLogActive()) {
                 log.info("duplicate call for fetched page: {}\n\t{}\n\twill take page from cache", cacheKey, Thread.currentThread().getStackTrace()[3]);
@@ -129,7 +128,7 @@ public class FetchedPage implements Page {
                     .retriesOnTimeout(retriesOnTimeout)
                     .cookie(cookie)
                     .build();
-            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), mobile, urlPrefix);
+            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), device, urlPrefix);
             fetchedPageCache.put(cacheKey, fetchedPage);
             return fetchedPage;
         }
@@ -143,10 +142,10 @@ public class FetchedPage implements Page {
 
     }
 
-    private FetchedPage(String url, Response response, boolean mobile, String urlPrefix) {
+    private FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {
         this.url = url;
         this.response = response;
-        this.mobile = mobile;
+        this.deviceType = deviceType;
         this.urlPrefix = urlPrefix;
     }
 
@@ -178,8 +177,13 @@ public class FetchedPage implements Page {
     }
 
     @Override
+    public DeviceType getDeviceType() {
+        return deviceType;
+    }
+
+    @Override
     public boolean isMobile() {
-        return mobile;
+        return deviceType.equals(MOBILE);
     }
 
     @Override
