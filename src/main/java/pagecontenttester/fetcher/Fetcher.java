@@ -39,6 +39,7 @@ public class Fetcher {
 
         log.info("fetching {} (UserAgent: {})", url, deviceType);
         setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
+        setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts");
 
         int retryCount = 0;
 
