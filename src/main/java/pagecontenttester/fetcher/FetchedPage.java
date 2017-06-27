@@ -2,16 +2,20 @@ package pagecontenttester.fetcher;
 
 import static org.jsoup.Connection.Method;
 import static org.jsoup.Connection.Response;
+import static pagecontenttester.annotations.Fetch.Protocol.NONE;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -73,7 +77,7 @@ public class FetchedPage implements Page {
     }
 
     public static FetchedPage call(String url, Method method, Map<String, String> requestBody) {
-        return fetchedPages(url,
+        return fetchedPages(getUrl(url, NONE, config.getUrlPrefix(), ""),
                             method,
                             requestBody,
                             DESKTOP,
@@ -89,8 +93,9 @@ public class FetchedPage implements Page {
                                             int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol,
                                             String urlPrefix, String port) {
 
-        String prefix = urlPrefix.isEmpty() ? urlPrefix : urlPrefix + ".";
-        return fetchedPages(protocol.value + prefix + url,
+        String urlWithPrefix = getUrl(url, protocol, urlPrefix, port);
+        log.info("\n\n\n" + urlWithPrefix + "\n\n\n");
+        return fetchedPages(urlWithPrefix,
                             method,
                             Collections.emptyMap(),
                             device,
@@ -100,6 +105,20 @@ public class FetchedPage implements Page {
                             cookie,
                             urlPrefix
         );
+    }
+
+    private static String getUrl(String url, Fetch.Protocol protocol, String urlPrefix, String portFromAnnotation) {
+        String prefix = urlPrefix.isEmpty() ? urlPrefix : urlPrefix + ".";
+        String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + config.getPort();
+        String port = portFallBackCheck.equals(":") ? "" : portFallBackCheck;
+        try {
+            URL urlRaw = new URL(protocol.value + prefix + url);
+            return protocol.value + urlRaw.getHost() + port + urlRaw.getFile();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @SneakyThrows
@@ -139,7 +158,6 @@ public class FetchedPage implements Page {
     private static class CacheKey {
         private String url;
         private DeviceType device;
-
     }
 
     private FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {
