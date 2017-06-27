@@ -257,6 +257,7 @@ public class FetchedPageTest extends PageContentTester {
                         .and(containsString("666-wtf")));
     }
 
+    @Ignore("problems with httpbin")
     @Test
     public void do_post_request_and_check_response() throws Exception {
         JSONObject responseBody = call("http://httpbin.org/post", POST, Collections.emptyMap()).getJsonResponse();
