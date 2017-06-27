@@ -94,7 +94,6 @@ public class FetchedPage implements Page {
                                             String urlPrefix, String port) {
 
         String urlWithPrefix = getUrl(url, protocol, urlPrefix, port);
-        log.info("\n\n\n" + urlWithPrefix + "\n\n\n");
         return fetchedPages(urlWithPrefix,
                             method,
                             Collections.emptyMap(),
