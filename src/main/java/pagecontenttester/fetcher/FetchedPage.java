@@ -77,7 +77,9 @@ public class FetchedPage implements Page {
     }
 
     public static FetchedPage call(String url, Method method, Map<String, String> requestBody) {
-        return fetchedPages(getUrl(url, NONE, config.getUrlPrefix(), ""),
+        String urlToCall = getUrl(url, NONE, config.getUrlPrefix(), "");
+        log.info("trying to call {}", urlToCall);
+        return fetchedPages(urlToCall,
                             method,
                             requestBody,
                             DESKTOP,
@@ -115,7 +117,7 @@ public class FetchedPage implements Page {
             return protocol.value + urlRaw.getHost() + port + urlRaw.getFile();
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }

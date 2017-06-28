@@ -122,6 +122,13 @@ public class FetcherRule implements MethodRule {
 
     public FetchedPage get(String urlSnippet) {
         for (FetchedPage recentlyFetchedPage : fetchedPages){
+            if (recentlyFetchedPage.getUrl().endsWith(urlSnippet)){
+                return recentlyFetchedPage;
+            }
+            // TODO: replace port used in config, this is just a quick
+            if (recentlyFetchedPage.getUrl().replace(":8080", "").endsWith(urlSnippet)){
+                return recentlyFetchedPage;
+            }
             if (recentlyFetchedPage.getUrl().contains(urlSnippet)){
                 return recentlyFetchedPage;
             }
@@ -140,6 +147,13 @@ public class FetcherRule implements MethodRule {
 
     public FetchedPage get(String urlSnippet, DeviceType deviceType) {
         for (FetchedPage recentlyFetchedPage : fetchedPages){
+            if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
+                return recentlyFetchedPage;
+            }
+            // TODO: replace port used in config, this is just a quick
+            if (recentlyFetchedPage.getUrl().replace(":8080", "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
+                return recentlyFetchedPage;
+            }
             if (recentlyFetchedPage.getUrl().contains(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
                 return recentlyFetchedPage;
             }

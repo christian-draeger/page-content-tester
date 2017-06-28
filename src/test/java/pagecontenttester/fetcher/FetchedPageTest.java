@@ -234,7 +234,7 @@ public class FetchedPageTest extends PageContentTester {
         assertThat(referrer, equalTo(config.getReferrer()));
     }
 
-    @Ignore("html-kit is dowm atm")
+    // @Ignore("html-kit is dowm atm")
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
@@ -244,7 +244,7 @@ public class FetchedPageTest extends PageContentTester {
                         .and(containsString("wtf-666")));
     }
 
-    @Ignore("html-kit is dowm atm")
+    // @Ignore("html-kit is dowm atm")
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),
@@ -257,10 +257,10 @@ public class FetchedPageTest extends PageContentTester {
                         .and(containsString("666-wtf")));
     }
 
-    @Ignore("problems with httpbin")
+    @Ignore("problems in call method")
     @Test
     public void do_post_request_and_check_response() throws Exception {
-        JSONObject responseBody = call("http://httpbin.org/post", POST, Collections.emptyMap()).getJsonResponse();
+        JSONObject responseBody = call("http://bin.org/post", POST, Collections.emptyMap()).getJsonResponse();
         assertThat(responseBody.get("data"), equalTo(""));
     }
 
