@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +40,7 @@ public class FetchedPage implements Page {
     private final DeviceType deviceType;
     private final Response response;
     private Optional<Document> document = Optional.empty();
-    private static String nameOfTest;
+    private static final ThreadLocal<String> nameOfTest = new ThreadLocal<>();
 
     public enum DeviceType {
         DESKTOP,
@@ -50,8 +52,9 @@ public class FetchedPage implements Page {
     private static Map<String, String> defaultCookie = new HashMap<>();
 
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
+    private static final Set<String> calledTestMethods = new ConcurrentSkipListSet<>();
 
-    public static FetchedPage call(String url, Method method, Map<String, String> requestBody) {
+    public FetchedPage call(String url, Method method, Map<String, String> requestBody) {
         String urlToCall = getUrl(url, NONE, config.getUrlPrefix(), "");
         log.info("trying to call {}", urlToCall);
         return fetchedPages(urlToCall,
@@ -72,6 +75,20 @@ public class FetchedPage implements Page {
                                             String urlPrefix, String port, String testName) {
 
         String urlWithPrefix = getUrl(url, protocol, urlPrefix, port);
+
+        // TODO: fix cache key
+//        FetchRequestParameters.builder()
+//        .urlToFetch(urlWithPrefix)
+//                .method(method)
+//                .requestBody(Collections.emptyMap())
+//                .device(device)
+//                .referrer(referrer)
+//                .timeout(timeout)
+//                .retriesOnTimeout(retriesOnTimeout)
+//                .cookie(cookie)
+//                .urlPrefix(urlPrefix)
+//                .build();
+
         return fetchedPages(urlWithPrefix,
                             method,
                             Collections.emptyMap(),
@@ -111,9 +128,9 @@ public class FetchedPage implements Page {
                                             String urlPrefix,
                                             String testName) {
 
-        nameOfTest = testName;
+        nameOfTest.set(testName);
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
-        if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
+        if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
             if (config.isCacheDuplicatesLogActive()) {
                 log.info("duplicate call for fetched page: {}\n\twill take page from cache while running test: {}", cacheKey, testName);
             }
@@ -129,9 +146,10 @@ public class FetchedPage implements Page {
                     .cookie(cookie)
                     .build();
             FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), device, urlPrefix);
-            if (config.isCacheDuplicatesActive()) {
+            if (config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
                 fetchedPageCache.put(cacheKey, fetchedPage);
             }
+            calledTestMethods.add(testName);
             return fetchedPage;
         }
     }
@@ -283,7 +301,7 @@ public class FetchedPage implements Page {
 
     @Override
     public String getTestName() {
-        return nameOfTest;
+        return nameOfTest.get();
     }
 
     @Override
@@ -298,9 +316,9 @@ public class FetchedPage implements Page {
 
     private void store(String folder) {
         try {
-            FileUtils.writeStringToFile(new File("target/page-content-tester/" + folder + "/" + nameOfTest + ".html"), getPageBody());
+            FileUtils.writeStringToFile(new File("target/page-content-tester/" + folder + "/" + getTestName() + ".html"), getPageBody());
         } catch (IOException e) {
-            log.warn("could not store page body for url: {} while executing test: {}", getUrl(), nameOfTest);
+            log.warn("could not store page body for url: {} while executing test: {}", getUrl(), getTestName());
         }
     }
 

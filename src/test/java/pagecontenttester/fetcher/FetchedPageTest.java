@@ -7,17 +7,13 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
-import static org.jsoup.Connection.Method.POST;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
-import static pagecontenttester.fetcher.FetchedPage.call;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -261,8 +257,8 @@ public class FetchedPageTest extends PageContentTester {
     @Ignore("problems in call method")
     @Test
     public void do_post_request_and_check_response() throws Exception {
-        JSONObject responseBody = call("http://bin.org/post", POST, Collections.emptyMap()).getJsonResponse();
-        assertThat(responseBody.get("data"), equalTo(""));
+//        JSONObject responseBody = call("http://bin.org/post", POST, Collections.emptyMap()).getJsonResponse();
+//        assertThat(responseBody.get("data"), equalTo(""));
     }
 
     @Test
