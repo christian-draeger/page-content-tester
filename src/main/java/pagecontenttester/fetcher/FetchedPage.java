@@ -25,9 +25,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import pagecontenttester.annotations.Fetch;
 import pagecontenttester.configurations.Config;
@@ -51,7 +49,7 @@ public class FetchedPage implements Page {
 
     private static Map<String, String> defaultCookie = new HashMap<>();
 
-    private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
+    private static final Map<FetchRequestParameters, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
     private static final Set<String> calledTestMethods = new ConcurrentSkipListSet<>();
 
     public FetchedPage call(String url, Method method, Map<String, String> requestBody) {
@@ -75,19 +73,6 @@ public class FetchedPage implements Page {
                                             String urlPrefix, String port, String testName) {
 
         String urlWithPrefix = getUrl(url, protocol, urlPrefix, port);
-
-        // TODO: fix cache key
-//        FetchRequestParameters.builder()
-//        .urlToFetch(urlWithPrefix)
-//                .method(method)
-//                .requestBody(Collections.emptyMap())
-//                .device(device)
-//                .referrer(referrer)
-//                .timeout(timeout)
-//                .retriesOnTimeout(retriesOnTimeout)
-//                .cookie(cookie)
-//                .urlPrefix(urlPrefix)
-//                .build();
 
         return fetchedPages(urlWithPrefix,
                             method,
@@ -129,7 +114,19 @@ public class FetchedPage implements Page {
                                             String testName) {
 
         nameOfTest.set(testName);
-        CacheKey cacheKey = new CacheKey(urlToFetch, device);
+
+        final FetchRequestParameters cacheKey = FetchRequestParameters.builder()
+                .urlToFetch(urlToFetch)
+                .method(method)
+                .requestBody(requestBody)
+                .device(device)
+                .referrer(referrer)
+                .timeout(timeout)
+                .retriesOnTimeout(retriesOnTimeout)
+                .cookie(cookie)
+                .urlPrefix(urlPrefix)
+                .build();
+
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
             if (config.isCacheDuplicatesLogActive()) {
                 log.info("duplicate call for fetched page: {}\n\twill take page from cache while running test: {}", cacheKey, testName);
@@ -137,9 +134,9 @@ public class FetchedPage implements Page {
             return fetchedPageCache.get(cacheKey);
         } else {
             Fetcher fetcher = Fetcher.builder()
-                    .deviceType(device)
                     .method(method)
                     .requestBody(requestBody)
+                    .deviceType(device)
                     .referrer(referrer)
                     .timeout(timeout)
                     .retriesOnTimeout(retriesOnTimeout)
@@ -152,13 +149,6 @@ public class FetchedPage implements Page {
             calledTestMethods.add(testName);
             return fetchedPage;
         }
-    }
-
-    @Value
-    @AllArgsConstructor
-    private static class CacheKey {
-        private String url;
-        private DeviceType device;
     }
 
     private FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {

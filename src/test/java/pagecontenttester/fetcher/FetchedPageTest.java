@@ -209,6 +209,14 @@ public class FetchedPageTest extends PageContentTester {
         assertThat(pageBody, both(containsString("christian-draeger")).and(containsString("GitHub")));
     }
 
+    @Test
+    public void store_page_body_if_element_not_present() throws IOException {
+        page.get().getElements("dfghfjhg");
+        File file = new File("target/page-content-tester/not-found/pagecontenttester.fetcher.FetchedPageTest.store_page_body_if_element_not_present.html");
+        String pageBody = FileUtils.readFileToString(file);
+        assertThat(pageBody, both(containsString("christian-draeger")).and(containsString("GitHub")));
+    }
+
 
     @Test
     @Fetch(url = "whatsmyuseragent.org/", device = MOBILE)
