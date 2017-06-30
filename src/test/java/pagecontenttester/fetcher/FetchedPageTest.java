@@ -14,8 +14,11 @@ import static pagecontenttester.fetcher.FetchedPage.call;
 import static pagecontenttester.fetcher.FetchedPage.fetchPage;
 import static pagecontenttester.fetcher.FetchedPage.fetchPageAsMobileDevice;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -206,10 +209,23 @@ public class FetchedPageTest extends PageContentTester {
 
     @Test
     @Fetch(url = GITHUB_URL)
-    @Fetch(url = GITHUB_URL, device = MOBILE)
-    public void can_pick_fetched_page_by_device_type() {
-        assertThat(page.get(DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get(MOBILE).getDeviceType(), equalTo(MOBILE));
+    public void get_name_of_test() {
+        assertThat(page.get().getTestName(), equalTo("pagecontenttester.fetcher.FetchedPageTest.get_name_of_test"));
+    }
+
+    @Test
+    @Fetch(url = GITHUB_URL)
+    public void get_name_of_other_test() {
+        assertThat(page.get().getTestName(), equalTo("pagecontenttester.fetcher.FetchedPageTest.get_name_of_other_test"));
+    }
+
+    @Test
+    @Fetch(url = GITHUB_URL)
+    public void can_store_page_body() throws IOException {
+        page.get().storePageBody();
+        File file = new File("target/page-content-tester/stored/pagecontenttester.fetcher.FetchedPageTest.can_store_page_body.html");
+        String pageBody = FileUtils.readFileToString(file);
+        assertThat(pageBody, both(containsString("christian-draeger")).and(containsString("GitHub")));
     }
 
 

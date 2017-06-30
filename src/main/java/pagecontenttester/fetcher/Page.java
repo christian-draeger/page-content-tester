@@ -59,6 +59,10 @@ public interface Page {
      */
     boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences);
 
+    String getTestName();
+
+    void storePageBody();
+
     /**
      * @param cssSelector to pick DOM-element
      * @return number of matching CSS-selectors

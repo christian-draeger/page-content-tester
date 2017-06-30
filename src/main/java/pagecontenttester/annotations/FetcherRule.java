@@ -26,6 +26,7 @@ public class FetcherRule implements MethodRule {
     private List<FetchedPage> fetchedPages = new ArrayList<>();
     private Config config = new Config();
     private Map<String, String> cookie = new HashMap<>();
+    private String testName;
 
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
@@ -36,6 +37,9 @@ public class FetcherRule implements MethodRule {
                 List<Annotation> annotations = new LinkedList<>();
                 annotations.addAll(Arrays.asList(method.getMethod().getDeclaringClass().getAnnotations()));
                 annotations.addAll(Arrays.asList(method.getAnnotations()));
+                if (!annotations.isEmpty()) {
+                    testName = method.getMethod().getDeclaringClass().getName() + "." + method.getName();
+                }
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof Fetch) {
                         Fetch fetchPage = (Fetch) annotation;
@@ -62,7 +66,8 @@ public class FetcherRule implements MethodRule {
                                                         cookie,
                                                         protocol,
                                                         urlPrefix,
-                                                        port
+                                                        port,
+                                                        testName
                         );
                     }
                     if (annotation instanceof FetchPages) {
@@ -89,12 +94,13 @@ public class FetcherRule implements MethodRule {
                                     cookie,
                                     fetchPage.protocol(),
                                     urlPrefix,
-                                    port
+                                    port,
+                                    testName
             ));
         }
     }
 
-    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol, String urlPrefix, String port) {
+    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol, String urlPrefix, String port, String testName) {
         return annotationCall(  url,
                                 device,
                                 method,
@@ -104,7 +110,8 @@ public class FetcherRule implements MethodRule {
                                 cookie,
                                 protocol,
                                 urlPrefix,
-                                port
+                                port,
+                                testName
         );
     }
 
@@ -125,7 +132,7 @@ public class FetcherRule implements MethodRule {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet)){
                 return recentlyFetchedPage;
             }
-            // TODO: replace port used in config, this is just a quick
+            // TODO: replace port used in config, this is just a quick fix
             if (recentlyFetchedPage.getUrl().replace(":8080", "").endsWith(urlSnippet)){
                 return recentlyFetchedPage;
             }
@@ -150,7 +157,7 @@ public class FetcherRule implements MethodRule {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
                 return recentlyFetchedPage;
             }
-            // TODO: replace port used in config, this is just a quick
+            // TODO: replace port used in config, this is just a quick fix
             if (recentlyFetchedPage.getUrl().replace(":8080", "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
                 return recentlyFetchedPage;
             }

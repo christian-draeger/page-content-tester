@@ -6,6 +6,7 @@ import static pagecontenttester.annotations.Fetch.Protocol.NONE;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
@@ -36,6 +38,7 @@ public class FetchedPage implements Page {
     private final DeviceType deviceType;
     private final Response response;
     private Optional<Document> document = Optional.empty();
+    private static String nameOfTest;
 
     public enum DeviceType {
         DESKTOP,
@@ -58,7 +61,8 @@ public class FetchedPage implements Page {
                             config.getTimeoutValue(),
                             config.getTimeoutMaxRetryCount(),
                             defaultCookie,
-                            config.getUrlPrefix()
+                            config.getUrlPrefix(),
+                            ""
         );
     }
 
@@ -72,7 +76,8 @@ public class FetchedPage implements Page {
                             config.getTimeoutValue(),
                             config.getTimeoutMaxRetryCount(),
                             defaultCookie,
-                            config.getUrlPrefix()
+                            config.getUrlPrefix(),
+                            ""
         );
     }
 
@@ -87,13 +92,14 @@ public class FetchedPage implements Page {
                             config.getTimeoutValue(),
                             config.getTimeoutMaxRetryCount(),
                             defaultCookie,
-                            config.getUrlPrefix()
+                            config.getUrlPrefix(),
+                            ""
         );
     }
 
     public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout,
                                             int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol,
-                                            String urlPrefix, String port) {
+                                            String urlPrefix, String port, String testName) {
 
         String urlWithPrefix = getUrl(url, protocol, urlPrefix, port);
         return fetchedPages(urlWithPrefix,
@@ -104,7 +110,8 @@ public class FetchedPage implements Page {
                             timeout,
                             retriesOnTimeout,
                             cookie,
-                            urlPrefix
+                            urlPrefix,
+                            testName
         );
     }
 
@@ -131,11 +138,14 @@ public class FetchedPage implements Page {
                                             int timeout,
                                             int retriesOnTimeout,
                                             Map<String,String> cookie,
-                                            String urlPrefix) {
+                                            String urlPrefix,
+                                            String testName) {
+
+        nameOfTest = testName;
         CacheKey cacheKey = new CacheKey(urlToFetch, device);
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive()) {
             if (config.isCacheDuplicatesLogActive()) {
-                log.info("duplicate call for fetched page: {}\n\t{}\n\twill take page from cache", cacheKey, Thread.currentThread().getStackTrace()[3]);
+                log.info("duplicate call for fetched page: {}\n\twill take page from cache while running test: {}", cacheKey, testName);
             }
             return fetchedPageCache.get(cacheKey);
         } else {
@@ -149,7 +159,9 @@ public class FetchedPage implements Page {
                     .cookie(cookie)
                     .build();
             FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), device, urlPrefix);
-            fetchedPageCache.put(cacheKey, fetchedPage);
+            if (config.isCacheDuplicatesActive()) {
+                fetchedPageCache.put(cacheKey, fetchedPage);
+            }
             return fetchedPage;
         }
     }
@@ -267,22 +279,26 @@ public class FetchedPage implements Page {
 
     @Override
     public Elements getElements(String cssSelector) {
+        hasSelector(cssSelector);
         return getDocument().select(cssSelector);
     }
 
     @Override
     public Element getElement(String cssSelector) {
-        return getDocument().select(cssSelector).first();
+        hasSelector(cssSelector);
+        return getElements(cssSelector).first();
     }
 
     @Override
     public Element getElementLastOf(String cssSelector) {
-        return getDocument().select(cssSelector).last();
+        hasSelector(cssSelector);
+        return getElements(cssSelector).last();
     }
 
     @Override
     public Element getElement(String cssSelector, int index) {
-        return getDocument().select(cssSelector).get(index);
+        hasSelector(cssSelector);
+        return getElements(cssSelector).get(index);
     }
 
     @Override
@@ -296,7 +312,32 @@ public class FetchedPage implements Page {
     }
 
     @Override
+    public String getTestName() {
+        return nameOfTest;
+    }
+
+    @Override
+    public void storePageBody() {
+        store("stored");
+    }
+
+    @Override
     public int getElementCount(String cssSelector) {
         return getDocument().select(cssSelector).size();
     }
+
+    private void store(String folder) {
+        try {
+            FileUtils.writeStringToFile(new File("target/page-content-tester/" + folder + "/" + nameOfTest + ".html"), getPageBody());
+        } catch (IOException e) {
+            log.warn("could not store page body for url: {} while executing test: {}", getUrl(), nameOfTest);
+        }
+    }
+
+    private void hasSelector(String cssSelector) {
+        if (getElementCount(cssSelector) == 0) {
+            store("not-found");
+        }
+    }
+
 }
