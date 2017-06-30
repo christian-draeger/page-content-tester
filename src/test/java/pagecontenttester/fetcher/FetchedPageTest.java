@@ -11,8 +11,6 @@ import static org.jsoup.Connection.Method.POST;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 import static pagecontenttester.fetcher.FetchedPage.call;
-import static pagecontenttester.fetcher.FetchedPage.fetchPage;
-import static pagecontenttester.fetcher.FetchedPage.fetchPageAsMobileDevice;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +18,6 @@ import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -29,137 +26,130 @@ import pagecontenttester.annotations.Fetch;
 import pagecontenttester.annotations.GetFetchedPageException;
 import pagecontenttester.runner.PageContentTester;
 
-@Fetch(url= "www.google.de")
+@Fetch(url = "github.com/christian-draeger")
 public class FetchedPageTest extends PageContentTester {
-
-    private static Page fetchedPage;
-    private static Page fetchedMobilePage;
 
     private static final String GITHUB_URL = "github.com/christian-draeger";
     private static final String GOOGLE_URL = "www.google.de";
     private static final String VALID_SELECTOR = "h1";
-
-    @BeforeClass
-    public static void fetcher() {
-        fetchedPage = fetchPage("http://github.com/christian-draeger");
-        fetchedMobilePage = fetchPageAsMobileDevice("http://www.google.de");
-    }
-
+    
     @Test
     public void can_fetch_from_class_annotation() {
-        assertThat(page.get().getUrl(), containsString("google"));
+        assertThat(page.get().getUrl(), containsString("github"));
     }
 
     @Test
     public void fetcher_should_return_fetched_desktop_page_for_valid_url() {
-        assertThat(fetchedPage.isMobile(), is(false));
+        assertThat(page.get().isMobile(), is(false));
     }
 
     @Test
+    @Fetch(url = GITHUB_URL, device = MOBILE)
     public void fetcher_should_return_fetched_mobile_page_for_valid_url() {
-        assertThat(fetchedMobilePage.isMobile(), is(true));
+        assertThat(page.get().isMobile(), is(true));
     }
 
     @Test
+    @Fetch(url = GITHUB_URL, device = MOBILE)
     public void fetcher_should_return_device_type_for_fetched_mobile_page() {
-        assertThat(fetchedMobilePage.getDeviceType(), equalTo(MOBILE));
+        assertThat(page.get().getDeviceType(), equalTo(MOBILE));
     }
 
     @Test
+    @Fetch(url = GITHUB_URL, device = DESKTOP)
     public void fetcher_should_return_device_type_for_fetched_desktop_page() {
-        assertThat(fetchedPage.getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get().getDeviceType(), equalTo(DESKTOP));
     }
 
     @Test
     public void fetcher_should_return_referrer() {
-        assertThat(fetchedPage.getConfig().getReferrer(), equalTo("http://www.google.com"));
+        assertThat(page.get().getConfig().getReferrer(), equalTo("http://www.google.com"));
     }
 
     @Test
     public void fetcher_should_return_cookie_value() {
-        assertThat(fetchedPage.getCookieValue("logged_in"), equalTo("no"));
+        assertThat(page.get().getCookieValue("logged_in"), equalTo("no"));
     }
 
     @Test
     public void fetcher_should_return_cookies() {
-        assertThat(fetchedPage.getCookies(), hasEntry("logged_in", "no"));
+        assertThat(page.get().getCookies(), hasEntry("logged_in", "no"));
     }
 
     @Test
     public void fetcher_should_return_cookie() {
-        assertThat(fetchedPage.hasCookie("logged_in"), is(true));
+        assertThat(page.get().hasCookie("logged_in"), is(true));
     }
 
     @Test
     public void fetcher_should_return_content_type() {
-        assertThat(fetchedPage.getContentType(), equalTo("text/html; charset=utf-8"));
+        assertThat(page.get().getContentType(), equalTo("text/html; charset=utf-8"));
     }
 
     @Test
     public void fetcher_should_return_element() {
-        assertThat(fetchedPage.getElement(VALID_SELECTOR).hasText(), is(true));
+        assertThat(page.get().getElement(VALID_SELECTOR).hasText(), is(true));
     }
 
     @Test
     public void fetcher_should_return_page_body() {
-        assertThat(fetchedPage.getPageBody(), containsString("<!DOCTYPE html>"));
-        assertThat(fetchedPage.getPageBody(), containsString("christian-draeger"));
+        assertThat(page.get().getPageBody(), containsString("<!DOCTYPE html>"));
+        assertThat(page.get().getPageBody(), containsString("christian-draeger"));
     }
 
     @Test
     public void fetcher_should_return_status_message() {
-        assertThat(fetchedPage.getStatusMessage(), equalTo("OK"));
+        assertThat(page.get().getStatusMessage(), equalTo("OK"));
     }
 
     @Test
     public void fetcher_should_return_status_code() {
-        assertThat(fetchedPage.getStatusCode(), is(200));
+        assertThat(page.get().getStatusCode(), is(200));
     }
 
     @Test
     public void should_return_true_if_certain_element_is_present() {
-        assertThat(fetchedPage.isElementPresent(VALID_SELECTOR), is(true));
+        assertThat(page.get().isElementPresent(VALID_SELECTOR), is(true));
     }
 
     @Test
     public void should_return_false_if_certain_element_is_not_present() {
-        assertThat(fetchedPage.isElementPresent("dgfhkdgs"), is(false));
+        assertThat(page.get().isElementPresent("dgfhkdgs"), is(false));
     }
 
     @Test
     public void fetcher_should_return_elements_by_selector() {
-        assertThat(fetchedPage.getElements(VALID_SELECTOR).size(), greaterThanOrEqualTo(1));
+        assertThat(page.get().getElements(VALID_SELECTOR).size(), greaterThanOrEqualTo(1));
     }
 
     @Test
     public void fetcher_should_return_last_matching_element_by_selector() {
-        assertThat(fetchedPage.getElementLastOf(VALID_SELECTOR).text(), containsString("christian-draeger"));
+        assertThat(page.get().getElementLastOf(VALID_SELECTOR).text(), containsString("christian-draeger"));
     }
 
     @Test
     public void fetcher_should_return_nth_matching_element_by_selector() {
-        assertThat(fetchedPage.getElement(VALID_SELECTOR, 0).text(), containsString("christian-draeger"));
+        assertThat(page.get().getElement(VALID_SELECTOR, 0).text(), containsString("christian-draeger"));
     }
 
     @Test
-    @Fetch(url = GITHUB_URL)
     public void fetcher_should_return_count_of_certain_element() {
         assertThat(page.get().getElementCount(VALID_SELECTOR), is(1));
     }
 
     @Test
     public void fetcher_should_return_headers() {
-        assertThat(fetchedPage.getHeaders(), hasEntry("Server", "GitHub.com"));
+        assertThat(page.get().getHeaders(), hasEntry("Server", "GitHub.com"));
     }
 
     @Test
     public void fetcher_should_return_certain_header() {
-        assertThat(fetchedPage.getHeader("Server"), equalTo("GitHub.com"));
+        assertThat(page.get().getHeader("Server"), equalTo("GitHub.com"));
     }
 
     @Test
     public void fetcher_should_check_is_certain_header_is_present() {
-        assertThat(fetchedPage.hasHeader("Server"), is(true));
+        assertThat(page.get().hasHeader("Server"), is(true));
     }
 
     @Test
@@ -182,7 +172,6 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test(expected = GetFetchedPageException.class)
-    @Fetch(url = GITHUB_URL)
     public void fetch_page_via_annotation_and_try_to_get_fetched_page_by_unknown_url_snippet() {
         page.get("unknown");
     }
@@ -194,7 +183,6 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test(expected = GetFetchedPageException.class)
-    @Fetch(url = GITHUB_URL)
     public void fetch_page_via_annotation_and_try_to_get_fetched_page_by_invalid_index() {
         page.get(1);
     }
@@ -208,20 +196,17 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(url = GITHUB_URL)
     public void get_name_of_test() {
         assertThat(page.get().getTestName(), equalTo("pagecontenttester.fetcher.FetchedPageTest.get_name_of_test"));
     }
 
     @Test
-    @Fetch(url = GITHUB_URL)
     public void get_name_of_other_test() {
         assertThat(page.get().getTestName(), equalTo("pagecontenttester.fetcher.FetchedPageTest.get_name_of_other_test"));
     }
 
     @Test
-    @Fetch(url = GITHUB_URL)
-    public void can_store_page_body() throws IOException {
+    public void can_store_page_body() throws IOException, InterruptedException {
         page.get().storePageBody();
         File file = new File("target/page-content-tester/stored/pagecontenttester.fetcher.FetchedPageTest.can_store_page_body.html");
         String pageBody = FileUtils.readFileToString(file);
@@ -281,25 +266,13 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    public void fetch_multiple_pages_in_test_method() {
-        FetchedPage github = fetchPage("http://github.com/christian-draeger");
-        FetchedPage google = fetchPage("http://www.google.de");
-
-        assertThat(github.isElementPresent("h1"), is(true));
-        assertThat(github.getUrl(), equalTo("http://github.com/christian-draeger"));
-
-        assertThat(google.isElementPresent("#footer"), is(true));
-        assertThat(google.getUrl(), equalTo("http://www.google.de"));
-    }
-
-    @Test
     public void should_return_true_for_certain_count_of_certain_element() {
-        assertThat(fetchedPage.isElementPresentNthTimes(VALID_SELECTOR, 1), is(true));
+        assertThat(page.get().isElementPresentNthTimes(VALID_SELECTOR, 1), is(true));
     }
 
     @Test
     public void should_return_false_for_invalid_count_of_certain_element() {
-        assertThat(fetchedPage.isElementPresentNthTimes(VALID_SELECTOR, 100), is(false));
+        assertThat(page.get().isElementPresentNthTimes(VALID_SELECTOR, 100), is(false));
     }
 
 }

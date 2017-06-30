@@ -43,43 +43,13 @@ public class FetchedPage implements Page {
     public enum DeviceType {
         DESKTOP,
         MOBILE
-
     }
+
     private static Config config = new Config();
 
     private static Map<String, String> defaultCookie = new HashMap<>();
 
     private static final Map<CacheKey, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
-
-    @Deprecated
-    public static FetchedPage fetchPage(String url) {
-        return fetchedPages(url,
-                            Method.GET,
-                            Collections.emptyMap(),
-                            DESKTOP,
-                            config.getReferrer(),
-                            config.getTimeoutValue(),
-                            config.getTimeoutMaxRetryCount(),
-                            defaultCookie,
-                            config.getUrlPrefix(),
-                            ""
-        );
-    }
-
-    @Deprecated
-    public static FetchedPage fetchPageAsMobileDevice(String url) {
-        return fetchedPages(url,
-                            Method.GET,
-                            Collections.emptyMap(),
-                            MOBILE,
-                            config.getReferrer(),
-                            config.getTimeoutValue(),
-                            config.getTimeoutMaxRetryCount(),
-                            defaultCookie,
-                            config.getUrlPrefix(),
-                            ""
-        );
-    }
 
     public static FetchedPage call(String url, Method method, Map<String, String> requestBody) {
         String urlToCall = getUrl(url, NONE, config.getUrlPrefix(), "");
