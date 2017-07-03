@@ -93,7 +93,6 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     public void fetcher_should_return_page_body() {
         assertThat(page.get().getPageBody(), containsString("<!DOCTYPE html>"));
-        assertThat(page.get().getPageBody(), containsString("christian-draeger"));
     }
 
     @Test
