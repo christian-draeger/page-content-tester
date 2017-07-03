@@ -285,7 +285,7 @@ public class FetchedPage implements Page {
 
     private void store(String folder) {
         try {
-            FileUtils.writeStringToFile(new File("target/page-content-tester/" + folder + "/" + getTestName() + ".html"), getPageBody());
+            FileUtils.writeStringToFile(new File("target/page-content-tester/" + folder,  getTestName() + ".html"), getPageBody());
         } catch (IOException e) {
             log.warn("could not store page body for url: {} while executing test: {}", getUrl(), getTestName());
         }

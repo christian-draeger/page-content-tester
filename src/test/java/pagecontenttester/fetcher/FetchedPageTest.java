@@ -262,7 +262,7 @@ public class FetchedPageTest extends PageContentTester {
         page.get().getElements("dfghfjhg");
         File file = new File("target/page-content-tester/not-found/pagecontenttester.fetcher.FetchedPageTest.store_page_body_if_element_not_present.html");
         String pageBody = FileUtils.readFileToString(file);
-        assertThat(pageBody, both(containsString("christian-draeger")).and(containsString("GitHub")));
+        assertThat(pageBody, containsString("GitHub"));
     }
 
 

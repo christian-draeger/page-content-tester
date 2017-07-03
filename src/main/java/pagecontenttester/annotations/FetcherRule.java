@@ -70,15 +70,19 @@ public class FetcherRule implements MethodRule {
                                                         testName
                         );
                     }
-                    if (annotation instanceof FetchPages) {
-                        FetchPages fetchPages = (FetchPages) annotation;
-                        fetchFromAnnotation(fetchPages.value());
-                    }
+                    fetchIfAnnotated(annotation);
                 }
 
                 base.evaluate();
             }
         };
+    }
+
+    private void fetchIfAnnotated(Annotation annotation) {
+        if (annotation instanceof FetchPages) {
+            FetchPages fetchPages = (FetchPages) annotation;
+            fetchFromAnnotation(fetchPages.value());
+        }
     }
 
     private void fetchFromAnnotation(Fetch... fetches) {
@@ -117,8 +121,7 @@ public class FetcherRule implements MethodRule {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet)){
                 return recentlyFetchedPage;
             }
-            // TODO: replace port used in config, this is just a quick fix
-            if (recentlyFetchedPage.getUrl().replace(":8080", "").endsWith(urlSnippet)){
+            if (recentlyFetchedPage.getUrl().replace(":" + config.getPort(), "").endsWith(urlSnippet)){
                 return recentlyFetchedPage;
             }
             if (recentlyFetchedPage.getUrl().contains(urlSnippet)){
@@ -142,8 +145,7 @@ public class FetcherRule implements MethodRule {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
                 return recentlyFetchedPage;
             }
-            // TODO: replace port used in config, this is just a quick fix
-            if (recentlyFetchedPage.getUrl().replace(":8080", "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
+            if (recentlyFetchedPage.getUrl().replace(":" + config.getPort(), "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
                 return recentlyFetchedPage;
             }
             if (recentlyFetchedPage.getUrl().contains(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
