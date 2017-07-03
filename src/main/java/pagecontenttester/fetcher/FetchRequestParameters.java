@@ -9,16 +9,16 @@ import lombok.Value;
 
 @Value
 @Builder
-public class FetchRequestParameters {
+class FetchRequestParameters {
 
-    String urlToFetch;
-    Connection.Method method;
-    Map<String, String> requestBody;
-    FetchedPage.DeviceType device;
-    String referrer;
-    int timeout;
-    int retriesOnTimeout;
-    Map<String, String> cookie;
-    String urlPrefix;
-    String testName;
+    private String urlToFetch;
+    private Connection.Method method;
+    private Map<String, String> requestBody;
+    private FetchedPage.DeviceType device;
+    private String referrer;
+    private int timeout;
+    private int retriesOnTimeout;
+    private Map<String, String> cookie;
+    private String urlPrefix;
+    private String testName;
 }
