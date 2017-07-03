@@ -66,18 +66,21 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
+    @Fetch(url = "www.idealo.de")
     public void fetcher_should_return_cookie_value() {
-        assertThat(page.get().getCookieValue("logged_in"), equalTo("no"));
+        assertThat(page.get().getCookieValue("ipcuid"), not(emptyString()));
     }
 
     @Test
+    @Fetch(url = "www.idealo.de")
     public void fetcher_should_return_cookies() {
-        assertThat(page.get().getCookies(), hasEntry("logged_in", "no"));
+        assertThat(page.get().getCookies(), hasEntry("icda", "1"));
     }
 
     @Test
+    @Fetch(url = "www.idealo.de")
     public void fetcher_should_return_cookie() {
-        assertThat(page.get().hasCookie("logged_in"), is(true));
+        assertThat(page.get().hasCookie("ipcuid"), is(true));
     }
 
     @Test
