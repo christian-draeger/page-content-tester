@@ -96,11 +96,13 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
+    @Fetch(url = GOOGLE_URL)
     public void fetcher_should_return_status_message() {
         assertThat(page.get().getStatusMessage(), equalTo("OK"));
     }
 
     @Test
+    @Fetch(url = GOOGLE_URL)
     public void fetcher_should_return_status_code() {
         assertThat(page.get().getStatusCode(), is(200));
     }
