@@ -2,8 +2,6 @@ package pagecontenttester.fetcher;
 
 import static org.jsoup.Connection.Method;
 import static org.jsoup.Connection.Response;
-import static pagecontenttester.annotations.Fetch.Protocol.NONE;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.File;
@@ -11,7 +9,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -47,26 +44,8 @@ public class FetchedPage implements Page {
 
     private static Config config = new Config();
 
-    private static Map<String, String> defaultCookie = new HashMap<>();
-
     private static final Map<FetchRequestParameters, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
     private static final Set<String> calledTestMethods = new ConcurrentSkipListSet<>();
-
-    public FetchedPage call(String url, Method method, Map<String, String> requestBody) {
-        String urlToCall = getUrl(url, NONE, config.getUrlPrefix(), "");
-        log.info("trying to call {}", urlToCall);
-        return fetchedPages(urlToCall,
-                            method,
-                            requestBody,
-                            DESKTOP,
-                            config.getReferrer(),
-                            config.getTimeoutValue(),
-                            config.getTimeoutMaxRetryCount(),
-                            defaultCookie,
-                            config.getUrlPrefix(),
-                            ""
-        );
-    }
 
     public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout,
                                             int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol,

@@ -3,10 +3,13 @@ package pagecontenttester.fetcher;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static pagecontenttester.annotations.Fetch.Protocol.HTTPS;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
@@ -120,12 +123,12 @@ public class FetchedPageTest extends PageContentTester {
 
     @Test
     public void fetcher_should_return_last_matching_element_by_selector() {
-        assertThat(page.get().getElementLastOf(VALID_SELECTOR).text(), containsString("christian-draeger"));
+        assertThat(page.get().getElementLastOf("title").text(), not(emptyString()));
     }
 
     @Test
     public void fetcher_should_return_nth_matching_element_by_selector() {
-        assertThat(page.get().getElement(VALID_SELECTOR, 0).text(), containsString("christian-draeger"));
+        assertThat(page.get().getElement("title", 0).text(), not(emptyString()));
     }
 
     @Test
@@ -136,6 +139,12 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     public void fetcher_should_return_headers() {
         assertThat(page.get().getHeaders(), hasEntry("Server", "GitHub.com"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void fetcher_should_return_null_for_non_existing_location_header() {
+        String location = page.get().getLocation();
+        assertThat(location, is(null));
     }
 
     @Test
@@ -173,9 +182,10 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(protocol = Fetch.Protocol.HTTPS, urlPrefix = "en", url = "wikipedia.org")
+    @Fetch(protocol = HTTPS, urlPrefix = "en", url = "wikipedia.org")
     public void fetch_page_via_annotation_and_build_url() {
         assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org"));
+        assertThat(page.get().getUrlPrefix(), equalTo("en"));
     }
 
     @Test(expected = GetFetchedPageException.class)
@@ -184,11 +194,50 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(url = GITHUB_URL)
-    @Fetch(url = GITHUB_URL, device = MOBILE)
-    public void fetch_as_desktop_and_mobile_device_by_annotation() {
+    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_page_by_url_and_device() {
+        assertThat(page.get(GOOGLE_URL, DESKTOP).getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get(GOOGLE_URL, MOBILE).getDeviceType(), equalTo(MOBILE));
+    }
+
+    @Test
+    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_by_device() {
+        assertThat(page.get(DESKTOP).getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get(MOBILE).getDeviceType(), equalTo(MOBILE));
+    }
+
+    @Test
+    @Fetch(url = "github.com:8080/christian-draeger")
+    @Fetch(url = "github.com:8080/christian-draeger", device = MOBILE)
+    public void should_retrun_fetched_page_even_with_wrong_port() {
         assertThat(page.get(GITHUB_URL, DESKTOP).getDeviceType(), equalTo(DESKTOP));
         assertThat(page.get(GITHUB_URL, MOBILE).getDeviceType(), equalTo(MOBILE));
+    }
+
+    @Test
+    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    public void should_return_fetched_page_for_url_snippet_and_device() {
+        assertThat(page.get("google", DESKTOP).getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get("google", MOBILE).getDeviceType(), equalTo(MOBILE));
+    }
+
+    @Test
+    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    public void should_return_fetched_page_for_url_snippet() {
+        assertThat(page.get("google").getDeviceType(), equalTo(DESKTOP));
+    }
+
+    @Test(expected = GetFetchedPageException.class)
+    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    public void should_throw_exception_if_page_can_not_get_by_url() {
+        page.get("wrong-url", DESKTOP);
+
     }
 
     @Test
@@ -239,7 +288,6 @@ public class FetchedPageTest extends PageContentTester {
         assertThat(referrer, equalTo(config.getReferrer()));
     }
 
-    // @Ignore("html-kit is dowm atm")
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
@@ -249,7 +297,6 @@ public class FetchedPageTest extends PageContentTester {
                         .and(containsString("wtf-666")));
     }
 
-    // @Ignore("html-kit is dowm atm")
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),

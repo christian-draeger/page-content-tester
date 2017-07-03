@@ -85,7 +85,7 @@ public class FetcherRule implements MethodRule {
         for (Fetch fetchPage : fetches) {
             String urlPrefix = fetchPage.urlPrefix().isEmpty() ? config.getUrlPrefix() : fetchPage.urlPrefix();
             String port = fetchPage.port().isEmpty() ? config.getPort() : fetchPage.port();
-            fetchedPages.add(fetch( fetchPage.url(),
+            fetchedPages.add(annotationCall( fetchPage.url(),
                                     fetchPage.device(),
                                     fetchPage.method(),
                                     fetchPage.referrer(),
@@ -98,21 +98,6 @@ public class FetcherRule implements MethodRule {
                                     testName
             ));
         }
-    }
-
-    private FetchedPage fetch(String url, DeviceType device, Method method, String referrer, int timeout, int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol, String urlPrefix, String port, String testName) {
-        return annotationCall(  url,
-                                device,
-                                method,
-                                referrer,
-                                timeout,
-                                retriesOnTimeout,
-                                cookie,
-                                protocol,
-                                urlPrefix,
-                                port,
-                                testName
-        );
     }
 
     public FetchedPage get() {
