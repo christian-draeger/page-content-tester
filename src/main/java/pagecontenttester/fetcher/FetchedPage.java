@@ -69,7 +69,7 @@ public class FetchedPage implements Page {
     private static String getUrl(String url, Fetch.Protocol protocol, String urlPrefix, String portFromAnnotation) {
         String prefix = urlPrefix.isEmpty() ? urlPrefix : urlPrefix + ".";
         String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + config.getPort();
-        String port = portFallBackCheck.equals(":") ? "" : portFallBackCheck;
+        String port = ":".equals(portFallBackCheck) ? "" : portFallBackCheck;
         try {
             URL urlRaw = new URL(protocol.value + prefix + url);
             return protocol.value + urlRaw.getHost() + port + urlRaw.getFile();
