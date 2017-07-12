@@ -47,6 +47,7 @@
     <version>1.0</version>
 </parent>
 ```
+* the tests will be executed during the test phase of maven (`mvn clean test` or later)
 
 ## Example Test
 
