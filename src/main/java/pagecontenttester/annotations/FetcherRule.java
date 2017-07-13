@@ -34,12 +34,7 @@ public class FetcherRule implements MethodRule {
             @Override
             public void evaluate() throws Throwable {
 
-                List<Annotation> annotations = new LinkedList<>();
-                annotations.addAll(Arrays.asList(method.getMethod().getDeclaringClass().getAnnotations()));
-                annotations.addAll(Arrays.asList(method.getAnnotations()));
-                if (!annotations.isEmpty()) {
-                    testName = method.getMethod().getDeclaringClass().getName() + "." + method.getName();
-                }
+                List<Annotation> annotations = getAnnotations(method);
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof Fetch) {
                         Fetch fetchPage = (Fetch) annotation;
@@ -76,6 +71,16 @@ public class FetcherRule implements MethodRule {
                 base.evaluate();
             }
         };
+    }
+
+    private List<Annotation> getAnnotations(FrameworkMethod method) {
+        List<Annotation> annotations = new LinkedList<>();
+        annotations.addAll(Arrays.asList(method.getMethod().getDeclaringClass().getAnnotations()));
+        annotations.addAll(Arrays.asList(method.getAnnotations()));
+        if (!annotations.isEmpty()) {
+            testName = method.getMethod().getDeclaringClass().getName() + "." + method.getName();
+        }
+        return annotations;
     }
 
     private void fetchIfAnnotated(Annotation annotation) {
