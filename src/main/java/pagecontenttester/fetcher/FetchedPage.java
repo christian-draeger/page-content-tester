@@ -108,7 +108,8 @@ public class FetchedPage implements Page {
 
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
             if (config.isCacheDuplicatesLogActive()) {
-                log.info("duplicate call for fetched page: {}\n\t\t\t ---> will take page from cache while running test: {}", cacheKey, testName);
+                log.info("duplicate call for fetched page: {}", cacheKey);
+                log.info("---> will take page from cache while running test: {}", testName);
             }
             return fetchedPageCache.get(cacheKey);
         } else {
@@ -121,13 +122,18 @@ public class FetchedPage implements Page {
                     .retriesOnTimeout(retriesOnTimeout)
                     .cookie(cookie)
                     .build();
+
             FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), device, urlPrefix);
-            if (config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
-                fetchedPageCache.put(cacheKey, fetchedPage);
-            }
-            calledTestMethods.add(testName);
+            addToCache(testName, cacheKey, fetchedPage);
             return fetchedPage;
         }
+    }
+
+    private static void addToCache(String testName, FetchRequestParameters cacheKey, FetchedPage fetchedPage) {
+        if (config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
+            fetchedPageCache.put(cacheKey, fetchedPage);
+        }
+        calledTestMethods.add(testName);
     }
 
     private FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {

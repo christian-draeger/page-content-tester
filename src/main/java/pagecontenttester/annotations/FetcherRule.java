@@ -18,7 +18,7 @@ import pagecontenttester.fetcher.FetchedPage.DeviceType;
 public class FetcherRule extends ExternalResourceRule {
 
     private final PagePicker pagePicker = new PagePicker(this);
-    private final AnnotationCollector annotationCollector = new AnnotationCollector(this);
+    private final AnnotationCollector annotationCollector = new AnnotationCollector();
 
     private List<FetchedPage> fetchedPages = new ArrayList<>();
     private Config config = new Config();
@@ -31,6 +31,9 @@ public class FetcherRule extends ExternalResourceRule {
             public void evaluate() throws Throwable {
 
                 List<Fetch> annotations = annotationCollector.getAnnotations(description);
+                if (!annotations.isEmpty()) {
+                    testName = description.getDisplayName();
+                }
                 fetchFromAnnotation(annotations);
                 statement.evaluate();
             }
@@ -40,18 +43,18 @@ public class FetcherRule extends ExternalResourceRule {
     private void fetchFromAnnotation(List<Fetch> fetchAnnotations) {
         for (Fetch fetchAnnotation : fetchAnnotations) {
             Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
-            fetchedPages.add(annotationCall( fetchAnnotation.url(),
-                                    fetchAnnotation.device(),
-                                    fetchAnnotation.method(),
-                                    getReferrer(fetchAnnotation),
-                                    getTimeout(fetchAnnotation),
-                                    getRetryCount(fetchAnnotation),
-                                    getCookies(cookieAnnotation),
-                                    fetchAnnotation.protocol(),
-                                    getUrlPrefix(fetchAnnotation),
-                                    getPort(fetchAnnotation),
-                                    testName)
-            );
+            final FetchedPage fetchedPage = annotationCall(fetchAnnotation.url(),
+                    fetchAnnotation.device(),
+                    fetchAnnotation.method(),
+                    getReferrer(fetchAnnotation),
+                    getTimeout(fetchAnnotation),
+                    getRetryCount(fetchAnnotation),
+                    getCookies(cookieAnnotation),
+                    fetchAnnotation.protocol(),
+                    getUrlPrefix(fetchAnnotation),
+                    getPort(fetchAnnotation),
+                    testName);
+            fetchedPages.add(fetchedPage);
         }
     }
 
@@ -114,9 +117,5 @@ public class FetcherRule extends ExternalResourceRule {
             cookies.put(annotationCookie.name(), annotationCookie.value());
         }
         return cookies;
-    }
-
-    void setTestName(String testName) {
-        this.testName = testName;
     }
 }

@@ -8,11 +8,6 @@ import java.util.List;
 import org.junit.runner.Description;
 
 public class AnnotationCollector {
-    private final FetcherRule fetcherRule;
-
-    public AnnotationCollector(FetcherRule fetcherRule) {
-        this.fetcherRule = fetcherRule;
-    }
 
     List<Fetch> getAnnotations(Description description) {
         List<Fetch> annotations = new LinkedList<Fetch>();
@@ -25,10 +20,6 @@ public class AnnotationCollector {
             annotations.addAll(Arrays.asList(description.getTestClass().getAnnotation(FetchPages.class).value()));
         } else if (hasSingleClassAnnotation(description)) {
             annotations.addAll(Collections.singletonList(description.getTestClass().getAnnotation(Fetch.class)));
-        }
-
-        if (!annotations.isEmpty()) {
-            fetcherRule.setTestName(description.getDisplayName());
         }
         return annotations;
     }

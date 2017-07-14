@@ -3,13 +3,13 @@
 
     <appender name="RAMPUP" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[ %-5level] %msg%n</pattern>
+            <pattern>%msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="CONSOLE-LOGGING" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[ %-5level]  %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{45} - %msg%n</pattern>
+            <pattern>[%level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{45} - %msg%n</pattern>
         </encoder>
     </appender>
 
