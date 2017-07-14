@@ -1,5 +1,7 @@
+<div style="width:100%;text-align:center">
 <img width="250px" src="https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/paco.png">
-<h1>PaCo - The Page-Content-Tester</h1>
+<h1 style="font-size:80px">Paco<sub>The Page-Content-Tester</sub></h1>
+</div>
 
 <p align="center">
 <a href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22"><img src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg"/></a>
@@ -13,7 +15,7 @@
 
 ## About
 
-**PaCo** is a framework for non-blocking and highly parallelized Dom testing. Since it's using the jSoup Framework to scrape the HTML (working with XML as well) you can use all the provieded methods of [jSoup](https://jsoup.org/) (server-side CSS3 selector driven DOM API). Beside that **PaCo** has a bunch of convenient methods on top of jsoup including test config meta data and easy access to request data (like cookies, headers, etc.) and Dom checks (like isElementPresent, get value of html tags / attributes, etc.)
+**Paco** is a framework for non-blocking and highly parallelized Dom testing. Since it's using the jSoup Framework to scrape the HTML (working with XML as well) you can use all the provieded methods of [jSoup](https://jsoup.org/) (server-side CSS3 selector driven DOM API). Beside that **Paco** has a bunch of convenient methods on top of jsoup including test config meta data and easy access to request data (like cookies, headers, etc.) and Dom checks (like isElementPresent, get value of html tags / attributes, etc.)
 
 ## Setup
 
