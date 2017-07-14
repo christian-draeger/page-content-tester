@@ -3,10 +3,8 @@ package pagecontenttester.annotations;
 import static pagecontenttester.fetcher.FetchedPage.annotationCall;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +18,10 @@ import pagecontenttester.fetcher.FetchedPage.DeviceType;
 public class FetcherRule extends ExternalResourceRule {
 
     private final PagePicker pagePicker = new PagePicker(this);
+    private final AnnotationCollector annotationCollector = new AnnotationCollector(this);
 
     private List<FetchedPage> fetchedPages = new ArrayList<>();
     private Config config = new Config();
-    private Map<String, String> cookie = new HashMap<>();
     private String testName;
 
     @Override
@@ -32,53 +30,15 @@ public class FetcherRule extends ExternalResourceRule {
             @Override
             public void evaluate() throws Throwable {
 
-                List<Fetch> annotations = getAnnotations(description);
+                List<Fetch> annotations = annotationCollector.getAnnotations(description);
                 fetchFromAnnotation(annotations);
                 statement.evaluate();
             }
         };
     }
 
-    private List<Fetch> getAnnotations(Description description) {
-        List<Fetch> annotations = new LinkedList<>();
-
-        if (hasMultipleMethodAnnotation(description)) {
-            annotations.addAll(Arrays.asList(description.getAnnotation(FetchPages.class).value()));
-        }
-        else if (hasSingleMethodAnnotation(description)) {
-            annotations.addAll(Collections.singletonList(description.getAnnotation(Fetch.class)));
-        }
-        else if (hasMultipleClassAnnotation(description)) {
-            annotations.addAll(Arrays.asList(description.getTestClass().getAnnotation(FetchPages.class).value()));
-        }
-        else if (hasSingleClassAnnotation(description)) {
-            annotations.addAll(Collections.singletonList(description.getTestClass().getAnnotation(Fetch.class)));
-        }
-
-        if (!annotations.isEmpty()) {
-            testName = description.getDisplayName();
-        }
-        return annotations;
-    }
-
-    private boolean hasSingleClassAnnotation(Description description) {
-        return description.getTestClass().getAnnotation(Fetch.class) != null;
-    }
-
-    private boolean hasMultipleClassAnnotation(Description description) {
-        return description.getTestClass().isAnnotationPresent(FetchPages.class);
-    }
-
-    private boolean hasSingleMethodAnnotation(Description description) {
-        return description.getAnnotation(Fetch.class) != null;
-    }
-
-    private boolean hasMultipleMethodAnnotation(Description description) {
-        return description.getAnnotation(FetchPages.class) != null;
-    }
-
-    private void fetchFromAnnotation(List<Fetch> fetches) {
-        for (Fetch fetchAnnotation : fetches) {
+    private void fetchFromAnnotation(List<Fetch> fetchAnnotations) {
+        for (Fetch fetchAnnotation : fetchAnnotations) {
             Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
             fetchedPages.add(annotationCall( fetchAnnotation.url(),
                                     fetchAnnotation.device(),
@@ -96,7 +56,7 @@ public class FetcherRule extends ExternalResourceRule {
     }
 
     public FetchedPage get() {
-        return pagePicker.get();
+        return pagePicker.get(0);
     }
 
     public FetchedPage get(int index) {
@@ -154,5 +114,9 @@ public class FetcherRule extends ExternalResourceRule {
             cookies.put(annotationCookie.name(), annotationCookie.value());
         }
         return cookies;
+    }
+
+    void setTestName(String testName) {
+        this.testName = testName;
     }
 }

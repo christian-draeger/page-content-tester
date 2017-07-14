@@ -10,10 +10,6 @@ public class PagePicker {
         this.fetcherRule = fetcherRule;
     }
 
-    public FetchedPage get() {
-        return fetcherRule.getFetchedPages().get(0);
-    }
-
     public FetchedPage get(int index) {
         try {
             return fetcherRule.getFetchedPages().get(index);
