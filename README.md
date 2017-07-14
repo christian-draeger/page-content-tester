@@ -13,7 +13,7 @@
 
 ## About
 
-**PaCo** is a framework for non-blocking and highly parallelized Dom testing. Since it's using the jSoup Framework to scrape the DOM you can use all the provieded methods of [jSoup](https://jsoup.org/) (server-side CSS3 selector driven DOM API). Beside that **PaCo** has a bunch of convenient methods on top of jsoup including test config meta data and easy access to request data (like cookies, headers, etc.) and Dom checks (like isElementPresent, get value of html tags / attributes, etc.)
+**PaCo** is a framework for non-blocking and highly parallelized Dom testing. Since it's using the jSoup Framework to scrape the HTML (working with XML as well) you can use all the provieded methods of [jSoup](https://jsoup.org/) (server-side CSS3 selector driven DOM API). Beside that **PaCo** has a bunch of convenient methods on top of jsoup including test config meta data and easy access to request data (like cookies, headers, etc.) and Dom checks (like isElementPresent, get value of html tags / attributes, etc.)
 
 ## Setup
 

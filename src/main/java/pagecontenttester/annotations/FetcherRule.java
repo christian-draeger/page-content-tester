@@ -2,7 +2,6 @@ package pagecontenttester.annotations;
 
 import static pagecontenttester.fetcher.FetchedPage.annotationCall;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,153 +10,117 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Connection.Method;
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import pagecontenttester.configurations.Config;
 import pagecontenttester.fetcher.FetchedPage;
 import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
-public class FetcherRule implements MethodRule {
+public class FetcherRule extends ExternalResourceRule {
 
-    private FetchedPage fetchedPage;
+    private final PagePicker pagePicker = new PagePicker(this);
+
     private List<FetchedPage> fetchedPages = new ArrayList<>();
     private Config config = new Config();
     private Map<String, String> cookie = new HashMap<>();
     private String testName;
 
     @Override
-    public Statement apply(Statement base, FrameworkMethod method, Object target) {
+    public Statement apply(Statement statement, Description description) {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
 
-                List<Annotation> annotations = getAnnotations(method);
-                for (Annotation annotation : annotations) {
-                    if (annotation instanceof Fetch) {
-                        Fetch fetchPage = (Fetch) annotation;
-
-                        String url = fetchPage.url();
-
-                        Method method = fetchPage.method();
-                        DeviceType device = fetchPage.device();
-                        String referrer = getReferrer(fetchPage);
-                        int timeout = getTimeout(fetchPage);
-                        int retriesOnTimeout = getRetryCount(fetchPage);
-                        Cookie[] cookieAnnotation = fetchPage.setCookies();
-                        cookie = getCookies(cookieAnnotation);
-                        Fetch.Protocol protocol = fetchPage.protocol();
-                        String urlPrefix = fetchPage.urlPrefix().isEmpty() ? config.getUrlPrefix() : fetchPage.urlPrefix();
-                        String port = fetchPage.port().isEmpty() ? config.getPort() : fetchPage.port();
-
-                        fetchedPage = annotationCall(   url,
-                                                        device,
-                                                        method,
-                                                        referrer,
-                                                        timeout,
-                                                        retriesOnTimeout,
-                                                        cookie,
-                                                        protocol,
-                                                        urlPrefix,
-                                                        port,
-                                                        testName
-                        );
-                    }
-                    fetchIfAnnotated(annotation);
-                }
-
-                base.evaluate();
+                List<Fetch> annotations = getAnnotations(description);
+                fetchFromAnnotation(annotations);
+                statement.evaluate();
             }
         };
     }
 
-    private List<Annotation> getAnnotations(FrameworkMethod method) {
-        List<Annotation> annotations = new LinkedList<>();
-        annotations.addAll(Arrays.asList(method.getMethod().getDeclaringClass().getAnnotations()));
-        annotations.addAll(Arrays.asList(method.getAnnotations()));
+    private List<Fetch> getAnnotations(Description description) {
+        List<Fetch> annotations = new LinkedList<>();
+
+        if (hasMultipleMethodAnnotation(description)) {
+            annotations.addAll(Arrays.asList(description.getAnnotation(FetchPages.class).value()));
+        }
+        else if (hasSingleMethodAnnotation(description)) {
+            annotations.addAll(Collections.singletonList(description.getAnnotation(Fetch.class)));
+        }
+        else if (hasMultipleClassAnnotation(description)) {
+            annotations.addAll(Arrays.asList(description.getTestClass().getAnnotation(FetchPages.class).value()));
+        }
+        else if (hasSingleClassAnnotation(description)) {
+            annotations.addAll(Collections.singletonList(description.getTestClass().getAnnotation(Fetch.class)));
+        }
+
         if (!annotations.isEmpty()) {
-            testName = method.getMethod().getDeclaringClass().getName() + "." + method.getName();
+            testName = description.getDisplayName();
         }
         return annotations;
     }
 
-    private void fetchIfAnnotated(Annotation annotation) {
-        if (annotation instanceof FetchPages) {
-            FetchPages fetchPages = (FetchPages) annotation;
-            fetchFromAnnotation(fetchPages.value());
-        }
+    private boolean hasSingleClassAnnotation(Description description) {
+        return description.getTestClass().getAnnotation(Fetch.class) != null;
     }
 
-    private void fetchFromAnnotation(Fetch... fetches) {
-        for (Fetch fetchPage : fetches) {
-            String urlPrefix = fetchPage.urlPrefix().isEmpty() ? config.getUrlPrefix() : fetchPage.urlPrefix();
-            String port = fetchPage.port().isEmpty() ? config.getPort() : fetchPage.port();
-            fetchedPages.add(annotationCall( fetchPage.url(),
-                                    fetchPage.device(),
-                                    fetchPage.method(),
-                                    fetchPage.referrer(),
-                                    fetchPage.timeout(),
-                                    fetchPage.retriesOnTimeout(),
-                                    cookie,
-                                    fetchPage.protocol(),
-                                    urlPrefix,
-                                    port,
-                                    testName
-            ));
+    private boolean hasMultipleClassAnnotation(Description description) {
+        return description.getTestClass().isAnnotationPresent(FetchPages.class);
+    }
+
+    private boolean hasSingleMethodAnnotation(Description description) {
+        return description.getAnnotation(Fetch.class) != null;
+    }
+
+    private boolean hasMultipleMethodAnnotation(Description description) {
+        return description.getAnnotation(FetchPages.class) != null;
+    }
+
+    private void fetchFromAnnotation(List<Fetch> fetches) {
+        for (Fetch fetchAnnotation : fetches) {
+            Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
+            fetchedPages.add(annotationCall( fetchAnnotation.url(),
+                                    fetchAnnotation.device(),
+                                    fetchAnnotation.method(),
+                                    getReferrer(fetchAnnotation),
+                                    getTimeout(fetchAnnotation),
+                                    getRetryCount(fetchAnnotation),
+                                    getCookies(cookieAnnotation),
+                                    fetchAnnotation.protocol(),
+                                    getUrlPrefix(fetchAnnotation),
+                                    getPort(fetchAnnotation),
+                                    testName)
+            );
         }
     }
 
     public FetchedPage get() {
-        return fetchedPage;
+        return pagePicker.get();
     }
 
     public FetchedPage get(int index) {
-        try {
-            return fetchedPages.get(index);
-        } catch (IndexOutOfBoundsException e) { // NOSONAR
-            throw new GetFetchedPageException("could not find fetched page with index \"" + index + "\"");
-        }
+        return pagePicker.get(index);
     }
 
     public FetchedPage get(String urlSnippet) {
-        for (FetchedPage recentlyFetchedPage : fetchedPages){
-            if (recentlyFetchedPage.getUrl().endsWith(urlSnippet)){
-                return recentlyFetchedPage;
-            }
-            if (recentlyFetchedPage.getUrl().replace(":" + config.getPort(), "").endsWith(urlSnippet)){
-                return recentlyFetchedPage;
-            }
-            if (recentlyFetchedPage.getUrl().contains(urlSnippet)){
-                return recentlyFetchedPage;
-            }
-        }
-        throw new GetFetchedPageException("could not find fetched page with url-snippet \"" + urlSnippet + "\"");
+        return pagePicker.get(urlSnippet);
     }
 
     public FetchedPage get(DeviceType deviceType) {
-        for (FetchedPage recentlyFetchedPage : fetchedPages){
-            if (recentlyFetchedPage.getDeviceType().equals(deviceType)){
-                return recentlyFetchedPage;
-            }
-        }
-        throw new GetFetchedPageException("could not find fetched page with deviceType \"" + deviceType + "\"");
+        return pagePicker.get(deviceType);
     }
 
     public FetchedPage get(String urlSnippet, DeviceType deviceType) {
-        for (FetchedPage recentlyFetchedPage : fetchedPages){
-            if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
-                return recentlyFetchedPage;
-            }
-            if (recentlyFetchedPage.getUrl().replace(":" + config.getPort(), "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
-                return recentlyFetchedPage;
-            }
-            if (recentlyFetchedPage.getUrl().contains(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)){
-                return recentlyFetchedPage;
-            }
-        }
-        throw new GetFetchedPageException("could not find fetched page with url-snippet: \"" + urlSnippet + "\" (" + deviceType + ")");
+        return pagePicker.get(urlSnippet, deviceType);
+    }
+
+    List<FetchedPage> getFetchedPages() {
+        return fetchedPages;
+    }
+
+    Config getConfig() {
+        return config;
     }
 
     private int getRetryCount(Fetch fetchPage) {
@@ -172,12 +135,20 @@ public class FetcherRule implements MethodRule {
         return "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
     }
 
+    private String getUrlPrefix(Fetch fetchPage) {
+        return fetchPage.urlPrefix().isEmpty() ? config.getUrlPrefix() : fetchPage.urlPrefix();
+    }
+
+    private String getPort(Fetch fetchPage) {
+        return fetchPage.port().isEmpty() ? config.getPort() : fetchPage.port();
+    }
+
     private Map<String, String> getCookies(Cookie[] annotationCookies) {
 
         HashMap<String, String> cookies = new HashMap<>();
 
         for (Cookie annotationCookie : annotationCookies) {
-            if ("1e97fa4a-34d3-11e7-a919-92ebcb67fe33".equals(annotationCookie.name())) {
+            if ("".equals(annotationCookie.name())) {
                 return Collections.emptyMap();
             }
             cookies.put(annotationCookie.name(), annotationCookie.value());

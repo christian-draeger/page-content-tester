@@ -5,6 +5,8 @@ import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
+import org.junit.rules.Timeout;
+
 import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 public class Config {
@@ -13,6 +15,10 @@ public class Config {
 
     public int getTimeoutValue() {
         return configs.getIntValue("timeout");
+    }
+
+    public Timeout getGlobalTimeoutValue() {
+        return Timeout.millis(configs.getIntValue("global.timeout"));
     }
 
     public int getTimeoutMaxRetryCount() {
@@ -65,5 +71,9 @@ public class Config {
 
     public String getPort() {
         return configs.getStringValue("port");
+    }
+
+    public String getPacoVersion() {
+        return configs.getStringValue("paco.version");
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.6.8</version>
+    <version>1.6.9</version>
 
     <name>Page Content Tester</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>

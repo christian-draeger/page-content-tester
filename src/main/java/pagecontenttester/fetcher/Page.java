@@ -32,6 +32,8 @@ public interface Page {
      */
     Element getElement(String cssSelector, int index);
 
+    String getTitle();
+
     /**
      * get DOM Elements of matching CSS-selectors
      * @param cssSelector to pick DOM-element

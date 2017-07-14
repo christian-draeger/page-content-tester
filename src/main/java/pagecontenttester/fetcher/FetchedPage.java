@@ -108,7 +108,7 @@ public class FetchedPage implements Page {
 
         if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
             if (config.isCacheDuplicatesLogActive()) {
-                log.info("duplicate call for fetched page: {}\n\twill take page from cache while running test: {}", cacheKey, testName);
+                log.info("duplicate call for fetched page: {}\n\t\t\t ---> will take page from cache while running test: {}", cacheKey, testName);
             }
             return fetchedPageCache.get(cacheKey);
         } else {
@@ -235,6 +235,11 @@ public class FetchedPage implements Page {
     }
 
     @Override
+    public String getTitle() {
+        return getDocument().title();
+    }
+
+    @Override
     public Elements getElements(String cssSelector) {
         hasSelector(cssSelector);
         return getDocument().select(cssSelector);
@@ -283,7 +288,7 @@ public class FetchedPage implements Page {
         return getDocument().select(cssSelector).size();
     }
 
-    private void store(String folder) {
+    public void store(String folder) {
         try {
             FileUtils.writeStringToFile(new File("target/page-content-tester/" + folder,  getTestName() + ".html"), getPageBody());
         } catch (IOException e) {
