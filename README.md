@@ -3,20 +3,20 @@
 <h1 align="left"> Paco <sub>(the page content tester)</sub></h1>
 
 <p align="left">
-<a href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22"><img src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
-<a href="https://travis-ci.org/christian-draeger/page-content-tester"><img src="https://img.shields.io/travis/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
+<a target="_blank" href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22"><img src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://travis-ci.org/christian-draeger/page-content-tester"><img src="https://img.shields.io/travis/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
 <a href="https://github.com/christian-draeger/page-content-tester/issues"><img src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
-<a href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester"><img src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square"/></a><br>
-<a href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436"><img src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
-<a href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard"><img src="https://img.shields.io/codacy/coverage/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
-<!--<a href="https://gratipay.com/~christian-draeger/"><img src="https://img.shields.io/gratipay/user/christian-draeger.svg"/></a>-->
+<a target="_blank" href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester"><img src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436"><img src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard"><img src="https://img.shields.io/codacy/coverage/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
+<br>
 </p>
 
-## About
+<h2 align="center">About</h2>
 
 **Paco** is a framework for non-blocking and highly parallelized Dom testing. Since it's using the jSoup Framework to scrape the HTML (working with XML as well) you can use all the provieded methods of [jSoup](https://jsoup.org/) (server-side CSS3 selector driven DOM API). Beside that **Paco** has a bunch of convenient methods on top of jsoup including test config meta data and easy access to request data (like cookies, headers, etc.) and Dom checks (like isElementPresent, get value of html tags / attributes, etc.)
 
-## Setup
+<h2 align="center">Setup</h2>
 
 * add the following dependency to your pom.xml
 
@@ -50,7 +50,7 @@
 ```
 * the tests will be executed during the test phase of maven (`mvn clean test` or later)
 
-## Example Test
+<h2 align="center">Test Examples</h2>
 
 ```
 public class ExampleUsageTest extends PageContentTester {
@@ -152,5 +152,6 @@ public class ExampleUsageTest extends PageContentTester {
 }
 ```
 
-## Example Project
+<h2 align="center">Example Project</h2>
+
 To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing and checking dom elements within ±1000 tests that are fetching an url is getting done in less than 10sec with a proper internet connection) 
