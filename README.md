@@ -1,7 +1,6 @@
-<div style="width:100%;text-align:center">
-<img width="250px" src="https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/paco.png">
-<h1 style="font-size:80px">Paco<sub>The Page-Content-Tester</sub></h1>
-</div>
+<img align="left" width="250px" src="https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/paco.png">
+
+<h1 align="right"> Paco <sub>(the page content tester)</sub></h1>
 
 <p align="center">
 <a href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22"><img src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg"/></a>
