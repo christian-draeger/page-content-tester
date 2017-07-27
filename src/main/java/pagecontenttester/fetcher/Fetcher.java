@@ -1,6 +1,9 @@
 package pagecontenttester.fetcher;
 
 import static java.lang.System.setProperty;
+import static org.fusesource.jansi.Ansi.Color.CYAN;
+import static org.fusesource.jansi.Ansi.Color.YELLOW;
+import static org.fusesource.jansi.Ansi.ansi;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
@@ -37,7 +40,6 @@ public class Fetcher {
 
     public Connection.Response fetch(String url) throws IOException {
 
-        log.info("fetching {} (UserAgent: {})", url, deviceType);
         setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
         setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts");
 
@@ -61,13 +63,14 @@ public class Fetcher {
                     connection.cookies(cookie);
                 }
 
+                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page\t\t: ").reset() + "{} (UserAgent: {})", url, deviceType);
                 return connection.execute();
 
             } catch(SocketTimeoutException ste) {
                 if(retryCount > retriesOnTimeout) {
                     throw ste;
                 }
-                log.warn("SocketRead time out after {}. try", retryCount++);
+                log.warn("\uD83D\uDD50 " + ansi().fg(YELLOW).bold().a("fetch timeout\t: ").reset() + "SocketRead time out after {}. try", retryCount++);
             }
         }
     }

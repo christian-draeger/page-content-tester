@@ -19,7 +19,4 @@ public class PageContentTester {
 
     @Rule
     public Timeout globalTimeout = config.getGlobalTimeoutValue();
-
-
-
 }

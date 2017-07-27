@@ -3,7 +3,6 @@ package pagecontenttester.runner;
 import static org.fusesource.jansi.Ansi.Color.CYAN;
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.MAGENTA;
-import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.ansi;
 
 import java.util.Arrays;
@@ -32,29 +31,29 @@ public class TestListener extends RunListener {
     @Override
     public void testRunFinished(Result result) throws Exception {
         if (result.wasSuccessful()) {
-            System.out.println(ansi().fg(GREEN).bold().a("\n\uD83D\uDC4D\tall tests pass").reset());
+            System.out.println(ansi().fgBrightGreen().bold().a("\u2705 SUCCESS\t\t: all " + result.getRunCount() + " tests pass").reset());
         } else {
-            System.out.println(ansi().fg(RED).bold().a("\n\uD83D\uDC4E\tsome tests failed").reset());
+            System.out.println(ansi().fgRed().bold().a("\uD83D\uDED1 DAMN IT\t\t: some tests failed").reset());
         }
     }
 
     @Override
     public void testFailure(Failure failure) throws Exception {
-        System.out.println("⛔ failing test\t\t: " + failure.getDescription().getDisplayName());
+        System.out.println("\u26d4 " + ansi().fgRed().bold().a("failing test\t\t: ").reset() + failure.getDescription().getDisplayName());
     }
 
     public void testIgnored(Description description) throws Exception {
-        System.out.println("⏭ skipped test\t\t: " + description.getDisplayName());
+        System.out.println("\u23ed " + ansi().fgBrightBlack().bold().a("skipped test\t\t: ").reset() + description.getDisplayName());
     }
 
     @Override
     public void testFinished(Description description) {
-        System.out.println("\uD83C\uDFC1 finished test\t: " + description.getDisplayName());
+        System.out.println("\uD83C\uDFC1 " + ansi().fgBrightCyan().bold().a("finished test\t: ").reset() + description.getDisplayName());
     }
 
-    Ansi.Color paco = CYAN;
-    Ansi.Color banner = MAGENTA;
-    Ansi.Color version = GREEN;
+    private Ansi.Color paco = CYAN;
+    private Ansi.Color banner = MAGENTA;
+    private Ansi.Color version = GREEN;
 
     private List<String> ascii = Arrays.asList(ansi().bold().fg(paco) +
             "\n   .----.     .-----.    .----.     .----.",
