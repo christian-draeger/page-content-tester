@@ -1,7 +1,6 @@
 package pagecontenttester.fetcher;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -13,7 +12,7 @@ public class FetchSingleFromClassTest extends PageContentTester {
 
     @Test
     public void can_fetch_from_class_annotation() {
-        assertThat(page.get().getTitle(), containsString("IDEALO"));
+        assertThat(page.get().getTitle()).contains("IDEALO");
     }
 
 }

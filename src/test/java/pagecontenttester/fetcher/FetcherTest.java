@@ -1,7 +1,6 @@
 package pagecontenttester.fetcher;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.io.IOException;
@@ -19,6 +18,6 @@ public class FetcherTest {
     @Test
     public void fetcher_should_return_response_for_valid_url() throws IOException {
         Connection.Response response = fetcher.fetch(VALID_URL);
-        assertThat(response.parse().title(), containsString("GitHub"));
+        assertThat(response.parse().title()).contains("GitHub");
     }
 }

@@ -1,7 +1,6 @@
 package pagecontenttester.fetcher;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -14,16 +13,16 @@ public class FetchMultipleFromClassAndMethodTest extends PageContentTester {
 
     @Test
     public void can_fetch_from_class_annotation() {
-        assertThat(page.get(1).getTitle(), containsString("IDEALO"));
-        assertThat(page.get(0).getTitle(), containsString("GitHub"));
+        assertThat(page.get(1).getTitle()).contains("IDEALO");
+        assertThat(page.get(0).getTitle()).contains("GitHub");
     }
 
     @Fetch(url = "www.google.de")
     @Fetch(url = "www.test.de")
     @Test
     public void can_fetch_from_class_annotation2() {
-        assertThat(page.get(0).getTitle(), containsString("Google"));
-        assertThat(page.get(1).getTitle(), containsString("test"));
+        assertThat(page.get(0).getTitle()).contains("Google");
+        assertThat(page.get(1).getTitle()).contains("test");
     }
 
 }

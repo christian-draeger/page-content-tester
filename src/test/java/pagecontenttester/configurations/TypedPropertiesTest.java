@@ -1,8 +1,6 @@
 package pagecontenttester.configurations;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -27,27 +25,27 @@ public class TypedPropertiesTest {
 
     @Test
     public void should_return_false_if_property_not_found() throws Exception {
-        assertThat(pacoProperties.hasProperty("non.valid.property"), is(false));
+        assertThat(pacoProperties.hasProperty("non.valid.property")).isFalse();
     }
 
     @Test
     public void should_return_true_if_property_found() throws Exception {
-        assertThat(pacoProperties.hasProperty("timeout"), is(true));
+        assertThat(pacoProperties.hasProperty("timeout")).isTrue();
     }
 
     @Test
     public void should_return_property_value_of_type_int() throws Exception {
-        assertThat(pacoProperties.getIntValue("timeout"), instanceOf(int.class));
+        assertThat(pacoProperties.getIntValue("timeout")).isInstanceOf(Integer.class);
     }
 
     @Test
     public void should_return_property_value_of_type_String() throws Exception {
-        assertThat(pacoProperties.getStringValue("referrer"), instanceOf(String.class));
+        assertThat(pacoProperties.getStringValue("referrer")).isInstanceOf(String.class);
     }
 
     @Test
     public void should_return_property_value_of_type_boolean() throws Exception {
-        assertThat(pacoProperties.getBooleanValue("cache.duplicates"), instanceOf(boolean.class));
+        assertThat(pacoProperties.getBooleanValue("cache.duplicates")).isInstanceOf(Boolean.class);
     }
 
     @Test(expected = NumberFormatException.class)

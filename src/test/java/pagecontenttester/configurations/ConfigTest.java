@@ -1,7 +1,6 @@
 package pagecontenttester.configurations;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
@@ -16,42 +15,42 @@ public class ConfigTest {
 
     @Test
     public void should_return_desktop_user_agent() {
-        assertThat(config.getUserAgent(MOBILE), is(MOBILE_USER_AGENT));
+        assertThat(config.getUserAgent(MOBILE)).isEqualTo(MOBILE_USER_AGENT);
     }
 
     @Test
     public void should_return_mobile_user_agent() {
-        assertThat(config.getUserAgent(DESKTOP), is(DESKTOP_USER_AGENT));
+        assertThat(config.getUserAgent(DESKTOP)).isEqualTo(DESKTOP_USER_AGENT);
     }
 
     @Test
     public void should_return_max_retry_count() {
-        assertThat(config.getTimeoutMaxRetryCount(), is(3));
+        assertThat(config.getTimeoutMaxRetryCount()).isEqualTo(3);
     }
 
     @Test
     public void should_return_timeout_value() {
-        assertThat(config.getTimeoutValue(), is(10000));
+        assertThat(config.getTimeoutValue()).isEqualTo(10000);
     }
 
     @Test
     public void should_return_url_prefix() {
-        assertThat(config.getUrlPrefix(), is(""));
+        assertThat(config.getUrlPrefix()).isEmpty();
     }
 
     @Test
     public void should_return_ignore_contenttype_config() {
-        assertThat(config.isIgnoringContentType(), is(true));
+        assertThat(config.isIgnoringContentType()).isTrue();
     }
 
     @Test
     public void should_return_follow_redirects_config() {
-        assertThat(config.isFollowingRedirects(), is(true));
+        assertThat(config.isFollowingRedirects()).isTrue();
     }
 
     @Test
     public void should_return_caching_config() {
-        assertThat(config.isCacheDuplicatesActive(), is(true));
+        assertThat(config.isCacheDuplicatesActive()).isTrue();
     }
 
 }
