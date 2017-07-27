@@ -55,23 +55,23 @@ public class TestListener extends RunListener {
     private Ansi.Color banner = MAGENTA;
     private Ansi.Color version = GREEN;
 
-    private List<Object> ascii = Arrays.asList(
-            ansi().bold().fg(paco).a("\n\t\t   .----.     .-----.    .----.     .----.").reset(),
-            ansi().bold().fg(paco).a("\t\t  /      \\   /  .-.  \\  /      \\   /      \\").reset(),
-            ansi().bold().fg(paco).a("\t\t |  .´`.  ; (___) ;  ; |  .´`.  ; |  ,´`.  ;").reset(),
-            ansi().bold().fg(paco).a("\t\t |  |  |  |    .'`   | |  |  (__) |  |  |  |").reset(),
-            ansi().bold().fg(paco).a("\t\t |  |  |  |  /  .'|  | |  |   __  |  |  |  |").reset(),
-            ansi().bold().fg(paco).a("\t\t |  |  ;  | ;  ¦  ;  | |  |  (  ) |  |  |  |").reset(),
-            ansi().bold().fg(paco).a("\t\t |  `-´   ; |  `-´   |  \\  `-'  ; |  :  ;  |").reset(),
-            ansi().bold().fg(paco).a("\t\t |  \\___.'   `.___.'__)  `.___.'   \\  `´   ;").reset(),
-            ansi().bold().fg(paco).a("\t\t :  ;").reset()
+    private List<Object> ascii = Arrays.asList("\n",
+            ansi().bold().fg(paco).a("        .----.     .-----.    .----.     .----.").reset(),
+            ansi().bold().fg(paco).a("       /      \\   /  .-.  \\  /      \\   /      \\").reset(),
+            ansi().bold().fg(paco).a("      |  .´`.  ; (___) ;  ; |  .´`.  ; |  ,´`.  ;").reset(),
+            ansi().bold().fg(paco).a("      |  |  |  |    .'`   | |  |  (__) |  |  |  |").reset(),
+            ansi().bold().fg(paco).a("      |  |  |  |  /  .'|  | |  |   __  |  |  |  |").reset(),
+            ansi().bold().fg(paco).a("      |  |  ;  | ;  ¦  ;  | |  |  (  ) |  |  |  |").reset(),
+            ansi().bold().fg(paco).a("      |  `-´   ; |  `-´   |  \\  `-'  ; |  :  ;  |").reset(),
+            ansi().bold().fg(paco).a("      |  \\___.'   `.___.'__)  `.___.'   \\  `´   ;").reset(),
+            ansi().bold().fg(paco).a("      :  ;").reset()
                     +""+ ansi().fg(banner).a("  ___╔═════════════════════╗___").reset()
                     + ansi().bold().fg(paco).a("`.___.'").reset(),
-            ansi().bold().fg(paco).a("\t\t (__)").reset()
+            ansi().bold().fg(paco).a("      (__)").reset()
                     +""+ ansi().fg(banner).a("  \\  ╠≡═- ").reset()
                     + ansi().fg(version).a("version " + pacoVersion).reset()
                     + ansi().fg(banner).a(" -═≡╣  /").reset(),
-            ansi().fg(banner).a("\t\t       /__╚═════════════════════╝__\\\n").reset());
+            ansi().fg(banner).a("            /__╚═════════════════════╝__\\\n").reset());
 
     private void printAsciiArt() {
         if (config.isPacoAsciiActive()) {
