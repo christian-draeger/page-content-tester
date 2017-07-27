@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
+import static org.jsoup.Connection.Method.POST;
 import static pagecontenttester.annotations.Fetch.Protocol.HTTPS;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
@@ -318,9 +319,10 @@ public class FetchedPageTest extends PageContentTester {
 
     @Ignore("problems in call method")
     @Test
+    @Fetch(url = "bin.org/post", method = POST)
     public void do_post_request_and_check_response() throws Exception {
 //        JSONObject responseBody = call("http://bin.org/post", POST, Collections.emptyMap()).getJsonResponse();
-//        assertThat(responseBody.get("data"), equalTo(""));
+        assertThat(page.get().getJsonResponse().get("data"), equalTo(""));
     }
 
     @Test
