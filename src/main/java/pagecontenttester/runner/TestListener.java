@@ -31,19 +31,19 @@ public class TestListener extends RunListener {
     @Override
     public void testRunFinished(Result result) throws Exception {
         if (result.wasSuccessful()) {
-            System.out.println(ansi().fgBrightGreen().bold().a("\u2705 SUCCESS\t\t: all " + result.getRunCount() + " tests pass").reset());
+            System.out.println(ansi().fgGreen().bold().a("\u2705 SUCCESS\t: all " + result.getRunCount() + " tests pass").reset());
         } else {
-            System.out.println(ansi().fgRed().bold().a("\uD83D\uDED1 DAMN IT\t\t: some tests failed").reset());
+            System.out.println(ansi().fgRed().bold().a("\uD83D\uDED1 DAMN IT\t: some tests failed").reset());
         }
     }
 
     @Override
     public void testFailure(Failure failure) throws Exception {
-        System.out.println("\u26d4 " + ansi().fgRed().bold().a("failing test\t\t: ").reset() + failure.getDescription().getDisplayName());
+        System.out.println("\u26d4 " + ansi().fgRed().bold().a("failing test\t: ").reset() + failure.getDescription().getDisplayName());
     }
 
     public void testIgnored(Description description) throws Exception {
-        System.out.println("\u23ed " + ansi().fgBrightBlack().bold().a("skipped test\t\t: ").reset() + description.getDisplayName());
+        System.out.println("\u23ed " + ansi().fgBrightBlack().bold().a("skipped test\t: ").reset() + description.getDisplayName());
     }
 
     @Override
@@ -55,22 +55,27 @@ public class TestListener extends RunListener {
     private Ansi.Color banner = MAGENTA;
     private Ansi.Color version = GREEN;
 
-    private List<String> ascii = Arrays.asList(ansi().bold().fg(paco) +
-            "\n   .----.     .-----.    .----.     .----.",
-            "  /      \\   /  .-.  \\  /      \\   /      \\",
-            " |  .´`.  ; (___) ;  ; |  .´`.  ; |  ,´`.  ;",
-            " |  |  |  |    .'`   | |  |  (__) |  |  |  |",
-            " |  |  |  |  /  .'|  | |  |   __  |  |  |  |",
-            " |  |  ;  | ;  ¦  ;  | |  |  (  ) |  |  |  |",
-            " |  `-´   ; |  `-´   |  \\  `-'  ; |  :  ;  |",
-            " |  \\___.'   `.___.'__)  `.___.'   \\  `´   ;",
-            " :  ;" + ansi().boldOff().fg(banner) + "  ___╔═════════════════════╗___" + ansi().bold().fg(paco) + "`.___.'",
-            " (__)" + ansi().boldOff().fg(banner) + "  \\  ╠≡═- " + ansi().fg(version).a("version " + pacoVersion) + ansi().fg(banner) + " -═≡╣  /",
-            "       /__╚═════════════════════╝__\\\n" + ansi().reset());
+    private List<Object> ascii = Arrays.asList(
+            ansi().bold().fg(paco).a("\n\t\t   .----.     .-----.    .----.     .----.").reset(),
+            ansi().bold().fg(paco).a("\t\t  /      \\   /  .-.  \\  /      \\   /      \\").reset(),
+            ansi().bold().fg(paco).a("\t\t |  .´`.  ; (___) ;  ; |  .´`.  ; |  ,´`.  ;").reset(),
+            ansi().bold().fg(paco).a("\t\t |  |  |  |    .'`   | |  |  (__) |  |  |  |").reset(),
+            ansi().bold().fg(paco).a("\t\t |  |  |  |  /  .'|  | |  |   __  |  |  |  |").reset(),
+            ansi().bold().fg(paco).a("\t\t |  |  ;  | ;  ¦  ;  | |  |  (  ) |  |  |  |").reset(),
+            ansi().bold().fg(paco).a("\t\t |  `-´   ; |  `-´   |  \\  `-'  ; |  :  ;  |").reset(),
+            ansi().bold().fg(paco).a("\t\t |  \\___.'   `.___.'__)  `.___.'   \\  `´   ;").reset(),
+            ansi().bold().fg(paco).a("\t\t :  ;").reset()
+                    +""+ ansi().fg(banner).a("  ___╔═════════════════════╗___").reset()
+                    + ansi().bold().fg(paco).a("`.___.'").reset(),
+            ansi().bold().fg(paco).a("\t\t (__)").reset()
+                    +""+ ansi().fg(banner).a("  \\  ╠≡═- ").reset()
+                    + ansi().fg(version).a("version " + pacoVersion).reset()
+                    + ansi().fg(banner).a(" -═≡╣  /").reset(),
+            ansi().fg(banner).a("\t\t       /__╚═════════════════════╝__\\\n").reset());
 
     private void printAsciiArt() {
         if (config.isPacoAsciiActive()) {
-            for (String line: ascii) {
+            for (Object line: ascii) {
                 System.out.println(line);
             }
         }
