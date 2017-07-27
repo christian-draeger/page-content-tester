@@ -10,12 +10,16 @@ import pagecontenttester.annotations.FetcherRule;
 import pagecontenttester.configurations.Config;
 
 @RunWith(ParallelRunner.class)
-public class PageContentTester extends RampUp {
+public class PageContentTester {
+
+    protected static Config config = new Config();
 
     @Rule
     public FetcherRule page = new FetcherRule();
 
     @Rule
     public Timeout globalTimeout = config.getGlobalTimeoutValue();
+
+
 
 }

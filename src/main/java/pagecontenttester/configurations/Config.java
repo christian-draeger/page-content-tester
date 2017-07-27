@@ -76,4 +76,8 @@ public class Config {
     public String getPacoVersion() {
         return configs.getStringValue("paco.version");
     }
+
+    public boolean isPacoAsciiActive() {
+        return configs.getBooleanValue("paco.ascii");
+    }
 }

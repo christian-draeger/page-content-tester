@@ -10,7 +10,7 @@ import org.junit.runner.Description;
 public class AnnotationCollector {
 
     List<Fetch> getAnnotations(Description description) {
-        List<Fetch> annotations = new LinkedList<Fetch>();
+        List<Fetch> annotations = new LinkedList<>();
 
         if (hasMultipleMethodAnnotation(description)) {
             annotations.addAll(Arrays.asList(description.getAnnotation(FetchPages.class).value()));
@@ -24,19 +24,19 @@ public class AnnotationCollector {
         return annotations;
     }
 
-    boolean hasSingleClassAnnotation(Description description) {
+    private boolean hasSingleClassAnnotation(Description description) {
         return description.getTestClass().getAnnotation(Fetch.class) != null;
     }
 
-    boolean hasMultipleClassAnnotation(Description description) {
+    private boolean hasMultipleClassAnnotation(Description description) {
         return description.getTestClass().isAnnotationPresent(FetchPages.class);
     }
 
-    boolean hasSingleMethodAnnotation(Description description) {
+    private boolean hasSingleMethodAnnotation(Description description) {
         return description.getAnnotation(Fetch.class) != null;
     }
 
-    boolean hasMultipleMethodAnnotation(Description description) {
+    private boolean hasMultipleMethodAnnotation(Description description) {
         return description.getAnnotation(FetchPages.class) != null;
     }
 }

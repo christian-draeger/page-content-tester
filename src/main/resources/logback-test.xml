@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
 
-    <appender name="RAMPUP" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%msg%n</pattern>
-        </encoder>
-    </appender>
-
     <appender name="CONSOLE-LOGGING" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{45} - %msg%n</pattern>
+            <pattern>[PACO] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{45} - %msg%n</pattern>
         </encoder>
     </appender>
 
     <logger name="pagecontenttester.fetcher" level="INFO">
         <appender-ref ref="CONSOLE-LOGGING"/>
-    </logger>
-
-    <logger name="pagecontenttester.runner.RampUp" level="INFO">
-        <appender-ref ref="RAMPUP"/>
     </logger>
 
 </configuration>
