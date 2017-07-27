@@ -4,12 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.either;
-import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static pagecontenttester.annotations.Fetch.Protocol.HTTPS;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
@@ -19,6 +16,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -36,41 +34,41 @@ public class FetchedPageTest extends PageContentTester {
     
     @Test
     public void can_fetch_from_class_annotation() {
-        assertThat(page.get().getUrl(), containsString("github"));
+        Assertions.assertThat(page.get().getUrl()).contains("github");
     }
 
     @Test
     public void fetcher_should_return_fetched_desktop_page_for_valid_url() {
-        assertThat(page.get().isMobile(), is(false));
+        Assertions.assertThat(page.get().isMobile()).isFalse();
     }
 
     @Test
     @Fetch(url = GOOGLE_URL, device = MOBILE)
     public void fetcher_should_return_fetched_mobile_page_for_valid_url() {
-        assertThat(page.get().isMobile(), is(true));
+        Assertions.assertThat(page.get().isMobile()).isTrue();
     }
 
     @Test
     @Fetch(url = GOOGLE_URL, device = MOBILE)
     public void fetcher_should_return_device_type_for_fetched_mobile_page() {
-        assertThat(page.get().getDeviceType(), equalTo(MOBILE));
+        Assertions.assertThat(page.get().getDeviceType()).isEqualTo(MOBILE);
     }
 
     @Test
     @Fetch(url = GOOGLE_URL, device = DESKTOP)
     public void fetcher_should_return_device_type_for_fetched_desktop_page() {
-        assertThat(page.get().getDeviceType(), equalTo(DESKTOP));
+        Assertions.assertThat(page.get().getDeviceType()).isEqualTo(DESKTOP);
     }
 
     @Test
     public void fetcher_should_return_referrer() {
-        assertThat(page.get().getConfig().getReferrer(), equalTo("http://www.google.com"));
+        Assertions.assertThat(page.get().getConfig().getReferrer()).isEqualTo("http://www.google.com");
     }
 
     @Test
     @Fetch(url = "www.idealo.de")
     public void fetcher_should_return_cookie_value() {
-        assertThat(page.get().getCookieValue("ipcuid"), not(emptyString()));
+        Assertions.assertThat(page.get().getCookieValue("ipcuid")).isNotEmpty();
     }
 
     @Test
@@ -81,59 +79,59 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     @Fetch(url = "www.idealo.de")
     public void fetcher_should_return_cookie() {
-        assertThat(page.get().hasCookie("ipcuid"), is(true));
+        Assertions.assertThat(page.get().hasCookie("ipcuid")).isTrue();
     }
 
     @Test
     public void fetcher_should_return_content_type() {
-        assertThat(page.get().getContentType(), containsString("text/html"));
+        Assertions.assertThat(page.get().getContentType()).contains("text/html");
     }
 
     @Test
     public void fetcher_should_return_element() {
-        assertThat(page.get().getElement(VALID_SELECTOR).hasText(), is(true));
+        Assertions.assertThat(page.get().getElement(VALID_SELECTOR).hasText()).isTrue();
     }
 
     @Test
     public void fetcher_should_return_page_body() {
-        assertThat(page.get().getPageBody(), containsString("<!DOCTYPE html>"));
+        Assertions.assertThat(page.get().getPageBody()).contains("<!DOCTYPE html>");
     }
 
     @Test
     @Fetch(url = GOOGLE_URL)
     public void fetcher_should_return_status_message() {
-        assertThat(page.get().getStatusMessage(), equalTo("OK"));
+        Assertions.assertThat(page.get().getStatusMessage()).isEqualTo("OK");
     }
 
     @Test
     @Fetch(url = GOOGLE_URL)
     public void fetcher_should_return_status_code() {
-        assertThat(page.get().getStatusCode(), is(200));
+        Assertions.assertThat(page.get().getStatusCode()).isEqualTo(200);
     }
 
     @Test
     public void should_return_true_if_certain_element_is_present() {
-        assertThat(page.get().isElementPresent(VALID_SELECTOR), is(true));
+        Assertions.assertThat(page.get().isElementPresent(VALID_SELECTOR)).isTrue();
     }
 
     @Test
     public void should_return_false_if_certain_element_is_not_present() {
-        assertThat(page.get().isElementPresent("dgfhkdgs"), is(false));
+        Assertions.assertThat(page.get().isElementPresent("dgfhkdgs")).isFalse();
     }
 
     @Test
     public void fetcher_should_return_elements_by_selector() {
-        assertThat(page.get().getElements(VALID_SELECTOR).size(), greaterThanOrEqualTo(1));
+        Assertions.assertThat(page.get().getElements(VALID_SELECTOR).size()).isGreaterThanOrEqualTo(1);
     }
 
     @Test
     public void fetcher_should_return_last_matching_element_by_selector() {
-        assertThat(page.get().getElementLastOf("title").text(), not(emptyString()));
+        Assertions.assertThat(page.get().getElementLastOf("title").text()).isNotBlank();
     }
 
     @Test
     public void fetcher_should_return_nth_matching_element_by_selector() {
-        assertThat(page.get().getElement("title", 0).text(), not(emptyString()));
+        Assertions.assertThat(page.get().getElement("title", 0).text()).isNotBlank();
     }
 
     @Test
