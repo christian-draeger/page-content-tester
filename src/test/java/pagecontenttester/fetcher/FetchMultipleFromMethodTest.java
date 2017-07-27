@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import pagecontenttester.annotations.Fetch;
-import pagecontenttester.runner.PageContentTester;
+import pagecontenttester.runner.Paco;
 
-public class FetchMultipleFromMethodTest extends PageContentTester {
+public class FetchMultipleFromMethodTest extends Paco {
 
     @Test
     @Fetch(url = "github.com/christian-draeger")

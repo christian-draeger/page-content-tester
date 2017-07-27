@@ -7,9 +7,9 @@ import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 import org.junit.Test;
 
 import pagecontenttester.annotations.Fetch;
-import pagecontenttester.runner.PageContentTester;
+import pagecontenttester.runner.Paco;
 
-public class FetchMultipleFromMethodMultipleTimesTest extends PageContentTester {
+public class FetchMultipleFromMethodMultipleTimesTest extends Paco {
 
     @Test
     @Fetch(url = "github.com/christian-draeger")

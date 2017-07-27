@@ -55,7 +55,7 @@ public class TestListener extends RunListener {
     private Ansi.Color banner = MAGENTA;
     private Ansi.Color version = GREEN;
 
-    private List<Object> ascii = Arrays.asList("\n",
+    private List<Object> ascii = Arrays.asList(
             ansi().bold().fg(paco).a("        .----.     .-----.    .----.     .----.").reset(),
             ansi().bold().fg(paco).a("       /      \\   /  .-.  \\  /      \\   /      \\").reset(),
             ansi().bold().fg(paco).a("      |  .´`.  ; (___) ;  ; |  .´`.  ; |  ,´`.  ;").reset(),

@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import pagecontenttester.annotations.Fetch;
-import pagecontenttester.runner.PageContentTester;
+import pagecontenttester.runner.Paco;
 
-public class FetchSingleFromMethodTest extends PageContentTester {
+public class FetchSingleFromMethodTest extends Paco {
 
     @Test
     @Fetch(url = "www.idealo.de")

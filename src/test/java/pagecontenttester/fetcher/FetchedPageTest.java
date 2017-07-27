@@ -24,10 +24,10 @@ import org.junit.Test;
 import pagecontenttester.annotations.Cookie;
 import pagecontenttester.annotations.Fetch;
 import pagecontenttester.annotations.GetFetchedPageException;
-import pagecontenttester.runner.PageContentTester;
+import pagecontenttester.runner.Paco;
 
 @Fetch(url = "github.com/christian-draeger")
-public class FetchedPageTest extends PageContentTester {
+public class FetchedPageTest extends Paco {
 
     private static final String GITHUB_URL = "github.com/christian-draeger";
     private static final String GOOGLE_URL = "www.google.de";

@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import pagecontenttester.annotations.Fetch;
-import pagecontenttester.runner.PageContentTester;
+import pagecontenttester.runner.Paco;
 
 @Fetch(url = "github.com/christian-draeger")
 @Fetch(url = "www.idealo.de")
-public class FetchMultipleFromClassAndMethodTest extends PageContentTester {
+public class FetchMultipleFromClassAndMethodTest extends Paco {
 
     @Test
     public void can_fetch_from_class_annotation() {
