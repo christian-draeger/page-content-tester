@@ -9,6 +9,7 @@
 <a target="_blank" href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester"><img src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square"/></a><br>
 <a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436"><img src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
 <a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard"><img src="https://img.shields.io/codacy/coverage/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://github.com/christian-draeger/page-content-tester/blob/master/LICENSE"><img src="https://img.shields.io/github/license/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
 <br>
 </p>
 
@@ -163,4 +164,9 @@ public class ExampleUsageTest extends PageContentTester {
 
 <h2 align="center">Example Project</h2>
 
-To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing and checking dom elements within ±1000 tests that are fetching an url is getting done in less than 10sec with a proper internet connection) 
+To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing and checking dom elements within ±1000 tests that are fetching an url is getting done in less than 10sec with a proper internet connection)
+
+<h2 align="center">License</h2>
+
+Paco is [GPLv3+](LICENSE).
+It re-distributes other open-source libraries. Please check the [third party licenses](https://github.com/christian-draeger/page-content-tester/blob/master/LICENSE-REDISTRIBUTED.md).
