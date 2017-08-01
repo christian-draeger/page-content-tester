@@ -17,11 +17,12 @@
 
 **Paco** is a Java based framework for non-blocking and highly parallelized Dom testing.
 The motivation of bringing this little buffed out guy to live have been the need of having a robust and fast solution to relieve a long running and unstable Selenium suite. After a code dive through these Selenium tests it turned out that lots of them were just checking things (like Dom elements, displayed data, cookies, etc) without the need of interacting with a web browser.
-So Paco was born as an alternative and he's doing his job rapidly fast and reliable. In a bigger test project where this framework is in use it runs ~400 tests in less than 10 seconds, but the best thing is that if you use **Paco** you can focus on your tests itself instead of messing around with setting up a complex test project (or even framework) yourself. 
-**Paco** allows you to configure all your test specific data individually and directly in place (on your test method and/or test class) via annotations. You only need to describe how you want to fetch an http response (e.g. requesting a  web page by using a proxy, mobile userAgent, setting cookies, add a specific referrer, doing a POST that sends some request body, etc). 
-The Setup is pretty easy (see __Setup__)
+So Paco was born as an alternative and he's doing his job rapidly fast and reliable. In a bigger test project where this framework is in use it runs ~400 tests in less than 10 seconds. When using **Paco** you can focus on your tests itself instead of messing around with setting up a complex test project yourself. 
 
-The Execution of the tests is managed with jUnit und Surefire. The intention of **Paco** is to run a big amount of tests in parallel, therefore it provides a parent pom (usage is optional) thats doing all the parallelization setup for you (see __Configure the Page-Fetcher__). 
+**Paco** allows you to configure all your test specific data individually and directly in place (on your test method and/or test class) via annotations. You only need to describe how you want to fetch an http response (e.g. requesting a  web page by using a proxy, mobile userAgent, setting cookies, add a specific referrer, doing a POST that sends some request body, etc). 
+The Setup is pretty easy (see __[Setup](#setup)__)
+
+The Execution of the tests is managed with jUnit und Surefire. The intention of **Paco** is to run a big amount of tests in parallel, therefore it provides a parent pom (usage is optional) thats doing all the parallelization setup for you (see __[Configure the Page-Fetcher](#configure-the-page-fetcher)__). 
 
 Beside that **Paco** has a bunch of convenient methods to easily write nicely readable tests. It provides easy access to request data (like cookies, headers, etc.), test-config data, and Dom checks (like isElementPresent, getElement, get value of html tags/attributes, etc, etc...)
 
