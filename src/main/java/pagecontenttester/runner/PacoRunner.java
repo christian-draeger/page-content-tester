@@ -14,7 +14,6 @@ public class PacoRunner extends BlockJUnit4ClassRunner {
         super(klass);
     }
 
-
     @Override
     public void run(RunNotifier notifier) {
         //Add Listener. This will register our JUnit Listener.

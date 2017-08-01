@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
@@ -15,7 +16,7 @@ import pagecontenttester.configurations.Config;
 import pagecontenttester.fetcher.FetchedPage;
 import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
-public class FetcherRule extends ExternalResourceRule {
+public class FetcherRule implements TestRule {
 
     private final PagePicker pagePicker = new PagePicker(this);
     private final AnnotationCollector annotationCollector = new AnnotationCollector();
