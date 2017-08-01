@@ -168,4 +168,4 @@ To see the PageContentTester in action you can checkout or fork the correspondin
 <h2 align="center">License</h2>
 
 Paco is [GPLv3+](LICENSE).
-It re-distributes other open-source libraries. Please check the [third party licenses](https://github.com/christian-draeger/page-content-tester/blob/master/REDISTRIBUTED.md).
+It just works because of other awesome open-source libraries. Please check the [third party licenses](https://github.com/christian-draeger/page-content-tester/blob/master/LIBRARIES.md).
