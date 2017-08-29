@@ -56,6 +56,7 @@ public class Fetcher {
                         .followRedirects(CONFIG.isFollowingRedirects())
                         .ignoreContentType(CONFIG.isIgnoringContentType())
                         .method(method)
+                        .maxBodySize(0)
                         .data(requestBody)
                         .referrer(referrer);
 
