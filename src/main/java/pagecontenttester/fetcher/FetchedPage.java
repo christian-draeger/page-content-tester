@@ -11,9 +11,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,9 +40,6 @@ public class FetchedPage implements Page {
     }
 
     private static Config config = new Config();
-
-    private static final Map<FetchRequestParameters, FetchedPage> fetchedPageCache = new ConcurrentHashMap<>();
-    private static final Set<String> calledTestMethods = new ConcurrentSkipListSet<>();
 
     public static FetchedPage annotationCall(String url, DeviceType device, Method method, String referrer, int timeout,
                                             int retriesOnTimeout, Map<String, String> cookie, Fetch.Protocol protocol,
@@ -106,37 +100,10 @@ public class FetchedPage implements Page {
                 .urlPrefix(urlPrefix)
                 .build();
 
-        if (fetchedPageCache.containsKey(cacheKey) && config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
-            if (config.isCacheDuplicatesLogActive()) {
-                log.info("duplicate call for fetched page: {}", cacheKey);
-                log.info("---> will take page from cache while running test: {}", testName);
-            }
-            return fetchedPageCache.get(cacheKey);
-        } else {
-            Fetcher fetcher = Fetcher.builder()
-                    .method(method)
-                    .requestBody(requestBody)
-                    .deviceType(device)
-                    .referrer(referrer)
-                    .timeout(timeout)
-                    .retriesOnTimeout(retriesOnTimeout)
-                    .cookie(cookie)
-                    .build();
-
-            FetchedPage fetchedPage = new FetchedPage(urlToFetch, fetcher.fetch(urlToFetch), device, urlPrefix);
-            addToCache(testName, cacheKey, fetchedPage);
-            return fetchedPage;
-        }
+        return FetcherManager.getInstance().submit(cacheKey, testName).get();
     }
 
-    private static void addToCache(String testName, FetchRequestParameters cacheKey, FetchedPage fetchedPage) {
-        if (config.isCacheDuplicatesActive() && !calledTestMethods.contains(testName)) {
-            fetchedPageCache.put(cacheKey, fetchedPage);
-        }
-        calledTestMethods.add(testName);
-    }
-
-    private FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {
+    public FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {
         this.url = url;
         this.response = response;
         this.deviceType = deviceType;

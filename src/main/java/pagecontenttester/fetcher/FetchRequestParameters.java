@@ -20,5 +20,16 @@ class FetchRequestParameters {
     private int retriesOnTimeout;
     private Map<String, String> cookie;
     private String urlPrefix;
-    private String testName;
+
+    public Fetcher createFetcher() {
+        return Fetcher.builder()
+                .method(method)
+                .requestBody(requestBody)
+                .deviceType(device)
+                .referrer(referrer)
+                .timeout(timeout)
+                .retriesOnTimeout(retriesOnTimeout)
+                .cookie(cookie)
+                .build();
+    }
 }
