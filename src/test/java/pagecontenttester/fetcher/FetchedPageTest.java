@@ -94,6 +94,7 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
+    @Fetch(url = "stackoverflow.com/")
     public void fetcher_should_return_page_body() {
         Assertions.assertThat(page.get().getPageBody()).contains("<!DOCTYPE html>");
     }
@@ -257,6 +258,7 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
+    @Fetch(url = "stackoverflow.com/")
     public void can_store_page_body() throws IOException, InterruptedException {
         page.get().storePageBody();
         File file = new File("target/page-content-tester/stored/can_store_page_body(pagecontenttester.fetcher.FetchedPageTest).html");
@@ -294,6 +296,7 @@ public class FetchedPageTest extends Paco {
         assertThat(referrer, equalTo(config.getReferrer()));
     }
 
+    @Ignore
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
@@ -303,6 +306,7 @@ public class FetchedPageTest extends Paco {
                         .and(containsString("wtf-666")));
     }
 
+    @Ignore
     @Test
     @Fetch( url = "www.html-kit.com/tools/cookietester/",
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),

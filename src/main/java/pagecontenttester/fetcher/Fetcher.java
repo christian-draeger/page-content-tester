@@ -29,7 +29,7 @@ public class Fetcher {
 
     private final DeviceType deviceType;
     private final Method method;
-    private final Map<String, String> requestBody;
+    private final String requestBody;
     private final String referrer;
     private final int timeout;
     private final int retriesOnTimeout;
@@ -57,10 +57,9 @@ public class Fetcher {
                         .ignoreContentType(CONFIG.isIgnoringContentType())
                         .method(method)
                         .maxBodySize(0)
-                        .data(requestBody)
                         .referrer(referrer);
 
-                if (!cookie.isEmpty()){
+                if (!cookie.isEmpty()) {
                     connection.cookies(cookie);
                 }
 
@@ -79,7 +78,7 @@ public class Fetcher {
     public static class FetcherBuilder { //NOSONAR
         private DeviceType device = DESKTOP; //NOSONAR
         private Method method = Method.GET; //NOSONAR
-        private Map<String, String> requestBody = Collections.emptyMap(); //NOSONAR
+        private String requestBody = ""; //NOSONAR
         private Map<String,String> cookie = Collections.emptyMap(); //NOSONAR
         // take property values if not set via annotation
         private String referrer = CONFIG.getReferrer(); //NOSONAR

@@ -13,6 +13,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import pagecontenttester.configurations.Config;
+import pagecontenttester.fetcher.FetchRequestParameters;
 import pagecontenttester.fetcher.FetchedPage.DeviceType;
 import pagecontenttester.fetcher.Page;
 
@@ -44,17 +45,22 @@ public class FetcherRule implements TestRule {
     private void fetchFromAnnotation(List<Fetch> fetchAnnotations) {
         for (Fetch fetchAnnotation : fetchAnnotations) {
             Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
-            final Page fetchedPage = annotationCall(fetchAnnotation.url(),
-                    fetchAnnotation.device(),
-                    fetchAnnotation.method(),
-                    getReferrer(fetchAnnotation),
-                    getTimeout(fetchAnnotation),
-                    getRetryCount(fetchAnnotation),
-                    getCookies(cookieAnnotation),
-                    fetchAnnotation.protocol(),
-                    getUrlPrefix(fetchAnnotation),
-                    getPort(fetchAnnotation),
-                    testName);
+            final FetchRequestParameters fetchRequestParameters = FetchRequestParameters.builder()
+                    .urlToFetch(fetchAnnotation.url())
+                    .device(fetchAnnotation.device())
+                    .method(fetchAnnotation.method())
+                    .protocol(fetchAnnotation.protocol())
+                    .referrer(getReferrer(fetchAnnotation))
+                    .timeout(getTimeout(fetchAnnotation))
+                    .retriesOnTimeout(getRetryCount(fetchAnnotation))
+                    .cookie(getCookies(cookieAnnotation))
+                    .urlPrefix(getUrlPrefix(fetchAnnotation))
+                    .port(getPort(fetchAnnotation))
+                    .testName(testName)
+                    .build();
+
+            final Page fetchedPage = annotationCall(fetchRequestParameters);
+
             fetchedPages.add(fetchedPage);
         }
     }

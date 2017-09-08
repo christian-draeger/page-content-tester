@@ -6,22 +6,26 @@ import org.jsoup.Connection;
 
 import lombok.Builder;
 import lombok.Value;
+import pagecontenttester.annotations.Fetch.Protocol;
 
 @Value
 @Builder
-class FetchRequestParameters {
+public class FetchRequestParameters {
 
     private String urlToFetch;
     private Connection.Method method;
-    private Map<String, String> requestBody;
+    private String requestBody;
     private FetchedPage.DeviceType device;
     private String referrer;
+    private Protocol protocol;
     private int timeout;
     private int retriesOnTimeout;
     private Map<String, String> cookie;
     private String urlPrefix;
+    private String port;
+    private String testName;
 
-    public Fetcher createFetcher() {
+    Fetcher createFetcher() {
         return Fetcher.builder()
                 .method(method)
                 .requestBody(requestBody)
