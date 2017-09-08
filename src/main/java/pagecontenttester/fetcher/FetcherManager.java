@@ -39,7 +39,7 @@ public class FetcherManager {
         } else {
             if (config.isCacheDuplicatesLogActive()) {
                 log.info("duplicate call for fetched page: {}", params);
-                log.info("---> will take page from cache while running test: {}", "");
+                log.info("---> will take page from cache while running test: {}", testName);
             }
             calledTestMethods.add(testName);
             return requestMap.get(params);
