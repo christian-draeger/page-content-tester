@@ -24,16 +24,6 @@ public class FetcherManager {
 
     private static FetcherManager ourInstance = new FetcherManager();
 
-    public String getCurrentTestName() {
-        return currentTestName;
-    }
-
-    public void setCurrentTestName(String currentTestName) {
-        this.currentTestName = currentTestName;
-    }
-
-    private String currentTestName;
-
     public static FetcherManager getInstance() {
         return ourInstance;
     }

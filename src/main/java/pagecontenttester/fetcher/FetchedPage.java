@@ -12,10 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -127,11 +124,10 @@ public class FetchedPage {
         return urlPrefix;
     }
 
-    
-    int getStatusCode() {
-        return response.statusCode();
-    }
 
+    Response getResponse() {
+        return response;
+    }
     
     DeviceType getDeviceType() {
         return deviceType;
@@ -143,103 +139,8 @@ public class FetchedPage {
     }
 
     
-    String getContentType() {
-        return response.contentType();
-    }
-
-    
-    String getPageBody() {
-        return response.body();
-    }
-
-    
-    JSONObject getJsonResponse() {
-        return new JSONObject(response.body());
-    }
-
-    
-    String getHeader(String header) {
-        return response.header(header);
-    }
-
-    
-    Map<String, String> getHeaders() {
-        return response.headers();
-    }
-
-    
-    String getLocation() {
-        return response.header("Location");
-    }
-
-    
-    boolean hasHeader(String header) {
-        return response.hasHeader(header);
-    }
-
-    
-    Map<String, String> getCookies() {
-        return response.cookies();
-    }
-
-    
-    String getCookieValue(String cookieName) {
-        return response.cookie(cookieName);
-    }
-
-    
-    boolean hasCookie(String cookieName) {
-        return response.hasCookie(cookieName);
-    }
-
-    
-    String getStatusMessage() {
-        return response.statusMessage();
-    }
-
-    
     public Config getConfig() {
         return config;
-    }
-
-    
-    String getTitle() {
-        return getDocument().title();
-    }
-
-    
-    Elements getElements(String cssSelector) {
-        return getDocument().select(cssSelector);
-    }
-
-    
-    Element getElement(String cssSelector) {
-        return getElements(cssSelector).first();
-    }
-
-    
-    Element getElementLastOf(String cssSelector) {
-        return getElements(cssSelector).last();
-    }
-
-    
-    Element getElement(String cssSelector, int index) {
-        return getElements(cssSelector).get(index);
-    }
-
-    
-    boolean isElementPresent(String cssSelector) {
-        return getElementCount(cssSelector) > 0;
-    }
-
-    
-    boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences) {
-        return getElementCount(cssSelector) == numberOfOccurrences;
-    }
-
-    
-    int getElementCount(String cssSelector) {
-        return getDocument().select(cssSelector).size();
     }
 
 }

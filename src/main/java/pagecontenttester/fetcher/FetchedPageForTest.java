@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
+import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -28,6 +29,10 @@ class FetchedPageForTest implements Page {
         return fetchedPage.getDocument();
     }
 
+    private Response getResponse() {
+        return fetchedPage.getResponse();
+    }
+
     public String getUrl() {
         return fetchedPage.getUrl();
     }
@@ -37,7 +42,7 @@ class FetchedPageForTest implements Page {
     }
 
     public int getStatusCode() {
-        return fetchedPage.getStatusCode();
+        return getResponse().statusCode();
     }
 
     public FetchedPage.DeviceType getDeviceType() {
@@ -49,47 +54,47 @@ class FetchedPageForTest implements Page {
     }
 
     public String getContentType() {
-        return fetchedPage.getContentType();
+        return getResponse().contentType();
     }
 
     public String getPageBody() {
-        return fetchedPage.getPageBody();
+        return getResponse().body();
     }
 
     public JSONObject getJsonResponse() {
-        return fetchedPage.getJsonResponse();
+        return new JSONObject(getResponse().body());
     }
 
     public String getHeader(String header) {
-        return fetchedPage.getHeader(header);
+        return getResponse().header(header);
     }
 
     public Map<String, String> getHeaders() {
-        return fetchedPage.getHeaders();
+        return getResponse().headers();
     }
 
     public String getLocation() {
-        return fetchedPage.getLocation();
+        return getResponse().header("Location");
     }
 
     public boolean hasHeader(String header) {
-        return fetchedPage.hasHeader(header);
+        return getResponse().hasHeader(header);
     }
 
     public Map<String, String> getCookies() {
-        return fetchedPage.getCookies();
+        return getResponse().cookies();
     }
 
     public String getCookieValue(String cookieName) {
-        return fetchedPage.getCookieValue(cookieName);
+        return getResponse().cookie(cookieName);
     }
 
     public boolean hasCookie(String cookieName) {
-        return fetchedPage.hasCookie(cookieName);
+        return getResponse().hasCookie(cookieName);
     }
 
     public String getStatusMessage() {
-        return fetchedPage.getStatusMessage();
+        return getResponse().statusMessage();
     }
 
     public Config getConfig() {
@@ -97,37 +102,41 @@ class FetchedPageForTest implements Page {
     }
 
     public String getTitle() {
-        return fetchedPage.getTitle();
+        return getDocument().title();
     }
 
     public Elements getElements(String cssSelector) {
         hasSelector(cssSelector);
-        return fetchedPage.getElements(cssSelector);
+        return getDocument().select(cssSelector);
     }
 
     public Element getElement(String cssSelector) {
         hasSelector(cssSelector);
-        return fetchedPage.getElement(cssSelector);
+        return getElements(cssSelector).first();
     }
 
     public Element getElementLastOf(String cssSelector) {
         hasSelector(cssSelector);
-        return fetchedPage.getElementLastOf(cssSelector);
+        return getElements(cssSelector).last();
     }
 
     public Element getElement(String cssSelector, int index) {
         hasSelector(cssSelector);
-        return fetchedPage.getElement(cssSelector, index);
+        return getElements(cssSelector).get(index);
     }
 
     public boolean isElementPresent(String cssSelector) {
         hasSelector(cssSelector);
-        return fetchedPage.isElementPresent(cssSelector);
+        return getElementCount(cssSelector) > 0;
     }
 
     public boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences) {
         hasSelector(cssSelector);
-        return fetchedPage.isElementPresentNthTimes(cssSelector, numberOfOccurrences);
+        return getElementCount(cssSelector) == numberOfOccurrences;
+    }
+
+    public int getElementCount(String cssSelector) {
+        return getDocument().select(cssSelector).size();
     }
 
     public String getTestName() {
@@ -146,10 +155,6 @@ class FetchedPageForTest implements Page {
         } catch (IOException e) {
             log.warn("could not store page body for url: {} while executing test: {}", getUrl(), getTestName());
         }
-    }
-
-    public int getElementCount(String cssSelector) {
-        return fetchedPage.getElementCount(cssSelector);
     }
 
     private void hasSelector(String cssSelector) {

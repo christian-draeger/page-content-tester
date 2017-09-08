@@ -44,7 +44,7 @@ public class FetcherManagerTest {
     public void canFetchPage() throws Exception {
         final Future<FetchedPage> future1 = FetcherManager.getInstance()
                 .submit(aValidRequest(), getUniqueTestName());
-        assertThat(future1.get().getStatusCode()).isEqualTo(200);
+        assertThat(future1.get().getResponse().statusCode()).isEqualTo(200);
     }
 
     @Test
@@ -83,5 +83,4 @@ public class FetcherManagerTest {
     private String getUniqueTestName() {
         return "test" + COUNTER++;
     }
-
 }
