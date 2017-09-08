@@ -38,7 +38,7 @@ public class FetchedPage {
         String urlWithPrefix = getUrl(params.getUrlToFetch(), params.getProtocol(), params.getUrlPrefix(), params.getPort());
 
         final FetchRequestParameters cacheKey = FetchRequestParameters.builder()
-                .urlToFetch(params.getUrlToFetch())
+                .urlToFetch(urlWithPrefix)
                 .method(params.getMethod())
                 .requestBody(params.getRequestBody())
                 .device(params.getDevice())
