@@ -65,6 +65,8 @@ public interface Page {
 
     void storePageBody();
 
+    void store(String folder);
+
     /**
      * @param cssSelector to pick DOM-element
      * @return number of matching CSS-selectors

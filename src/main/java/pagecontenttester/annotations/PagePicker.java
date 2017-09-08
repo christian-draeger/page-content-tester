@@ -1,6 +1,7 @@
 package pagecontenttester.annotations;
 
 import pagecontenttester.fetcher.FetchedPage;
+import pagecontenttester.fetcher.Page;
 
 public class PagePicker {
 
@@ -10,7 +11,7 @@ public class PagePicker {
         this.fetcherRule = fetcherRule;
     }
 
-    public FetchedPage get(int index) {
+    public Page get(int index) {
         try {
             return fetcherRule.getFetchedPages().get(index);
         } catch (IndexOutOfBoundsException e) { // NOSONAR
@@ -18,8 +19,8 @@ public class PagePicker {
         }
     }
 
-    public FetchedPage get(String urlSnippet) {
-        for (FetchedPage recentlyFetchedPage : fetcherRule.getFetchedPages()) {
+    public Page get(String urlSnippet) {
+        for (Page recentlyFetchedPage : fetcherRule.getFetchedPages()) {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet)) {
                 return recentlyFetchedPage;
             }
@@ -33,8 +34,8 @@ public class PagePicker {
         throw new GetFetchedPageException("could not find fetched page with url-snippet \"" + urlSnippet + "\"");
     }
 
-    public FetchedPage get(FetchedPage.DeviceType deviceType) {
-        for (FetchedPage recentlyFetchedPage : fetcherRule.getFetchedPages()) {
+    public Page get(FetchedPage.DeviceType deviceType) {
+        for (Page recentlyFetchedPage : fetcherRule.getFetchedPages()) {
             if (recentlyFetchedPage.getDeviceType().equals(deviceType)) {
                 return recentlyFetchedPage;
             }
@@ -42,8 +43,8 @@ public class PagePicker {
         throw new GetFetchedPageException("could not find fetched page with deviceType \"" + deviceType + "\"");
     }
 
-    public FetchedPage get(String urlSnippet, FetchedPage.DeviceType deviceType) {
-        for (FetchedPage recentlyFetchedPage : fetcherRule.getFetchedPages()) {
+    public Page get(String urlSnippet, FetchedPage.DeviceType deviceType) {
+        for (Page recentlyFetchedPage : fetcherRule.getFetchedPages()) {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {
                 return recentlyFetchedPage;
             }

@@ -13,15 +13,15 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import pagecontenttester.configurations.Config;
-import pagecontenttester.fetcher.FetchedPage;
 import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import pagecontenttester.fetcher.Page;
 
 public class FetcherRule implements TestRule {
 
     private final PagePicker pagePicker = new PagePicker(this);
     private final AnnotationCollector annotationCollector = new AnnotationCollector();
 
-    private List<FetchedPage> fetchedPages = new ArrayList<>();
+    private List<Page> fetchedPages = new ArrayList<>();
     private Config config = new Config();
     private String testName;
 
@@ -44,7 +44,7 @@ public class FetcherRule implements TestRule {
     private void fetchFromAnnotation(List<Fetch> fetchAnnotations) {
         for (Fetch fetchAnnotation : fetchAnnotations) {
             Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
-            final FetchedPage fetchedPage = annotationCall(fetchAnnotation.url(),
+            final Page fetchedPage = annotationCall(fetchAnnotation.url(),
                     fetchAnnotation.device(),
                     fetchAnnotation.method(),
                     getReferrer(fetchAnnotation),
@@ -59,27 +59,27 @@ public class FetcherRule implements TestRule {
         }
     }
 
-    public FetchedPage get() {
+    public Page get() {
         return pagePicker.get(0);
     }
 
-    public FetchedPage get(int index) {
+    public Page get(int index) {
         return pagePicker.get(index);
     }
 
-    public FetchedPage get(String urlSnippet) {
+    public Page get(String urlSnippet) {
         return pagePicker.get(urlSnippet);
     }
 
-    public FetchedPage get(DeviceType deviceType) {
+    public Page get(DeviceType deviceType) {
         return pagePicker.get(deviceType);
     }
 
-    public FetchedPage get(String urlSnippet, DeviceType deviceType) {
+    public Page get(String urlSnippet, DeviceType deviceType) {
         return pagePicker.get(urlSnippet, deviceType);
     }
 
-    List<FetchedPage> getFetchedPages() {
+    List<Page> getFetchedPages() {
         return fetchedPages;
     }
 

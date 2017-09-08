@@ -3,12 +3,12 @@ package pagecontenttester.watcher;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import pagecontenttester.fetcher.FetchedPage;
+import pagecontenttester.fetcher.Page;
 
 public class StorePageBodyOnFailure extends TestWatcher {
-    private final FetchedPage fetchedPage;
+    private final Page fetchedPage;
 
-    public StorePageBodyOnFailure(FetchedPage fetchedPage) {
+    public StorePageBodyOnFailure(Page fetchedPage) {
         this.fetchedPage = fetchedPage;
     }
 

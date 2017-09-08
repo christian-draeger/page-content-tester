@@ -244,19 +244,18 @@ public class FetchedPageTest extends Paco {
 
     }
 
-    @Ignore
+
     @Test
     public void get_name_of_test() {
-        assertThat(page.get().getTestName(), equalTo("get_name_of_test(pagecontenttester.fetcher.FetchedPageTest)"));
+        String testName = page.get().getTestName();
+        assertThat(testName, equalTo("get_name_of_test(pagecontenttester.fetcher.FetchedPageTest)"));
     }
 
-    @Ignore
     @Test
     public void get_name_of_other_test() {
         assertThat(page.get().getTestName(), equalTo("get_name_of_other_test(pagecontenttester.fetcher.FetchedPageTest)"));
     }
 
-    @Ignore
     @Test
     public void can_store_page_body() throws IOException, InterruptedException {
         page.get().storePageBody();
@@ -265,7 +264,6 @@ public class FetchedPageTest extends Paco {
         assertThat(pageBody, containsString("html"));
     }
 
-    @Ignore
     @Test
     public void store_page_body_if_element_not_present() throws IOException {
         page.get().getElements("dfghfjhg");
