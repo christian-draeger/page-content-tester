@@ -1,5 +1,8 @@
 package pagecontenttester.fetcher;
 
+import static org.fusesource.jansi.Ansi.Color.BLACK;
+import static org.fusesource.jansi.Ansi.ansi;
+
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,8 +41,8 @@ public class FetcherManager {
             return future;
         } else {
             if (config.isCacheDuplicatesLogActive()) {
-                log.info("duplicate call for fetched page: {}", params);
-                log.info("---> will take page from cache while running test: {}", testName);
+                log.info("\uD83D\uDC65 " + ansi().fg(BLACK).bold().a("duplicate call ").reset() + "for fetched page: {}", params);
+                log.info("\t\t\t---> will take page from cache while running test: {}", testName);
             }
             calledTestMethods.add(testName);
             return requestMap.get(params);
