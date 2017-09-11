@@ -32,7 +32,7 @@ public class TestListener extends RunListener {
     }
 
     public void testIgnored(Description description) throws Exception {
-        System.out.println("\u23ed " + ansi().fgBrightBlack().bold().a("skipped test\t: ").reset() + description.getDisplayName());
+        System.out.println("\u23ed " + ansi().fgBrightBlack().bold().a("skipped test  : ").reset() + description.getDisplayName());
     }
 
     @Override

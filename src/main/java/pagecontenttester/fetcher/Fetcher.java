@@ -63,14 +63,14 @@ public class Fetcher {
                     connection.cookies(cookie);
                 }
 
-                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page\t: ").reset() + "{} (UserAgent: {})", url, deviceType);
+                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + "{} (UserAgent: {})", url, deviceType);
                 return connection.execute();
 
             } catch(SocketTimeoutException ste) {
                 if(retryCount > retriesOnTimeout) {
                     throw ste;
                 }
-                log.warn("\uD83D\uDD50 " + ansi().fg(YELLOW).bold().a("fetch timeout\t: ").reset() + "SocketRead time out after {}. try", retryCount++);
+                log.warn("\uD83D\uDD50 " + ansi().fg(YELLOW).bold().a("fetch timeout: ").reset() + "SocketRead time out after {}. try", retryCount++);
             }
         }
     }
