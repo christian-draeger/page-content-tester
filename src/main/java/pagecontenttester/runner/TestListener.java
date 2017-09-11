@@ -37,7 +37,7 @@ public class TestListener extends RunListener {
 
     @Override
     public void testFinished(Description description) {
-        System.out.println("\uD83C\uDFC1 " + ansi().fgBrightCyan().bold().a("finished test\t: ").reset() + description.getDisplayName());
+        System.out.println("\uD83C\uDFC1 " + ansi().fgBrightCyan().bold().a("finished test: ").reset() + description.getDisplayName());
     }
 
 }
