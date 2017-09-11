@@ -28,7 +28,7 @@ public class TestListener extends RunListener {
 
     @Override
     public void testFailure(Failure failure) throws Exception {
-        System.out.println("\u26d4 " + ansi().fgRed().bold().a("failing test\t: ").reset() + failure.getDescription().getDisplayName());
+        System.out.println("\u26d4 " + ansi().fgRed().bold().a("failing test: ").reset() + failure.getDescription().getDisplayName());
     }
 
     public void testIgnored(Description description) throws Exception {

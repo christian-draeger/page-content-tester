@@ -41,8 +41,8 @@ public class FetcherManager {
             return future;
         } else {
             if (config.isCacheDuplicatesLogActive()) {
-                log.info("\uD83D\uDC65 " + ansi().fg(BLACK).bold().a("duplicate call ").reset() + "for fetched page: {}", params);
-                log.info("\t\t\t---> will take page from cache while running test: {}", testName);
+                log.info("\uD83D\uDC65 " + ansi().fg(BLACK).bold().a("duplicate call: ").reset() + "{}", params);
+                log.info( ansi().fgBrightBlack().a("\t\t---> will take page from cache while running test: ").reset() + "{}", testName);
             }
             calledTestMethods.add(testName);
             return requestMap.get(params);
