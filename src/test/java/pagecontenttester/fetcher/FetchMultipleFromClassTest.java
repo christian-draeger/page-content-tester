@@ -11,8 +11,6 @@ import pagecontenttester.runner.Paco;
 @Fetch(url = "www.idealo.de")
 public class FetchMultipleFromClassTest extends Paco {
 
-    // TODO: holt seite pro methode neu sollte bei Class aber nur einmal pro annotation passieren
-
     @Test
     public void can_fetch_from_class_annotation() {
         assertThat(page.get(0).getTitle()).contains("GitHub");

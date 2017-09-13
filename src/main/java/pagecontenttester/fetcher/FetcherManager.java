@@ -1,6 +1,5 @@
 package pagecontenttester.fetcher;
 
-import static org.fusesource.jansi.Ansi.Color.BLACK;
 import static org.fusesource.jansi.Ansi.ansi;
 
 import java.util.Set;
@@ -41,8 +40,8 @@ public class FetcherManager {
             return future;
         } else {
             if (config.isCacheDuplicatesLogActive()) {
-                log.info("\uD83D\uDC65 " + ansi().fg(BLACK).bold().a("duplicate call: ").reset() + "{}", params);
-                log.info("" + ansi().fgBrightBlack().a("\t\t---> will take page from cache while running test: ").reset() + ansi().bold().a(testName).reset());
+                log.info("\uD83D\uDC65 " + ansi().fgBrightBlack().bold().a("duplicate call: ").reset() +
+                        "fetched page will be taken from cache while executing test" + ansi().bold().a(" {} ").reset() + "to avoid unnecessary requests", testName);
             }
             calledTestMethods.add(testName);
             return requestMap.get(params);

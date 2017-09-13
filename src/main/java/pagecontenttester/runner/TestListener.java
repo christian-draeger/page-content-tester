@@ -7,9 +7,6 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class TestListener extends RunListener {
 
     @Override
@@ -20,9 +17,9 @@ public class TestListener extends RunListener {
     @Override
     public void testRunFinished(Result result) throws Exception {
         if (result.wasSuccessful()) {
-            System.out.println(ansi().fgGreen().bold().a("\u2705 SUCCESS\t: all " + result.getRunCount() + " tests pass").reset());
+            System.out.println(ansi().fgGreen().bold().a("\u2705 SUCCESS\t: all " + result.getRunCount() + " executed tests pass").reset());
         } else {
-            System.out.println(ansi().fgRed().bold().a("\uD83D\uDED1 DAMN IT\t: some tests failed").reset());
+            System.out.println(ansi().fgRed().bold().a("\uD83D\uDED1 DAMN IT\t: " + result.getFailureCount() + " of " + result.getRunCount() + " executed tests failed").reset());
         }
     }
 
