@@ -267,7 +267,7 @@ public class FetchedPageTest extends Paco {
     @Fetch(url = "stackoverflow.com/")
     public void can_store_page_body() throws IOException, InterruptedException {
         page.get().storePageBody();
-        File file = new File("target/page-content-tester/stored/can_store_page_body(pagecontenttester.fetcher.FetchedPageTest).html");
+        File file = new File("target/paco/stored/can_store_page_body(pagecontenttester.fetcher.FetchedPageTest).html");
         String pageBody = FileUtils.readFileToString(file);
         assertThat(pageBody, containsString("html"));
     }
@@ -275,7 +275,7 @@ public class FetchedPageTest extends Paco {
     @Test
     public void store_page_body_if_element_not_present() throws IOException {
         page.get().getElements("dfghfjhg");
-        File file = new File("target/page-content-tester/not-found/store_page_body_if_element_not_present(pagecontenttester.fetcher.FetchedPageTest).html");
+        File file = new File("target/paco/not-found/store_page_body_if_element_not_present(pagecontenttester.fetcher.FetchedPageTest).html");
         String pageBody = FileUtils.readFileToString(file);
         assertThat(pageBody, containsString("GitHub"));
     }

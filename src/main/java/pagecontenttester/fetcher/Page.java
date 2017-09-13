@@ -32,6 +32,9 @@ public interface Page {
      */
     Element getElement(String cssSelector, int index);
 
+    /**
+     * @return value of title tag
+     */
     String getTitle();
 
     /**
@@ -61,10 +64,21 @@ public interface Page {
      */
     boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences);
 
+    /**
+     * @return name of test that requested fetched page
+     */
     String getTestName();
 
+    /**
+     * stores the responses page body as html file in target directory.
+     * files can be found under target/paco/stored/<nameOfTest(path)>.html
+     */
     void storePageBody();
 
+    /**
+     * stores the responses page body as html file in target directory under target/paco/<folder>.
+     * @param folder
+     */
     void store(String folder);
 
     /**
@@ -73,6 +87,10 @@ public interface Page {
      */
     int getElementCount(String cssSelector);
 
+    /**
+     *
+     * @return used url prefix. will be empty string if no url prefix was set.
+     */
     String getUrlPrefix();
 
     /**
