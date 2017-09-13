@@ -43,6 +43,7 @@ public class FetchedPage {
                 .requestBody(params.getRequestBody())
                 .device(params.getDevice())
                 .referrer(params.getReferrer())
+                .followRedirects(params.isFollowRedirects())
                 .timeout(params.getTimeout())
                 .retriesOnTimeout(params.getRetriesOnTimeout())
                 .cookie(params.getCookie())

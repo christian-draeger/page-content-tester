@@ -31,6 +31,7 @@ public class Fetcher {
     private final Method method;
     private final String requestBody;
     private final String referrer;
+    private boolean followRedirects;
     private final int timeout;
     private final int retriesOnTimeout;
     private final Map<String, String> cookie;
@@ -53,7 +54,7 @@ public class Fetcher {
                         .userAgent(deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP))
                         .ignoreHttpErrors(true)
                         .proxy(CONFIG.getProxy())
-                        .followRedirects(CONFIG.isFollowingRedirects())
+                        .followRedirects(followRedirects)
                         .ignoreContentType(CONFIG.isIgnoringContentType())
                         .method(method)
                         .maxBodySize(0)

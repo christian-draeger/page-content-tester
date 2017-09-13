@@ -17,6 +17,7 @@ public class FetchRequestParameters {
     private String requestBody;
     private FetchedPage.DeviceType device;
     private String referrer;
+    private boolean followRedirects;
     private Protocol protocol;
     private int timeout;
     private int retriesOnTimeout;
@@ -31,6 +32,7 @@ public class FetchRequestParameters {
                 .requestBody(requestBody)
                 .deviceType(device)
                 .referrer(referrer)
+                .followRedirects(followRedirects)
                 .timeout(timeout)
                 .retriesOnTimeout(retriesOnTimeout)
                 .cookie(cookie)

@@ -73,6 +73,7 @@ public class FetcherManagerTest {
                 .device(DESKTOP)
                 .requestBody("")
                 .referrer("")
+                .followRedirects(true)
                 .timeout(3000)
                 .retriesOnTimeout(0)
                 .cookie(Collections.emptyMap())

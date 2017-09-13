@@ -51,6 +51,7 @@ public class FetcherRule implements TestRule {
                     .method(fetchAnnotation.method())
                     .protocol(fetchAnnotation.protocol())
                     .referrer(getReferrer(fetchAnnotation))
+                    .followRedirects(isFollowingRedirects(fetchAnnotation))
                     .timeout(getTimeout(fetchAnnotation))
                     .retriesOnTimeout(getRetryCount(fetchAnnotation))
                     .cookie(getCookies(cookieAnnotation))
@@ -103,6 +104,11 @@ public class FetcherRule implements TestRule {
 
     private String getReferrer(Fetch fetchPage) {
         return "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
+    }
+
+    private boolean isFollowingRedirects(Fetch fetchPage) {
+        return fetchPage.followRedirects() && config.isFollowingRedirects();
+
     }
 
     private String getUrlPrefix(Fetch fetchPage) {

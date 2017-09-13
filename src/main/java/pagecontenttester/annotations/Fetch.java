@@ -35,7 +35,7 @@ public @interface Fetch {
     Protocol protocol() default HTTP;
     String urlPrefix() default "";
     String url();
-    String requestBody() default "_-.";
+    boolean followRedirects() default true;
     String port() default "";
     DeviceType device() default DESKTOP;
     Method method() default GET;
