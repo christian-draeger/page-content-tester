@@ -77,7 +77,7 @@ public interface Page {
 
     /**
      * stores the responses page body as html file in target directory under target/paco/$folder.
-     * @param folder
+     * @param folder - name of folder
      */
     void store(String folder);
 
