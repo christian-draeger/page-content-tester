@@ -71,12 +71,12 @@ public interface Page {
 
     /**
      * stores the responses page body as html file in target directory.
-     * files can be found under target/paco/stored/<nameOfTest(path)>.html
+     * files can be found under target/paco/stored/$nameOfTest(path).html
      */
     void storePageBody();
 
     /**
-     * stores the responses page body as html file in target directory under target/paco/<folder>.
+     * stores the responses page body as html file in target directory under target/paco/$folder.
      * @param folder
      */
     void store(String folder);
