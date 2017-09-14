@@ -1,4 +1,4 @@
-<img align="left" width="250px" src="https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/paco.png">
+<img align="left" width="250px" src="https://raw.githubusercontent.com/christian-draeger/page-content-tester/master/src/main/resources/paco.png">
 
 <h1 align="left"> Paco <sub>(the page content tester)</sub></h1>
 
