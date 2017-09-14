@@ -12,7 +12,7 @@ import pagecontenttester.configurations.Config;
 public interface Page {
 
     /**
-     * Holds information of certain fetched page's config values
+     * Holds information of the global config values
      * @return Config
      */
     Config getConfig();

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import pagecontenttester.configurations.Config;
 
 @Slf4j
-public class FetcherManager {
+class FetcherManager {
 
     private Config config = new Config();
 
@@ -26,11 +26,11 @@ public class FetcherManager {
 
     private static FetcherManager ourInstance = new FetcherManager();
 
-    public static FetcherManager getInstance() {
+    static FetcherManager getInstance() {
         return ourInstance;
     }
 
-    public Future<FetchedPage> submit(FetchRequestParameters params, String testName) {
+    Future<FetchedPage> submit(FetchRequestParameters params, String testName) {
         final CompletableFuture<FetchedPage> future = new CompletableFuture<>();
         final Future<FetchedPage> oldValue = requestMap.putIfAbsent(params, future);
         if (oldValue == null || cacheIsOff() || calledTestMethods.contains(testName)) {

@@ -15,6 +15,9 @@ import pagecontenttester.configurations.Config;
 
 public class RampUp {
 
+    private RampUp() {
+    }
+
     protected static Config config = new Config();
 
     private static Ansi.Color paco = CYAN;
