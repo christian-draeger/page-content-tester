@@ -9,7 +9,14 @@ import java.lang.annotation.Target;
 @Target({ ElementType.PARAMETER })
 public @interface Cookie {
 
+    /**
+     * Defines the name of the cookie
+     */
     String name() default "";
+
+    /**
+     * Defines the value of the cookie
+     */
     String value() default "";
 
 }
