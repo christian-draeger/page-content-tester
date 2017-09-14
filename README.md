@@ -1,16 +1,16 @@
 <h1 align="left"> Paco <sub>(the page content tester)</sub></h1><br>
 
-<img align="left" width="240px" src="https://raw.githubusercontent.com/christian-draeger/page-content-tester/master/src/main/resources/paco.png">
+<img align="left" width="240px" border-width="0" src="https://raw.githubusercontent.com/christian-draeger/page-content-tester/master/src/main/resources/paco.png">
 
 <p align="left">
 <br>
-<a target="_blank" href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22"><img src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
-<a target="_blank" href="https://travis-ci.org/christian-draeger/page-content-tester"><img src="https://img.shields.io/travis/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
-<a href="https://github.com/christian-draeger/page-content-tester/issues"><img src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
-<a target="_blank" href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester"><img src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square"/></a><br>
-<a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436"><img src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
-<a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard"><img src="https://img.shields.io/codacy/coverage/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
-<a target="_blank" href="https://github.com/christian-draeger/page-content-tester/blob/master/LICENSE"><img src="https://img.shields.io/github/license/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
+<a target="_blank" href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22"><img border-width="0" src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://travis-ci.org/christian-draeger/page-content-tester"><img border-width="0" src="https://img.shields.io/travis/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
+<a href="https://github.com/christian-draeger/page-content-tester/issues"><img  border-width="0" src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester"><img  border-width="0" src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436"><img  border-width="0" src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard"><img  border-width="0" src="https://img.shields.io/codacy/coverage/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square"/></a><br>
+<a target="_blank" href="https://github.com/christian-draeger/page-content-tester/blob/master/LICENSE"><img  border-width="0" src="https://img.shields.io/github/license/christian-draeger/page-content-tester.svg?style=flat-square"/></a><br>
 <br>
 </p>
 
