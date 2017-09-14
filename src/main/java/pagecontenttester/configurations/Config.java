@@ -2,15 +2,11 @@ package pagecontenttester.configurations;
 
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
-import java.io.FileReader;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.junit.rules.Timeout;
 
-import lombok.SneakyThrows;
 import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 public class Config {
@@ -75,13 +71,6 @@ public class Config {
 
     public String getPort() {
         return configs.getStringValue("port");
-    }
-
-    @SneakyThrows
-    public String getPacoVersion() {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = reader.read(new FileReader("pom.xml"));
-        return model.getVersion();
     }
 
     public boolean isPacoAsciiActive() {

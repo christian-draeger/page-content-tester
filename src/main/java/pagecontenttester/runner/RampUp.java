@@ -16,7 +16,6 @@ import pagecontenttester.configurations.Config;
 public class RampUp {
 
     protected static Config config = new Config();
-    static String pacoVersion = config.getPacoVersion();
 
     private static Ansi.Color paco = CYAN;
     private static Ansi.Color banner = MAGENTA;
@@ -36,7 +35,7 @@ public class RampUp {
                     + ansi().bold().fg(paco).a("`.___.'").reset(),
             ansi().bold().fg(paco).a("      (__)").reset()
                     +""+ ansi().fg(banner).a("  \\  ╠≡═- ").reset()
-                    + ansi().fg(version).a("version " + pacoVersion).reset()
+                    + ansi().fg(version).a("version 1.7.3").reset()
                     + ansi().fg(banner).a(" -═≡╣  /").reset(),
             ansi().fg(banner).a("            /__╚═════════════════════╝__\\\n").reset());
 
