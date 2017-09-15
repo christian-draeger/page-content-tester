@@ -1,8 +1,20 @@
 package pagecontenttester.fetcher;
 
+import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
@@ -10,7 +22,12 @@ import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import pagecontenttester.configurations.Config;
 
@@ -160,6 +177,54 @@ class FetchedPageForTest implements Page {
     private void hasSelector(String cssSelector) {
         if (getElementCount(cssSelector) == 0) {
             store("not-found");
+        }
+    }
+
+    @Override
+    public void validateXml(String xsdPath){
+        validateXml(xsdPath, true, W3C_XML_SCHEMA_NS_URI);
+    }
+
+    @Override
+    public void validateXml(String xsdPath, boolean namespaceAware){
+        validateXml(xsdPath, namespaceAware, W3C_XML_SCHEMA_NS_URI);
+    }
+
+    @Override
+    @SneakyThrows
+    public void validateXml(String xsdPath, boolean namespaceAware, String schemaLanguage) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        factory.setNamespaceAware(namespaceAware);
+
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        org.w3c.dom.Document document = builder.parse(new InputSource(new StringReader(getPageBody())));
+
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(schemaLanguage);
+        Source schemaSource = new StreamSource(getClass().getResourceAsStream(xsdPath));
+
+        Schema schema = schemaFactory.newSchema(schemaSource);
+        Validator validator = schema.newValidator();
+        Source source = new DOMSource(document);
+        validator.setErrorHandler(new XmlErrorHandler());
+        validator.validate(source);
+    }
+
+    private static class XmlErrorHandler implements ErrorHandler {
+
+        @Override
+        public void warning(SAXParseException exception) throws SAXException {
+            throw new RuntimeException(exception);
+        }
+
+        @Override
+        public void error(SAXParseException exception) throws SAXException {
+            throw new RuntimeException(exception);
+        }
+
+        @Override
+        public void fatalError(SAXParseException exception) throws SAXException {
+            throw new RuntimeException(exception);
         }
     }
 }

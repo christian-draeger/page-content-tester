@@ -186,4 +186,10 @@ public interface Page {
      * @return the response body in JSON format
      */
     JSONObject getJsonResponse();
+
+    void validateXml(String xsdPath);
+
+    void validateXml(String xsdPath, boolean namespaceAware);
+
+    void validateXml(String xsdPath, boolean namespaceAware, String schemaLanguage);
 }
