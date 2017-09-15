@@ -15,9 +15,6 @@ import pagecontenttester.configurations.Config;
 
 public class RampUp {
 
-    private RampUp() {
-    }
-
     protected static Config config = new Config();
 
     private static Ansi.Color paco = CYAN;
@@ -41,6 +38,9 @@ public class RampUp {
                     + ansi().fg(version).a("version 1.7.3").reset()
                     + ansi().fg(banner).a(" -═≡╣  /").reset(),
             ansi().fg(banner).a("            /__╚═════════════════════╝__\\\n").reset());
+
+    private RampUp() {
+    }
 
     static void printAsciiArt() {
         if (config.isPacoAsciiActive()) {
