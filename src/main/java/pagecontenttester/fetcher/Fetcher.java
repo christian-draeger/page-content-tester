@@ -76,6 +76,8 @@ public class Fetcher {
         }
     }
 
+    // TODO: remove old lombok hack for default values use the new @Builder.Default feature (since v1.16.16), see: https://reinhard.codes/2016/07/13/using-lomboks-builder-annotation-with-default-values/
+
     public static class FetcherBuilder { //NOSONAR
         private DeviceType device = DESKTOP; //NOSONAR
         private Method method = Method.GET; //NOSONAR
