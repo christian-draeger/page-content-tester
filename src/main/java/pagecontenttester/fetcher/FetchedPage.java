@@ -103,13 +103,28 @@ public class FetchedPage {
 
     private static String getUrl(String url, Protocol protocol, String urlPrefix, String portFromAnnotation) {
 
-
         String prefix = urlPrefix.isEmpty() ? urlPrefix : urlPrefix + ".";
+
         String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + config.getPort();
         String port = ":".equals(portFallBackCheck) ? "" : portFallBackCheck;
+
+        String protocolValue = StringUtils.isNotEmpty(protocol.value) ? protocol.value : ":" + config.getProtocol();
+
         try {
-            URL urlRaw = new URL(protocol.value + prefix + url);
-            return protocol.value + urlRaw.getHost() + port + urlRaw.getFile();
+            /*if (StringUtils.isNotEmpty(protocolValue)) {
+                url.replace("http://", "");
+                url.replace("https://", "");
+                url.replace("ftp://", "");
+                url = protocolValue + url;
+            }*/
+
+            URL urlRaw = new URL(protocolValue + prefix + url);
+
+            if (url.matches(".*:[0-9]{4,6}.*") && StringUtils.isEmpty(portFromAnnotation)) {
+                port =  ":" + urlRaw.getPort();
+            }
+
+            return protocolValue + urlRaw.getHost() + port + urlRaw.getFile();
 
         } catch (MalformedURLException e) {
             log.error(e.getMessage(), e);
