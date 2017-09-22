@@ -111,12 +111,10 @@ public class FetchedPage {
         String protocolValue = StringUtils.isNotEmpty(protocol.value) ? protocol.value : ":" + config.getProtocol();
 
         try {
-            /*if (StringUtils.isNotEmpty(protocolValue)) {
-                url.replace("http://", "");
-                url.replace("https://", "");
-                url.replace("ftp://", "");
-                url = protocolValue + url;
-            }*/
+            if (StringUtils.isNotEmpty(protocolValue)) {
+                // TODO: string replaces are ignored atm
+                url = removeProtocolFromString(url);
+            }
 
             URL urlRaw = new URL(protocolValue + prefix + url);
 
@@ -131,6 +129,13 @@ public class FetchedPage {
         }
 
         return null;
+    }
+
+    private static String removeProtocolFromString(String url) {
+        url.replace("http://", "");
+        url.replace("https://", "");
+        url.replace("ftp://", "");
+        return url;
     }
 
 }
