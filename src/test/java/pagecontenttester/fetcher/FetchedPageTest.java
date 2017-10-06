@@ -221,14 +221,6 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = "github.com:8080/christian-draeger")
-    @Fetch(url = "github.com:8080/christian-draeger", device = MOBILE)
-    public void should_retrun_fetched_page_even_with_wrong_port() {
-        assertThat(page.get(GITHUB_URL, DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get(GITHUB_URL, MOBILE).getDeviceType(), equalTo(MOBILE));
-    }
-
-    @Test
     @Fetch(url = GOOGLE_URL)
     @Fetch(url = GOOGLE_URL, device = MOBILE)
     public void should_return_fetched_page_for_url_snippet_and_device() {
