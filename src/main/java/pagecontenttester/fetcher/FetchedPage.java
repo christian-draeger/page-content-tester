@@ -108,7 +108,7 @@ public class FetchedPage {
         String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + config.getPort();
         String port = ":".equals(portFallBackCheck) ? "" : portFallBackCheck;
 
-        String protocolValue = StringUtils.isNotEmpty(protocol.value) ? protocol.value : ":" + config.getProtocol();
+        String protocolValue = StringUtils.isNotEmpty(protocol.value) ? protocol.value : config.getProtocol();
 
         try {
             if (StringUtils.isNotEmpty(protocolValue)) {
