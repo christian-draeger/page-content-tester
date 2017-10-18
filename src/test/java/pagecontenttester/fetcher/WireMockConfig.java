@@ -1,30 +1,32 @@
 package pagecontenttester.fetcher;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 
 import pagecontenttester.runner.Paco;
 
 public class WireMockConfig extends Paco {
 
+    @ClassRule
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8365);
+    public WireMockClassRule instanceRule = wireMockRule;
 
     @BeforeClass
     public static void setUp() throws Exception {
-        stubFor(get(urlEqualTo("/my/resource"))
-                .withHeader("Accept", equalTo("text/xml"))
+        stubFor(get(urlEqualTo("/templated"))
                 .willReturn(aResponse()
-                        .withStatus(123)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>")));
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/html; charset=utf-8")
+                        .withBody("<body>Some content</body>")));
     }
 }
