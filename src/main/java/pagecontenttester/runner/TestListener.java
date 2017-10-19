@@ -12,7 +12,6 @@ import org.junit.runner.notification.RunListener;
 public class TestListener extends RunListener {
 
     private long startTime;
-    private long endTime;
 
     @Override
     public void testRunStarted(Description description) throws Exception {
@@ -28,8 +27,7 @@ public class TestListener extends RunListener {
             System.out.println(ansi().fgRed().bold().a("\uD83D\uDED1 DAMN IT\t: " + result.getFailureCount() + " of " + result.getRunCount() + " executed tests failed").reset());
         }
 
-        endTime = new Date().getTime();
-        System.out.println(ansi().fgBrightBlack().bold().a("\uD83D\uDD57 TIME\t\t: test run took " + getElapsedTime(startTime, endTime) + " (without maven ramp up)").reset());
+        System.out.println(ansi().fgBrightBlack().bold().a("\uD83D\uDD57 TIME\t\t: test run took " + getElapsedTime(startTime) + " (without maven ramp up)").reset());
     }
 
     @Override
@@ -47,10 +45,13 @@ public class TestListener extends RunListener {
         System.out.println("\uD83C\uDFC1 " + ansi().fgBrightCyan().bold().a("finished test: ").reset() + description.getDisplayName());
     }
 
-    private String getElapsedTime(long startTime, long endTime) {
-        long elapsed = (endTime-startTime);
+    private String getElapsedTime(long startTime) {
+        long elapsed = (new Date().getTime()-startTime);
         if (elapsed < 1000) {
             return elapsed + " milliseconds";
+        }
+        if(elapsed < 2000) {
+            return elapsed / 1000 + " second";
         }
         return elapsed / 1000 + " seconds";
     }
