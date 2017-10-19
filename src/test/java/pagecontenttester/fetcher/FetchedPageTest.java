@@ -1,9 +1,9 @@
 package pagecontenttester.fetcher;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
@@ -24,18 +24,18 @@ import org.junit.Test;
 import pagecontenttester.annotations.Cookie;
 import pagecontenttester.annotations.Fetch;
 import pagecontenttester.annotations.GetFetchedPageException;
-import pagecontenttester.runner.Paco;
+import pagecontenttester.runner.PageContentTester;
 
-@Fetch(url = "github.com/christian-draeger")
-public class FetchedPageTest extends Paco {
+@Fetch(url = "localhost/example", port = "8089")
+public class FetchedPageTest extends PageContentTester {
 
-    private static final String GITHUB_URL = "github.com/christian-draeger";
-    private static final String GOOGLE_URL = "www.google.de";
-    private static final String VALID_SELECTOR = "h1";
+    private static final String URL1 = "localhost:8089/example";
+    private static final String URL2 = "localhost:8089/example2";
+    private static final String URL3 = "localhost:8089/example3";
 
     @Test
     public void can_fetch_from_class_annotation() {
-        assertThat(page.get().getUrl()).contains("github");
+        assertThat(page.get().getUrl()).endsWith("example");
     }
 
     @Test
@@ -44,19 +44,19 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    @Fetch(url = URL2, device = MOBILE)
     public void fetcher_should_return_fetched_mobile_page_for_valid_url() {
         assertThat(page.get().isMobile()).isTrue();
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    @Fetch(url = URL2, device = MOBILE)
     public void fetcher_should_return_device_type_for_fetched_mobile_page() {
         assertThat(page.get().getDeviceType()).isEqualTo(MOBILE);
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL, device = DESKTOP)
+    @Fetch(url = URL2, device = DESKTOP)
     public void fetcher_should_return_device_type_for_fetched_desktop_page() {
         assertThat(page.get().getDeviceType()).isEqualTo(DESKTOP);
     }
@@ -90,7 +90,7 @@ public class FetchedPageTest extends Paco {
 
     @Test
     public void fetcher_should_return_element() {
-        assertThat(page.get().getElement(VALID_SELECTOR).hasText()).isTrue();
+        assertThat(page.get().getElement("h1").hasText()).isTrue();
     }
 
     @Test
@@ -100,13 +100,13 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = URL2)
     public void fetcher_should_return_status_message() {
         assertThat(page.get().getStatusMessage()).isEqualTo("OK");
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = URL2)
     public void fetcher_should_return_status_code() {
         assertThat(page.get().getStatusCode()).isEqualTo(200);
     }
@@ -119,7 +119,7 @@ public class FetchedPageTest extends Paco {
 
     @Test
     public void should_return_true_if_certain_element_is_present() {
-        assertThat(page.get().isElementPresent(VALID_SELECTOR)).isTrue();
+        assertThat(page.get().isElementPresent("h1")).isTrue();
     }
 
     @Test
@@ -129,27 +129,27 @@ public class FetchedPageTest extends Paco {
 
     @Test
     public void fetcher_should_return_elements_by_selector() {
-        assertThat(page.get().getElements(VALID_SELECTOR).size()).isGreaterThanOrEqualTo(1);
+        assertThat(page.get().getElements("h1").size()).isEqualTo(1);
     }
 
     @Test
     public void fetcher_should_return_last_matching_element_by_selector() {
-        assertThat(page.get().getElementLastOf("title").text()).isNotBlank();
+        assertThat(page.get().getElementLastOf("p").text()).contains("second paragraph");
     }
 
     @Test
     public void fetcher_should_return_nth_matching_element_by_selector() {
-        assertThat(page.get().getElement("title", 0).text()).isNotBlank();
+        assertThat(page.get().getElement("p", 0).text()).isEqualTo("i'm a paragraph");
     }
 
     @Test
     public void fetcher_should_return_count_of_certain_element() {
-        assertThat(page.get().getElementCount(VALID_SELECTOR), is(1));
+        assertThat(page.get().getElementCount("p"), is(2));
     }
 
     @Test
     public void fetcher_should_return_headers() {
-        assertThat(page.get().getHeaders(), hasEntry("Server", "GitHub.com"));
+        assertThat(page.get().getHeaders(), hasEntry("Custom-Header", "custom value"));
     }
 
     @Test(expected = NullPointerException.class)
@@ -160,31 +160,28 @@ public class FetchedPageTest extends Paco {
 
     @Test
     public void fetcher_should_return_certain_header() {
-        assertThat(page.get().getHeader("Server"), equalTo("GitHub.com"));
+        assertThat(page.get().getHeader("Custom-Header"), equalTo("custom value"));
     }
 
     @Test
     public void fetcher_should_check_is_certain_header_is_present() {
-        assertThat(page.get().hasHeader("Server"), is(true));
+        assertThat(page.get().hasHeader("Custom-Header"), is(true));
     }
 
     @Test
-    @Fetch(url = GITHUB_URL)
-    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = URL1)
+    @Fetch(url = URL2)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_index() {
-        assertThat(page.get(0).isElementPresent("h1"), is(true));
-        assertThat(page.get(0).getUrl(), equalTo("http://" + GITHUB_URL));
-
-        assertThat(page.get(1).isElementPresent("#footer"), is(true));
-        assertThat(page.get(1).getUrl(), equalTo("http://" + GOOGLE_URL));
+        assertThat(page.get(0).getUrl(), equalTo("http://" + URL1));
+        assertThat(page.get(1).getUrl(), equalTo("http://" + URL2));
     }
 
     @Test
-    @Fetch(url = GITHUB_URL)
-    @Fetch(url = GOOGLE_URL)
+    @Fetch(url = URL2)
+    @Fetch(url = URL3)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_url_snippet() {
-        assertThat(page.get("github").isElementPresent("h1"), is(true));
-        assertThat(page.get("google").isElementPresent("#footer"), is(true));
+        assertThat(page.get("example2").getTitle()).isEqualTo("i'm the title2");
+        assertThat(page.get("example3").getTitle()).isEqualTo("i'm the title3");
     }
 
     @Test(expected = GetFetchedPageException.class)
@@ -192,6 +189,7 @@ public class FetchedPageTest extends Paco {
         page.get("unknown");
     }
 
+    @Ignore("figure out how to make redirects or set prefix with wiremock")
     @Test
     @Fetch(protocol = HTTPS, urlPrefix = "en", url = "wikipedia.org")
     public void fetch_page_via_annotation_and_build_url() {
@@ -205,39 +203,39 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL)
-    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    @Fetch(url = URL2)
+    @Fetch(url = URL2, device = MOBILE)
     public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_page_by_url_and_device() {
-        assertThat(page.get(GOOGLE_URL, DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get(GOOGLE_URL, MOBILE).getDeviceType(), equalTo(MOBILE));
+        assertThat(page.get(URL2, DESKTOP).getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get(URL2, MOBILE).getDeviceType(), equalTo(MOBILE));
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL)
-    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    @Fetch(url = URL2)
+    @Fetch(url = URL2, device = MOBILE)
     public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_by_device() {
         assertThat(page.get(DESKTOP).getDeviceType(), equalTo(DESKTOP));
         assertThat(page.get(MOBILE).getDeviceType(), equalTo(MOBILE));
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL)
-    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    @Fetch(url = URL2)
+    @Fetch(url = URL2, device = MOBILE)
     public void should_return_fetched_page_for_url_snippet_and_device() {
-        assertThat(page.get("google", DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get("google", MOBILE).getDeviceType(), equalTo(MOBILE));
+        assertThat(page.get("example2", DESKTOP).getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get("example2", MOBILE).getDeviceType(), equalTo(MOBILE));
     }
 
     @Test
-    @Fetch(url = GOOGLE_URL)
-    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    @Fetch(url = URL2)
+    @Fetch(url = URL2, device = MOBILE)
     public void should_return_fetched_page_for_url_snippet() {
-        assertThat(page.get("google").getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get("example2").getDeviceType(), equalTo(DESKTOP));
     }
 
     @Test(expected = GetFetchedPageException.class)
-    @Fetch(url = GOOGLE_URL)
-    @Fetch(url = GOOGLE_URL, device = MOBILE)
+    @Fetch(url = URL2)
+    @Fetch(url = URL2, device = MOBILE)
     public void should_throw_exception_if_page_can_not_get_by_url() {
         page.get("wrong-url", DESKTOP);
 
@@ -256,20 +254,18 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = "stackoverflow.com/")
+    @Fetch(url = URL1)
     public void can_store_page_body() throws IOException, InterruptedException {
         page.get().storePageBody();
         File file = new File("target/paco/stored/can_store_page_body(pagecontenttester.fetcher.FetchedPageTest).html");
-        String pageBody = FileUtils.readFileToString(file);
-        assertThat(pageBody, containsString("html"));
+        assertFileContent(file, "<title>i'm the title</title>");
     }
 
     @Test
     public void store_page_body_if_element_not_present() throws IOException {
         page.get().getElements("dfghfjhg");
         File file = new File("target/paco/not-found/store_page_body_if_element_not_present(pagecontenttester.fetcher.FetchedPageTest).html");
-        String pageBody = FileUtils.readFileToString(file);
-        assertThat(pageBody, containsString("GitHub"));
+        assertFileContent(file, "<title>i'm the title</title>");
     }
 
 
@@ -277,62 +273,59 @@ public class FetchedPageTest extends Paco {
     @Fetch(url = "whatsmyuseragent.org/", device = MOBILE)
     public void fetch_as_mobile_device_by_annotation() {
         String ua = page.get().getElement("p.intro-text").text();
-        assertThat(ua, containsString(page.get().getConfig().getUserAgent(MOBILE)));
+        assertThat(ua).contains(page.get().getConfig().getUserAgent(MOBILE));
     }
 
     @Test
-    @Fetch(url = "www.whatismyreferer.com/", referrer = "my.custom.referrer")
+    @Fetch(url = URL1, referrer = "my.custom.referrer")
     public void fetch_page_by_setting_custom_referrer() {
-        String referrer = page.get().getElement("strong").text();
-        assertThat(referrer, equalTo("my.custom.referrer"));
+        String referrer = page.get().getReferrer();
+        assertThat(referrer).isEqualTo("my.custom.referrer");
     }
 
     @Test
     @Fetch(url = "www.whatismyreferer.com/")
     public void fetch_page_should_use_referrer_from_properties_by_default() {
         String referrer = page.get().getElement("strong").text();
-        assertThat(referrer, equalTo(config.getReferrer()));
+        assertThat(referrer).isEqualTo(config.getReferrer());
     }
 
-    @Ignore
+    @Ignore("figure out how to configure qiremock to replay cookies")
     @Test
-    @Fetch( url = "www.html-kit.com/tools/cookietester/",
+    @Fetch( url = URL1,
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
     public void can_set_cookie_via_annotation() throws Exception {
-        assertThat(page.get().getDocument().body().text(),
-                both(containsString("page-content-tester"))
-                        .and(containsString("wtf-666")));
+        assertThat(page.get().getCookieValue("page-content-tester")).isEqualTo("wtf-666");
     }
 
-    @Ignore
+    @Ignore("figure out how to configure qiremock to replay cookies")
     @Test
-    @Fetch( url = "www.html-kit.com/tools/cookietester/",
+    @Fetch( url = URL1,
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),
                             @Cookie(name = "some-other-cookie", value = "666-wtf") })
     public void can_set__multiple_cookies_via_annotation() throws Exception {
-        String body = page.get().getDocument().body().text();
-        assertThat(body, both(containsString("page-content-tester"))
-                        .and(containsString("wtf-666")));
-        assertThat(body, both(containsString("some-other-cookie"))
-                        .and(containsString("666-wtf")));
+        assertThat(page.get().getCookieValue("page-content-tester")).isEqualTo("wtf-666");
+        assertThat(page.get().getCookieValue("some-other-cookie")).isEqualTo("666-wtf");
     }
 
-    @Ignore("problems in call method")
     @Test
-    @Fetch(url = "bin.org/post", method = POST)
+    @Fetch(url = URL1, method = POST)
     public void do_post_request_and_check_response() throws Exception {
-//        JSONObject responseBody = call("http://bin.org/post", POST, Collections.emptyMap()).getJsonResponse();
-        assertThat(page.get().getJsonResponse().get("data"), equalTo(""));
+        assertThat(page.get().getJsonResponse().get("data"), equalTo("some value"));
     }
 
     @Test
     public void should_return_true_for_certain_count_of_certain_element() {
-        assertThat(page.get().isElementPresentNthTimes(VALID_SELECTOR, 1), is(true));
+        assertThat(page.get().isElementPresentNthTimes("h1", 1), is(true));
     }
 
     @Test
     public void should_return_false_for_invalid_count_of_certain_element() {
-        assertThat(page.get().isElementPresentNthTimes(VALID_SELECTOR, 100), is(false));
+        assertThat(page.get().isElementPresentNthTimes("h1", 100), is(false));
     }
 
+    private void assertFileContent(File file, String contains) {
+        await().atMost(5, SECONDS).untilAsserted(() ->
+                assertThat(FileUtils.readFileToString(file).contains(contains)));
+    }
 }

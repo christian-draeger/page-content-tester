@@ -117,9 +117,10 @@
             <version>4.5</version>
         </dependency>
         <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
-            <version>2.9.0</version>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility-proxy</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.fusesource.jansi</groupId>
@@ -167,7 +168,27 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>uk.co.deliverymind</groupId>
+                <artifactId>wiremock-maven-plugin</artifactId>
+                <version>2.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <dir>target/classes</dir>
+                            <params>--port=8089 --https-port=8090</params>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
+
 
         <pluginManagement>
             <plugins>
@@ -196,7 +217,7 @@
                     <configuration>
                         <parallel>all</parallel>
                         <useUnlimitedThreads>true</useUnlimitedThreads>
-                        <useSystemClassLoader>false</useSystemClassLoader>
+                        <!--<useSystemClassLoader>false</useSystemClassLoader>-->
                         <trimStackTrace>false</trimStackTrace>
                         <properties>
                             <property>

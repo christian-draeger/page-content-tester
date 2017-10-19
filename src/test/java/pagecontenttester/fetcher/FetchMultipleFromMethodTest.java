@@ -5,16 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import pagecontenttester.annotations.Fetch;
-import pagecontenttester.runner.Paco;
+import pagecontenttester.runner.PageContentTester;
 
-public class FetchMultipleFromMethodTest extends Paco {
+public class FetchMultipleFromMethodTest extends PageContentTester {
 
     @Test
-    @Fetch(url = "github.com/christian-draeger")
-    @Fetch(url = "www.idealo.de")
+    @Fetch(url = "localhost/example", port = "8089")
+    @Fetch(url = "localhost/example2", port = "8089")
     public void can_fetch_from_method_annotation() {
-        assertThat(page.get(1).getTitle()).contains("IDEALO");
-        assertThat(page.get(0).getTitle()).contains("GitHub");
+        assertThat(page.get(1).getTitle()).endsWith("title2");
+        assertThat(page.get(0).getTitle()).endsWith("title");
     }
 
 }

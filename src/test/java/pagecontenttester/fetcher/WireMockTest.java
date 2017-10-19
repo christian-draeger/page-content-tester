@@ -5,12 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import pagecontenttester.annotations.Fetch;
+import pagecontenttester.runner.PageContentTester;
 
-public class WireMockTest extends WireMockConfig {
+public class WireMockTest extends PageContentTester {
 
     @Test
-    @Fetch(url = "localhost/templated", port = "8089")
+    @Fetch(url = "localhost/example", port = "8089")
     public void name() throws Exception {
-        assertThat(page.get().getElement("body").text()).isEqualTo("Some content");
+        assertThat(page.get().getTitle()).contains("i'm the title");
     }
 }

@@ -94,6 +94,10 @@ class FetchedPageForTest implements Page {
         return getResponse().header("Location");
     }
 
+    public String getReferrer() {
+        return getResponse().header("Referer");
+    }
+
     public boolean hasHeader(String header) {
         return getResponse().hasHeader(header);
     }

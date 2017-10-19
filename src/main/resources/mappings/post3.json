@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/example"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "data.json"
+  }
+}

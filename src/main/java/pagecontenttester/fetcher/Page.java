@@ -154,6 +154,11 @@ public interface Page {
     String getLocation();
 
     /**
+     * @return Referer header
+     */
+    String getReferrer();
+
+    /**
      * Check if a header is present
      * @param header name of header (case insensitive)
      * @return if the header is present in this request/response
