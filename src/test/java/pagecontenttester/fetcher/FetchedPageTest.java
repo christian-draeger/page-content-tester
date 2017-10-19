@@ -189,11 +189,10 @@ public class FetchedPageTest extends PageContentTester {
         page.get("unknown");
     }
 
-    @Ignore("figure out how to make redirects or set prefix with wiremock")
     @Test
-    @Fetch(protocol = HTTPS, urlPrefix = "en", url = "wikipedia.org")
+    @Fetch(protocol = HTTPS, urlPrefix = "en", url = "wikipedia.org/proxy")
     public void fetch_page_via_annotation_and_build_url() {
-        assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org"));
+        assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org/proxy"));
         assertThat(page.get().getUrlPrefix(), equalTo("en"));
     }
 
