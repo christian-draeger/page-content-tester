@@ -2,6 +2,8 @@ package pagecontenttester.runner;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
+import java.util.Date;
+
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -9,8 +11,12 @@ import org.junit.runner.notification.RunListener;
 
 public class TestListener extends RunListener {
 
+    private long startTime;
+    private long endTime;
+
     @Override
     public void testRunStarted(Description description) throws Exception {
+        startTime = new Date().getTime();
         RampUp.printAsciiArt();
     }
 
@@ -21,6 +27,9 @@ public class TestListener extends RunListener {
         } else {
             System.out.println(ansi().fgRed().bold().a("\uD83D\uDED1 DAMN IT\t: " + result.getFailureCount() + " of " + result.getRunCount() + " executed tests failed").reset());
         }
+
+        endTime = new Date().getTime();
+        System.out.println(ansi().fgBrightBlack().bold().a("\uD83D\uDD57 TIME\t\t: test run took " + getElapsedTime(startTime, endTime) + " (without maven ramp up)").reset());
     }
 
     @Override
@@ -36,6 +45,14 @@ public class TestListener extends RunListener {
     @Override
     public void testFinished(Description description) {
         System.out.println("\uD83C\uDFC1 " + ansi().fgBrightCyan().bold().a("finished test: ").reset() + description.getDisplayName());
+    }
+
+    private String getElapsedTime(long startTime, long endTime) {
+        long elapsed = (endTime-startTime);
+        if (elapsed < 1000) {
+            return elapsed + " milliseconds";
+        }
+        return elapsed / 1000 + " seconds";
     }
 
 }
