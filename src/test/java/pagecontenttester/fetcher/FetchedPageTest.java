@@ -32,6 +32,8 @@ public class FetchedPageTest extends PageContentTester {
     private static final String URL1 = "localhost:8089/example";
     private static final String URL2 = "localhost:8089/example2";
     private static final String URL3 = "localhost:8089/example3";
+    private static final String MOBILE_USER_AGENT = "Mozilla/5.0 (iPhone\\\\; CPU iPhone OS 6_1_4 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B350 Safari/8536.25";
+    private static final String USER_AGENT = "Mozilla/5.0 (X11\\\\; Ubuntu\\\\; Linux x86_64\\\\; rv\\\\:25.0)";
 
     @Test
     public void can_fetch_from_class_annotation() {
@@ -237,9 +239,7 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = URL2, device = MOBILE)
     public void should_throw_exception_if_page_can_not_get_by_url() {
         page.get("wrong-url", DESKTOP);
-
     }
-
 
     @Test
     public void get_name_of_test() {
@@ -267,12 +267,25 @@ public class FetchedPageTest extends PageContentTester {
         assertFileContent(file, "<title>i'm the title</title>");
     }
 
-
     @Test
     @Fetch(url = "whatsmyuseragent.org/", device = MOBILE)
     public void fetch_as_mobile_device_by_annotation() {
-        String ua = page.get().getElement("p.intro-text").text();
-        assertThat(ua).contains(page.get().getConfig().getUserAgent(MOBILE));
+        String userAgent = page.get().getElement("p.intro-text").text();
+        assertThat(userAgent).contains(page.get().getConfig().getUserAgent(MOBILE));
+    }
+
+    @Test
+    @Fetch(url = "whatsmyuseragent.org/")
+    public void fetch_as_default_user_agent_by_annotation() {
+        String userAgent = page.get().getElement("p.intro-text").text();
+        assertThat(userAgent).contains(page.get().getConfig().getUserAgent(DESKTOP));
+    }
+
+    @Test
+    @Fetch(url = "whatsmyuseragent.org/", userAgent = "my custom UserAgent")
+    public void fetch_as_mobile_user_agent_by_annotation() {
+        String userAgent = page.get().getElement("p.intro-text").text();
+        assertThat(userAgent).contains("my custom UserAgent");
     }
 
     @Test

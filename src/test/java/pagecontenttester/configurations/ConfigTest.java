@@ -14,12 +14,12 @@ public class ConfigTest {
     private Config config = new Config();
 
     @Test
-    public void should_return_desktop_user_agent() {
+    public void should_return_mobile_user_agent_for_device_mobile() {
         assertThat(config.getUserAgent(MOBILE)).isEqualTo(MOBILE_USER_AGENT);
     }
 
     @Test
-    public void should_return_mobile_user_agent() {
+    public void should_return_desktop_user_agent_for_device_desktop() {
         assertThat(config.getUserAgent(DESKTOP)).isEqualTo(DESKTOP_USER_AGENT);
     }
 

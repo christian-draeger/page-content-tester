@@ -48,6 +48,7 @@ public class FetcherRule implements TestRule {
             final FetchRequestParameters fetchRequestParameters = FetchRequestParameters.builder()
                     .urlToFetch(fetchAnnotation.url())
                     .device(fetchAnnotation.device())
+                    .userAgent(fetchAnnotation.userAgent())
                     .method(fetchAnnotation.method())
                     .protocol(fetchAnnotation.protocol())
                     .referrer(getReferrer(fetchAnnotation))

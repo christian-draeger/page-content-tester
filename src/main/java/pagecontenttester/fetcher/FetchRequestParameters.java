@@ -25,12 +25,14 @@ public class FetchRequestParameters {
     private String urlPrefix;
     private String port;
     private String testName;
+    private String userAgent;
 
     Fetcher createFetcher() {
         return Fetcher.builder()
                 .method(method)
                 .requestBody(requestBody)
                 .deviceType(device)
+                .userAgent(userAgent)
                 .referrer(referrer)
                 .followRedirects(followRedirects)
                 .timeout(timeout)

@@ -71,6 +71,7 @@ public class FetcherManagerTest {
                 .urlToFetch("http://www.google.com")
                 .method(GET)
                 .device(DESKTOP)
+                .userAgent("")
                 .requestBody("")
                 .referrer("")
                 .followRedirects(true)

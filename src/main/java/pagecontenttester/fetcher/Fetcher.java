@@ -38,6 +38,7 @@ public class Fetcher {
     private final String protocol;
     private final String urlPrefix;
     private final String port;
+    private final String userAgent;
 
     public Connection.Response fetch(String url) throws IOException {
 
@@ -51,7 +52,7 @@ public class Fetcher {
                 final Connection connection = Jsoup.connect(url)
                         .validateTLSCertificates(false)
                         .timeout(timeout)
-                        .userAgent(deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP))
+                        .userAgent(getUserAgent())
                         .ignoreHttpErrors(true)
                         .proxy(CONFIG.getProxy())
                         .followRedirects(followRedirects)
@@ -76,6 +77,13 @@ public class Fetcher {
         }
     }
 
+    private String getUserAgent() {
+        if (userAgent.isEmpty()) {
+            return deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP);
+        }
+        return userAgent;
+    }
+
     // TODO: remove old lombok hack for default values use the new @Builder.Default feature (since v1.16.16), see: https://reinhard.codes/2016/07/13/using-lomboks-builder-annotation-with-default-values/
 
     public static class FetcherBuilder { //NOSONAR
@@ -90,5 +98,6 @@ public class Fetcher {
         private String protocol = CONFIG.getProtocol(); //NOSONAR
         private String urlPrefix = CONFIG.getUrlPrefix(); //NOSONAR
         private String port = CONFIG.getPort(); //NOSONAR
+        private String userAgent = CONFIG.getUserAgent(DESKTOP); //NOSONAR
     }
 }

@@ -42,6 +42,7 @@ public class FetchedPage {
                 .method(params.getMethod())
                 .requestBody(params.getRequestBody())
                 .device(params.getDevice())
+                .userAgent(params.getUserAgent())
                 .referrer(params.getReferrer())
                 .followRedirects(params.isFollowRedirects())
                 .timeout(params.getTimeout())
@@ -77,11 +78,9 @@ public class FetchedPage {
         return url;
     }
 
-
     public String getUrlPrefix() {
         return urlPrefix;
     }
-
 
     Response getResponse() {
         return response;

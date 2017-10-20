@@ -92,4 +92,9 @@ public @interface Fetch {
      * but the cookie has been send.
      */
     Cookie[] setCookies() default @Cookie();
+
+    /**
+     * Defines the user agent
+     */
+    String userAgent() default "";
 }
