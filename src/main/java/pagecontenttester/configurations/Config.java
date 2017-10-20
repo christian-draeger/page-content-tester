@@ -1,13 +1,9 @@
 package pagecontenttester.configurations;
 
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
-
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 import org.junit.rules.Timeout;
-
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 public class Config {
 
@@ -25,11 +21,8 @@ public class Config {
         return configs.getIntValue("timeout.max.retry.count");
     }
 
-    public String getUserAgent(DeviceType deviceType) {
-        if (deviceType.equals(MOBILE)) {
-            return configs.getStringValue("mobile.userAgent");
-        }
-        return configs.getStringValue("desktop.userAgent");
+    public String getUserAgent() {
+        return configs.getStringValue("userAgent");
     }
 
     public boolean isFollowingRedirects() {

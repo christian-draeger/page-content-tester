@@ -10,8 +10,6 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.jsoup.Connection.Method.POST;
 import static pagecontenttester.annotations.Fetch.Protocol.HTTPS;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,33 +30,12 @@ public class FetchedPageTest extends PageContentTester {
     private static final String URL1 = "localhost:8089/example";
     private static final String URL2 = "localhost:8089/example2";
     private static final String URL3 = "localhost:8089/example3";
+    private static final String MOBILE_USER_AGENT = "Mozilla/5.0 (iPhone\\\\; CPU iPhone OS 6_1_4 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B350 Safari/8536.25";
+    private static final String USER_AGENT = "Mozilla/5.0 (X11\\\\; Ubuntu\\\\; Linux x86_64\\\\; rv\\\\:25.0)";
 
     @Test
     public void can_fetch_from_class_annotation() {
         assertThat(page.get().getUrl()).endsWith("example");
-    }
-
-    @Test
-    public void fetcher_should_return_fetched_desktop_page_for_valid_url() {
-        assertThat(page.get().isMobile()).isFalse();
-    }
-
-    @Test
-    @Fetch(url = URL2, device = MOBILE)
-    public void fetcher_should_return_fetched_mobile_page_for_valid_url() {
-        assertThat(page.get().isMobile()).isTrue();
-    }
-
-    @Test
-    @Fetch(url = URL2, device = MOBILE)
-    public void fetcher_should_return_device_type_for_fetched_mobile_page() {
-        assertThat(page.get().getDeviceType()).isEqualTo(MOBILE);
-    }
-
-    @Test
-    @Fetch(url = URL2, device = DESKTOP)
-    public void fetcher_should_return_device_type_for_fetched_desktop_page() {
-        assertThat(page.get().getDeviceType()).isEqualTo(DESKTOP);
     }
 
     @Test
@@ -201,45 +178,6 @@ public class FetchedPageTest extends PageContentTester {
         page.get(2);
     }
 
-    @Test
-    @Fetch(url = URL2)
-    @Fetch(url = URL2, device = MOBILE)
-    public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_page_by_url_and_device() {
-        assertThat(page.get(URL2, DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get(URL2, MOBILE).getDeviceType(), equalTo(MOBILE));
-    }
-
-    @Test
-    @Fetch(url = URL2)
-    @Fetch(url = URL2, device = MOBILE)
-    public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_by_device() {
-        assertThat(page.get(DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get(MOBILE).getDeviceType(), equalTo(MOBILE));
-    }
-
-    @Test
-    @Fetch(url = URL2)
-    @Fetch(url = URL2, device = MOBILE)
-    public void should_return_fetched_page_for_url_snippet_and_device() {
-        assertThat(page.get("example2", DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get("example2", MOBILE).getDeviceType(), equalTo(MOBILE));
-    }
-
-    @Test
-    @Fetch(url = URL2)
-    @Fetch(url = URL2, device = MOBILE)
-    public void should_return_fetched_page_for_url_snippet() {
-        assertThat(page.get("example2").getDeviceType(), equalTo(DESKTOP));
-    }
-
-    @Test(expected = GetFetchedPageException.class)
-    @Fetch(url = URL2)
-    @Fetch(url = URL2, device = MOBILE)
-    public void should_throw_exception_if_page_can_not_get_by_url() {
-        page.get("wrong-url", DESKTOP);
-
-    }
-
 
     @Test
     public void get_name_of_test() {
@@ -267,12 +205,18 @@ public class FetchedPageTest extends PageContentTester {
         assertFileContent(file, "<title>i'm the title</title>");
     }
 
+    @Test
+    @Fetch(url = "whatsmyuseragent.org/")
+    public void fetch_as_default_user_agent_by_annotation() {
+        String ua = page.get().getElement("p.intro-text").text();
+        assertThat(ua).contains(USER_AGENT);
+    }
 
     @Test
-    @Fetch(url = "whatsmyuseragent.org/", device = MOBILE)
-    public void fetch_as_mobile_device_by_annotation() {
+    @Fetch(url = "whatsmyuseragent.org/", userAgent = MOBILE_USER_AGENT)
+    public void fetch_as_mobile_user_agent_by_annotation() {
         String ua = page.get().getElement("p.intro-text").text();
-        assertThat(ua).contains(page.get().getConfig().getUserAgent(MOBILE));
+        assertThat(ua).contains(MOBILE_USER_AGENT);
     }
 
     @Test

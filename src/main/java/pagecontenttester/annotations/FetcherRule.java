@@ -14,7 +14,6 @@ import org.junit.runners.model.Statement;
 
 import pagecontenttester.configurations.Config;
 import pagecontenttester.fetcher.FetchRequestParameters;
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
 import pagecontenttester.fetcher.Page;
 
 public class FetcherRule implements TestRule {
@@ -47,7 +46,7 @@ public class FetcherRule implements TestRule {
             Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
             final FetchRequestParameters fetchRequestParameters = FetchRequestParameters.builder()
                     .urlToFetch(fetchAnnotation.url())
-                    .device(fetchAnnotation.device())
+                    .userAgent(fetchAnnotation.userAgent())
                     .method(fetchAnnotation.method())
                     .protocol(fetchAnnotation.protocol())
                     .referrer(getReferrer(fetchAnnotation))
@@ -76,14 +75,6 @@ public class FetcherRule implements TestRule {
 
     public Page get(String urlSnippet) {
         return pagePicker.get(urlSnippet);
-    }
-
-    public Page get(DeviceType deviceType) {
-        return pagePicker.get(deviceType);
-    }
-
-    public Page get(String urlSnippet, DeviceType deviceType) {
-        return pagePicker.get(urlSnippet, deviceType);
     }
 
     List<Page> getFetchedPages() {

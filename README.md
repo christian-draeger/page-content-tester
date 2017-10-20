@@ -129,10 +129,10 @@ public class ExampleUsageTest extends PageContentTester {
     }
     
     @Test
-    @Fetch(url = "http://whatsmyuseragent.org/", device = MOBILE)
-    public void fetch_page_and_emulate_mobile_device_by_annotation() {
+    @Fetch(url = "whatsmyuseragent.org/", userAgent = MOBILE_USER_AGENT)
+    public void fetch_as_mobile_user_agent_by_annotation() {
         String ua = page.get().getElement("p.intro-text").text();
-        assertThat(ua, containsString(page.get().getConfig().getUserAgent(MOBILE)));
+        assertThat(ua).contains(MOBILE_USER_AGENT);
     }
 
     @Test
