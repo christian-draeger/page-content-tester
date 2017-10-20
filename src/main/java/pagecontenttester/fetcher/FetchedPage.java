@@ -1,6 +1,7 @@
 package pagecontenttester.fetcher;
 
 import static org.jsoup.Connection.Response;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,8 +21,14 @@ public class FetchedPage {
 
     private final String url;
     private final String urlPrefix;
+    private final DeviceType deviceType;
     private final Response response;
     private Optional<Document> document = Optional.empty();
+
+    public enum DeviceType {
+        DESKTOP,
+        MOBILE
+    }
 
     private static Config config = new Config();
 
@@ -34,6 +41,7 @@ public class FetchedPage {
                 .urlToFetch(urlWithPrefix)
                 .method(params.getMethod())
                 .requestBody(params.getRequestBody())
+                .device(params.getDevice())
                 .userAgent(params.getUserAgent())
                 .referrer(params.getReferrer())
                 .followRedirects(params.isFollowRedirects())
@@ -48,9 +56,10 @@ public class FetchedPage {
         return new FetchedPageForTest(page, params.getTestName());
     }
 
-    public FetchedPage(String url, Response response, String urlPrefix) {
+    public FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {
         this.url = url;
         this.response = response;
+        this.deviceType = deviceType;
         this.urlPrefix = urlPrefix;
     }
 
@@ -76,6 +85,16 @@ public class FetchedPage {
     Response getResponse() {
         return response;
     }
+
+    DeviceType getDeviceType() {
+        return deviceType;
+    }
+
+
+    boolean isMobile() {
+        return deviceType.equals(MOBILE);
+    }
+
 
     public Config getConfig() {
         return config;

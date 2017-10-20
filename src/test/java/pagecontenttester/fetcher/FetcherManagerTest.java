@@ -2,6 +2,7 @@ package pagecontenttester.fetcher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jsoup.Connection.Method.GET;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.util.Collections;
 import java.util.concurrent.Future;
@@ -69,6 +70,7 @@ public class FetcherManagerTest {
         return FetchRequestParameters.builder()
                 .urlToFetch("http://www.google.com")
                 .method(GET)
+                .device(DESKTOP)
                 .userAgent("")
                 .requestBody("")
                 .referrer("")

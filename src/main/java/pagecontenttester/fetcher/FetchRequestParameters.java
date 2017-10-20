@@ -15,6 +15,7 @@ public class FetchRequestParameters {
     private String urlToFetch;
     private Connection.Method method;
     private String requestBody;
+    private FetchedPage.DeviceType device;
     private String referrer;
     private boolean followRedirects;
     private Protocol protocol;
@@ -30,6 +31,7 @@ public class FetchRequestParameters {
         return Fetcher.builder()
                 .method(method)
                 .requestBody(requestBody)
+                .deviceType(device)
                 .userAgent(userAgent)
                 .referrer(referrer)
                 .followRedirects(followRedirects)

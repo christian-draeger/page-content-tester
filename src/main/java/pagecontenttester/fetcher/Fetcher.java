@@ -4,6 +4,8 @@ import static java.lang.System.setProperty;
 import static org.fusesource.jansi.Ansi.Color.CYAN;
 import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -17,6 +19,7 @@ import org.jsoup.Jsoup;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import pagecontenttester.configurations.Config;
+import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 @Slf4j
 @Builder
@@ -24,6 +27,7 @@ public class Fetcher {
 
     private static final Config CONFIG = new Config();
 
+    private final DeviceType deviceType;
     private final Method method;
     private final String requestBody;
     private final String referrer;
@@ -48,7 +52,7 @@ public class Fetcher {
                 final Connection connection = Jsoup.connect(url)
                         .validateTLSCertificates(false)
                         .timeout(timeout)
-                        .userAgent(userAgent)
+                        .userAgent(getUserAgent())
                         .ignoreHttpErrors(true)
                         .proxy(CONFIG.getProxy())
                         .followRedirects(followRedirects)
@@ -61,7 +65,7 @@ public class Fetcher {
                     connection.cookies(cookie);
                 }
 
-                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + "{} (UserAgent: {})", url);
+                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + "{} (UserAgent: {})", url, deviceType);
                 return connection.execute();
 
             } catch(SocketTimeoutException ste) {
@@ -73,9 +77,17 @@ public class Fetcher {
         }
     }
 
+    private String getUserAgent() {
+        if (userAgent.isEmpty()) {
+            return deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP);
+        }
+        return userAgent;
+    }
+
     // TODO: remove old lombok hack for default values use the new @Builder.Default feature (since v1.16.16), see: https://reinhard.codes/2016/07/13/using-lomboks-builder-annotation-with-default-values/
 
     public static class FetcherBuilder { //NOSONAR
+        private DeviceType device = DESKTOP; //NOSONAR
         private Method method = Method.GET; //NOSONAR
         private String requestBody = ""; //NOSONAR
         private Map<String,String> cookie = Collections.emptyMap(); //NOSONAR
@@ -86,6 +98,6 @@ public class Fetcher {
         private String protocol = CONFIG.getProtocol(); //NOSONAR
         private String urlPrefix = CONFIG.getUrlPrefix(); //NOSONAR
         private String port = CONFIG.getPort(); //NOSONAR
-        private String userAgent = CONFIG.getUserAgent(); //NOSONAR
+        private String userAgent = CONFIG.getUserAgent(DESKTOP); //NOSONAR
     }
 }

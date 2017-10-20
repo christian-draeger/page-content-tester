@@ -2,6 +2,7 @@ package pagecontenttester.annotations;
 
 import static org.jsoup.Connection.Method.GET;
 import static pagecontenttester.annotations.Fetch.Protocol.NONE;
+import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -10,6 +11,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.jsoup.Connection.Method;
+
+import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
@@ -56,6 +59,12 @@ public @interface Fetch {
     boolean followRedirects() default true;
 
     /**
+     * Defines the user Agent that will be send with the request.
+     * This is helpful to emulate a websites behaviour regarding mobile devices or different browsers.
+     */
+    DeviceType device() default DESKTOP;
+
+    /**
      * Defines the HTTP request method that should be used
      */
     Method method() default GET;
@@ -87,5 +96,5 @@ public @interface Fetch {
     /**
      * Defines the user agent
      */
-    String userAgent() default "Mozilla/5.0 (X11\\\\; Ubuntu\\\\; Linux x86_64\\\\; rv\\\\:25.0)";
+    String userAgent() default "";
 }
