@@ -11,7 +11,7 @@ import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 public class Config {
 
-    private final TypedProperties configs = new TypedProperties("/pagecontent.properties");
+    private final TypedProperties configs = new TypedProperties("/paco.properties");
 
     public int getTimeoutValue() {
         return configs.getIntValue("timeout");

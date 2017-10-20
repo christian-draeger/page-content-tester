@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class TypedPropertiesTest {
 
-    private TypedProperties pacoProperties = new TypedProperties("/pagecontent.properties");
+    private TypedProperties pacoProperties = new TypedProperties("/paco.properties");
 
     @Test(expected = RuntimeException.class)
     public void should_throw_exception_for_unknown_property_file() {
@@ -15,7 +15,7 @@ public class TypedPropertiesTest {
 
     @Test
     public void can_load_existing_property_files() {
-        new TypedProperties("/pagecontent.properties");
+        new TypedProperties("/paco.properties");
     }
 
     @Test(expected = ConfigurationException.class)

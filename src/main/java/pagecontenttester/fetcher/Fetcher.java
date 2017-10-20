@@ -65,7 +65,7 @@ public class Fetcher {
                     connection.cookies(cookie);
                 }
 
-                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + "{} (UserAgent: {})", url, deviceType);
+                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + "{}", url);
                 return connection.execute();
 
             } catch(SocketTimeoutException ste) {

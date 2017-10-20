@@ -44,8 +44,8 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 ```
 
 #### Configure the Page-Fetcher
-- place a pagecontent.properties file in your project under src/test/resources/
-    - you can override all default values from [pagecontent.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/pagecontent.properties) in your projects pagecontent.properties file (these settings will be used global)
+- place a paco.properties file in your project under src/test/resources/
+    - you can override all default values from [paco.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/pagecontent.properties) in your projects pagecontent.properties file (these settings will be used global)
     - nearly all these values can be set individually for test methods and classes via Annotation as well (see __[Test Examples](#test-examples)__)
         - annotated values will always win over global config
 
