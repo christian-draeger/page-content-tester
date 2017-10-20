@@ -37,7 +37,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
     <dependency>
         <groupId>io.github.christian-draeger</groupId>
         <artifactId>page-content-tester</artifactId>
-        <version>1.5.6</version>
+        <version>${version.from.maven.central.badge}</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
