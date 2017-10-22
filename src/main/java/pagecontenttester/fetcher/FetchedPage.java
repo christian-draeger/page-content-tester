@@ -14,7 +14,7 @@ import org.jsoup.nodes.Document;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import pagecontenttester.annotations.Fetch.Protocol;
-import pagecontenttester.configurations.Config;
+import pagecontenttester.configurations.GlobalConfig;
 
 @Slf4j
 public class FetchedPage {
@@ -25,19 +25,26 @@ public class FetchedPage {
     private final Response response;
     private Optional<Document> document = Optional.empty();
 
+    public FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {
+        this.url = url;
+        this.response = response;
+        this.deviceType = deviceType;
+        this.urlPrefix = urlPrefix;
+    }
+
     public enum DeviceType {
         DESKTOP,
         MOBILE
     }
 
-    private static Config config = new Config();
+    private static GlobalConfig globalConfig = new GlobalConfig();
 
     @SneakyThrows
-    public static Page annotationCall(FetchRequestParameters params) {
+    public static Page annotationCall(Parameters params) {
 
         String urlWithPrefix = getUrl(params.getUrlToFetch(), params.getProtocol(), params.getUrlPrefix(), params.getPort());
 
-        final FetchRequestParameters cacheKey = FetchRequestParameters.builder()
+        final Parameters cacheKey = Parameters.builder()
                 .urlToFetch(urlWithPrefix)
                 .method(params.getMethod())
                 .requestBody(params.getRequestBody())
@@ -54,13 +61,6 @@ public class FetchedPage {
         FetchedPage page = FetcherManager.getInstance().submit(cacheKey, params.getTestName()).get();
 
         return new FetchedPageForTest(page, params.getTestName());
-    }
-
-    public FetchedPage(String url, Response response, DeviceType deviceType, String urlPrefix) {
-        this.url = url;
-        this.response = response;
-        this.deviceType = deviceType;
-        this.urlPrefix = urlPrefix;
     }
 
     synchronized Document getDocument() {
@@ -96,18 +96,18 @@ public class FetchedPage {
     }
 
 
-    public Config getConfig() {
-        return config;
+    public GlobalConfig getConfig() {
+        return globalConfig;
     }
 
     private static String getUrl(String url, Protocol protocol, String urlPrefix, String portFromAnnotation) {
 
         String prefix = urlPrefix.isEmpty() ? urlPrefix : urlPrefix + ".";
 
-        String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + config.getPort();
+        String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + globalConfig.getPort();
         String port = ":".equals(portFallBackCheck) ? "" : portFallBackCheck;
 
-        String protocolValue = StringUtils.isNotEmpty(protocol.value) ? protocol.value : config.getProtocol();
+        String protocolValue = StringUtils.isNotEmpty(protocol.value) ? protocol.value : globalConfig.getProtocol();
 
         try {
             if (StringUtils.isNotEmpty(protocolValue)) {
@@ -117,7 +117,7 @@ public class FetchedPage {
 
             URL urlRaw = new URL(protocolValue + prefix + url);
 
-            if (url.matches(".*:[0-9]{4,6}.*") && StringUtils.isEmpty(portFromAnnotation)) {
+            if (url.matches(".*:[0-9]{2,6}.*") && StringUtils.isEmpty(portFromAnnotation)) {
                 port =  ":" + urlRaw.getPort();
             }
 

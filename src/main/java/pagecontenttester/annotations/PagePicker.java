@@ -24,7 +24,7 @@ public class PagePicker {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet)) {
                 return recentlyFetchedPage;
             }
-            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getConfig().getPort(), "").endsWith(urlSnippet)) {
+            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getGlobalConfig().getPort(), "").endsWith(urlSnippet)) {
                 return recentlyFetchedPage;
             }
             if (recentlyFetchedPage.getUrl().contains(urlSnippet)) {
@@ -48,7 +48,7 @@ public class PagePicker {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {
                 return recentlyFetchedPage;
             }
-            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getConfig().getPort(), "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {
+            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getGlobalConfig().getPort(), "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {
                 return recentlyFetchedPage;
             }
             if (recentlyFetchedPage.getUrl().contains(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {

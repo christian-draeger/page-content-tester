@@ -7,7 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import pagecontenttester.configurations.Config;
+import pagecontenttester.configurations.GlobalConfig;
 
 public interface Page {
 
@@ -15,7 +15,7 @@ public interface Page {
      * Holds information of the global config values
      * @return Config
      */
-    Config getConfig();
+    GlobalConfig getConfig();
 
     /**
      * get DOM Element of first CSS-selector match

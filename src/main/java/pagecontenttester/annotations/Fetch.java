@@ -65,12 +65,18 @@ public @interface Fetch {
     DeviceType device() default DESKTOP;
 
     /**
+     * Defines a custom user Agent string that will be send with the request.
+     * If this options is set it will override the user agent set via {@link DeviceType device()}
+     */
+    String userAgent() default "";
+
+    /**
      * Defines the HTTP request method that should be used
      */
     Method method() default GET;
 
     /**
-     * Defines the referrer that shpuld be set for a request
+     * Defines the referrer that should be set for a request
      */
     String referrer() default "referrer";
 
@@ -82,7 +88,7 @@ public @interface Fetch {
     /**
      * Defines the amount of retries if there has been a connection timeout
      */
-    int retriesOnTimeout() default 0;
+    int retriesOnTimeout() default -1;
 
     /**
      * Defines a Cookie or several Cookies the can be send with the request.
@@ -92,9 +98,4 @@ public @interface Fetch {
      * but the cookie has been send.
      */
     Cookie[] setCookies() default @Cookie();
-
-    /**
-     * Defines the user agent
-     */
-    String userAgent() default "";
 }

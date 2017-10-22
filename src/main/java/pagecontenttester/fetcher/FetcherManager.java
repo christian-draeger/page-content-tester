@@ -10,17 +10,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import pagecontenttester.configurations.Config;
+import pagecontenttester.configurations.GlobalConfig;
 
 @Slf4j
 class FetcherManager {
 
-    private Config config = new Config();
+    private GlobalConfig globalConfig = new GlobalConfig();
 
     private ExecutorService executorService = Executors.newFixedThreadPool(20);
 
-    private ConcurrentHashMap<FetchRequestParameters, CompletableFuture<FetchedPage>> requestMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Parameters, CompletableFuture<FetchedPage>> requestMap = new ConcurrentHashMap<>();
 
     private final Set<String> calledTestMethods = new ConcurrentSkipListSet<>();
 
@@ -30,7 +31,7 @@ class FetcherManager {
         return ourInstance;
     }
 
-    Future<FetchedPage> submit(FetchRequestParameters params, String testName) {
+    Future<FetchedPage> submit(Parameters params, String testName) {
         final CompletableFuture<FetchedPage> future = new CompletableFuture<>();
         final Future<FetchedPage> oldValue = requestMap.putIfAbsent(params, future);
         if (oldValue == null || cacheIsOff() || calledTestMethods.contains(testName)) {
@@ -39,9 +40,9 @@ class FetcherManager {
             calledTestMethods.add(testName);
             return future;
         } else {
-            if (config.isCacheDuplicatesLogActive()) {
-                log.info("\uD83D\uDC65 " + ansi().fgBrightBlack().bold().a("duplicate call: ").reset() +
-                        "fetched page will be taken from cache while executing test" + ansi().bold().a(" {} ").reset() + "to avoid unnecessary requests", testName);
+            if (globalConfig.isCacheDuplicatesLogActive()) {
+                System.out.println("\uD83D\uDC65 " + ansi().fgBrightBlack().bold().a("duplicate call: ").reset() +
+                        "fetched page will be taken from cache while executing test " + ansi().bold().a(testName).reset() + " to avoid unnecessary requests");
             }
             calledTestMethods.add(testName);
             return requestMap.get(params);
@@ -49,27 +50,27 @@ class FetcherManager {
     }
 
     private boolean cacheIsOff() {
-        return !config.isCacheDuplicatesActive();
+        return !globalConfig.isCacheDuplicatesActive();
     }
 
     private FetcherManager() {
     }
 
+    @AllArgsConstructor
     private class FetcherWorker implements Runnable {
 
-        private final FetchRequestParameters params;
+        private final Parameters params;
         private final CompletableFuture<FetchedPage> future;
-
-        private FetcherWorker(FetchRequestParameters params, CompletableFuture<FetchedPage> future) {
-            this.params = params;
-            this.future = future;
-        }
 
         @Override
         public void run() {
-            Fetcher fetcher = params.createFetcher();
+            Fetcher fetcher = new Fetcher();
             try {
-                FetchedPage fetchedPage = new FetchedPage(params.getUrlToFetch(), fetcher.fetch(params.getUrlToFetch()), params.getDevice(), params.getUrlPrefix());
+                FetchedPage fetchedPage = new FetchedPage(
+                        params.getUrlToFetch(),
+                        fetcher.fetch(params),
+                        params.getDevice(),
+                        params.getUrlPrefix());
                 future.complete(fetchedPage);
             } catch (Throwable e) {
                 future.completeExceptionally(e);

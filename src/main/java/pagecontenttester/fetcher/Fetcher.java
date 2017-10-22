@@ -9,95 +9,61 @@ import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.Collections;
-import java.util.Map;
 
 import org.jsoup.Connection;
-import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import pagecontenttester.configurations.Config;
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import pagecontenttester.configurations.GlobalConfig;
 
 @Slf4j
-@Builder
 public class Fetcher {
 
-    private static final Config CONFIG = new Config();
+    private static final GlobalConfig GLOBAL_CONFIG = new GlobalConfig();
 
-    private final DeviceType deviceType;
-    private final Method method;
-    private final String requestBody;
-    private final String referrer;
-    private boolean followRedirects;
-    private final int timeout;
-    private final int retriesOnTimeout;
-    private final Map<String, String> cookie;
-    private final String protocol;
-    private final String urlPrefix;
-    private final String port;
-    private final String userAgent;
+    public Connection.Response fetch(Parameters params) throws IOException {
 
-    public Connection.Response fetch(String url) throws IOException {
-
-        setProperty("sun.net.http.allowRestrictedHeaders", "true");  // jvm hack for adding any custom header
+        setProperty("sun.net.http.allowRestrictedHeaders", "true");
         setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts");
 
         int retryCount = 0;
 
         while(true) {
             try {
-                final Connection connection = Jsoup.connect(url)
+                final Connection connection = Jsoup.connect(params.getUrlToFetch())
                         .validateTLSCertificates(false)
-                        .timeout(timeout)
-                        .userAgent(getUserAgent())
+                        .timeout(params.getTimeout())
+                        .userAgent(getUserAgent(params))
                         .ignoreHttpErrors(true)
-                        .proxy(CONFIG.getProxy())
-                        .followRedirects(followRedirects)
-                        .ignoreContentType(CONFIG.isIgnoringContentType())
-                        .method(method)
+                        .proxy(GLOBAL_CONFIG.getProxy())
+                        .followRedirects(params.isFollowRedirects())
+                        .ignoreContentType(GLOBAL_CONFIG.isIgnoringContentType())
+                        .method(params.getMethod())
                         .maxBodySize(0)
-                        .referrer(referrer);
+                        .referrer(params.getReferrer());
 
-                if (!cookie.isEmpty()) {
-                    connection.cookies(cookie);
+                if (!params.getCookie().isEmpty()) {
+                    connection.cookies(params.getCookie());
                 }
 
-                log.info("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + "{}", url);
+                System.out.println("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset()
+                        + params.getUrlToFetch() + " (for test: " + params.getTestName() + ")");
+
                 return connection.execute();
 
             } catch(SocketTimeoutException ste) {
-                if(retryCount > retriesOnTimeout) {
+                if(retryCount > params.getRetriesOnTimeout()) {
                     throw ste;
                 }
-                log.warn("\uD83D\uDD50 " + ansi().fg(YELLOW).bold().a("fetch timeout: ").reset() + "SocketRead time out after {}. try", retryCount++);
+                System.out.println("\uD83D\uDD50 " + ansi().fg(YELLOW).bold().a("fetch timeout: ").reset() + "SocketRead time out after " + retryCount++ + ". try");
             }
         }
     }
 
-    private String getUserAgent() {
-        if (userAgent.isEmpty()) {
-            return deviceType.equals(MOBILE) ? CONFIG.getUserAgent(MOBILE) : CONFIG.getUserAgent(DESKTOP);
+    private String getUserAgent(Parameters params) {
+        if (params.getUserAgent().isEmpty()) {
+            return params.getDevice().equals(MOBILE) ? GLOBAL_CONFIG.getUserAgent(MOBILE) : GLOBAL_CONFIG.getUserAgent(DESKTOP);
         }
-        return userAgent;
-    }
-
-    // TODO: remove old lombok hack for default values use the new @Builder.Default feature (since v1.16.16), see: https://reinhard.codes/2016/07/13/using-lomboks-builder-annotation-with-default-values/
-
-    public static class FetcherBuilder { //NOSONAR
-        private DeviceType device = DESKTOP; //NOSONAR
-        private Method method = Method.GET; //NOSONAR
-        private String requestBody = ""; //NOSONAR
-        private Map<String,String> cookie = Collections.emptyMap(); //NOSONAR
-        // take property values if not set via annotation
-        private String referrer = CONFIG.getReferrer(); //NOSONAR
-        private int timeout = CONFIG.getTimeoutValue(); //NOSONAR
-        private int retriesOnTimeout = CONFIG.getTimeoutMaxRetryCount(); //NOSONAR
-        private String protocol = CONFIG.getProtocol(); //NOSONAR
-        private String urlPrefix = CONFIG.getUrlPrefix(); //NOSONAR
-        private String port = CONFIG.getPort(); //NOSONAR
-        private String userAgent = CONFIG.getUserAgent(DESKTOP); //NOSONAR
+        return params.getUserAgent();
     }
 }

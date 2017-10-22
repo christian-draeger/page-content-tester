@@ -10,12 +10,12 @@ import java.util.List;
 
 import org.fusesource.jansi.Ansi;
 
-import pagecontenttester.configurations.Config;
+import pagecontenttester.configurations.GlobalConfig;
 
 
 public class RampUp {
 
-    protected static Config config = new Config();
+    protected static GlobalConfig globalConfig = new GlobalConfig();
 
     private static Ansi.Color paco = CYAN;
     private static Ansi.Color banner = MAGENTA;
@@ -43,7 +43,7 @@ public class RampUp {
     }
 
     static void printAsciiArt() {
-        if (config.isPacoAsciiActive()) {
+        if (globalConfig.isPacoAsciiActive()) {
             for (Object line: ascii) {
                 System.out.println(line);
             }

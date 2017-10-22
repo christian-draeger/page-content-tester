@@ -32,8 +32,6 @@ public class FetchedPageTest extends PageContentTester {
     private static final String URL1 = "localhost:8089/example";
     private static final String URL2 = "localhost:8089/example2";
     private static final String URL3 = "localhost:8089/example3";
-    private static final String MOBILE_USER_AGENT = "Mozilla/5.0 (iPhone\\\\; CPU iPhone OS 6_1_4 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B350 Safari/8536.25";
-    private static final String USER_AGENT = "Mozilla/5.0 (X11\\\\; Ubuntu\\\\; Linux x86_64\\\\; rv\\\\:25.0)";
 
     @Test
     public void can_fetch_from_class_annotation() {
@@ -299,10 +297,10 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = "www.whatismyreferer.com/")
     public void fetch_page_should_use_referrer_from_properties_by_default() {
         String referrer = page.get().getElement("strong").text();
-        assertThat(referrer).isEqualTo(config.getReferrer());
+        assertThat(referrer).isEqualTo(globalConfig.getReferrer());
     }
 
-    @Ignore("figure out how to configure qiremock to replay cookies")
+    @Ignore("figure out how to configure wiremock to replay cookies")
     @Test
     @Fetch( url = URL1,
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
@@ -310,7 +308,7 @@ public class FetchedPageTest extends PageContentTester {
         assertThat(page.get().getCookieValue("page-content-tester")).isEqualTo("wtf-666");
     }
 
-    @Ignore("figure out how to configure qiremock to replay cookies")
+    @Ignore("figure out how to configure wiremock to replay cookies")
     @Test
     @Fetch( url = URL1,
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),
