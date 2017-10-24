@@ -88,7 +88,7 @@ public class ConfigResolver {
         HashMap<String, String> cookies = new HashMap<>();
 
         for (Cookie annotationCookie : annotationCookies) {
-            if ("".equals(annotationCookie.name())) {
+            if (annotationCookie.name().isEmpty()) {
                 return Collections.emptyMap();
             }
             cookies.put(annotationCookie.name(), annotationCookie.value());
@@ -100,18 +100,12 @@ public class ConfigResolver {
 
         String portFromAnnotation = fetchAnnotation.port();
 
-        String prefix = getUrlPrefix().isEmpty() ? getUrlPrefix() : getUrlPrefix() + ".";
-
         String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + globalConfig.getPort();
         String port = ":".equals(portFallBackCheck) ? "" : portFallBackCheck;
 
         try {
-            if (StringUtils.isNotEmpty(getProtocol())) {
-                // TODO: string replaces are ignored atm
-                url = removeProtocolFromString(url);
-            }
 
-            URL urlRaw = new URL(getProtocol() + prefix + url);
+            URL urlRaw = new URL(getProtocol() + getUrlPrefix() + url);
 
             if (url.matches(".*:[0-9]{2,6}.*") && StringUtils.isEmpty(portFromAnnotation)) {
                 port =  ":" + urlRaw.getPort();
@@ -124,12 +118,5 @@ public class ConfigResolver {
         }
 
         return null;
-    }
-
-    private static String removeProtocolFromString(String url) {
-        url.replace("http://", "");
-        url.replace("https://", "");
-        url.replace("ftp://", "");
-        return url;
     }
 }

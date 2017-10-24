@@ -2,7 +2,6 @@ package pagecontenttester.configurations;
 
 import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
-import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
@@ -12,7 +11,7 @@ import pagecontenttester.fetcher.FetchedPage.DeviceType;
 
 public class GlobalConfig {
 
-    private final TypedProperties configs = new TypedProperties("/paco.properties");
+    private final TypedProperties configs = new TypedProperties();
 
     public int getTimeoutValue() {
         return configs.getIntValue("timeout");
@@ -78,12 +77,4 @@ public class GlobalConfig {
         return configs.getBooleanValue("paco.ascii");
     }
 
-    private static String getPropsPath() {
-        final String customPropertiesPath = "/paco.properties";
-        File customProperties = new File(customPropertiesPath);
-        if (customProperties.exists()) {
-            return customPropertiesPath;
-        }
-        return "/default.properties";
-    }
 }

@@ -118,32 +118,32 @@ class FetchedPageForTest implements Page {
     }
 
     public Elements getElements(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getDocument().select(cssSelector);
     }
 
     public Element getElement(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElements(cssSelector).first();
     }
 
     public Element getElementLastOf(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElements(cssSelector).last();
     }
 
     public Element getElement(String cssSelector, int index) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElements(cssSelector).get(index);
     }
 
     public boolean isElementPresent(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElementCount(cssSelector) > 0;
     }
 
     public boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElementCount(cssSelector) == numberOfOccurrences;
     }
 
@@ -169,7 +169,7 @@ class FetchedPageForTest implements Page {
         }
     }
 
-    private void hasSelector(String cssSelector) {
+    private void storeIfNotFound(String cssSelector) {
         if (getElementCount(cssSelector) == 0) {
             store("not-found");
         }

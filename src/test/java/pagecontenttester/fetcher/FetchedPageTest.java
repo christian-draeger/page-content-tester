@@ -190,7 +190,7 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(protocol = HTTPS, urlPrefix = "en", url = "wikipedia.org/proxy")
+    @Fetch(protocol = HTTPS, urlPrefix = "en.", url = "wikipedia.org/proxy")
     public void fetch_page_via_annotation_and_build_url() {
         assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org/proxy"));
     }
