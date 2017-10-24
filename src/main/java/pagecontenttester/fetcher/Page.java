@@ -7,15 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import pagecontenttester.configurations.GlobalConfig;
-
 public interface Page {
-
-    /**
-     * Holds information of the global config values
-     * @return Config
-     */
-    GlobalConfig getConfig();
 
     /**
      * get DOM Element of first CSS-selector match
@@ -86,12 +78,6 @@ public interface Page {
      * @return number of matching CSS-selectors
      */
     int getElementCount(String cssSelector);
-
-    /**
-     *
-     * @return used url prefix. will be empty string if no url prefix was set.
-     */
-    String getUrlPrefix();
 
     /**
      * @return HTTP status code of fetched page

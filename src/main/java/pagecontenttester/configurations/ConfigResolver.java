@@ -29,24 +29,21 @@ public class ConfigResolver {
 
         Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
         return Parameters.builder()
-                .urlToFetch(getUrl())
+                .urlToFetch(getUrl(fetchAnnotation.url()))
                 .device(getDevice())
                 .userAgent(getUserAgent())
                 .method(getMethod())
-                .protocol(getProtocol())
                 .referrer(getReferrer())
                 .followRedirects(isFollowingRedirects())
                 .timeout(getTimeout())
                 .retriesOnTimeout(getRetryCount())
                 .cookie(getCookies(cookieAnnotation))
-                .urlPrefix(getUrlPrefix())
-                .port(getPort())
                 .testName(testName)
                 .build();
     }
 
-    private Fetch.Protocol getProtocol() {
-        return fetchAnnotation.protocol();
+    private String getProtocol() {
+        return StringUtils.isNotEmpty(fetchAnnotation.protocol().value) ? fetchAnnotation.protocol().value : globalConfig.getProtocol();
     }
 
     private Connection.Method getMethod() {
@@ -99,28 +96,28 @@ public class ConfigResolver {
         return cookies;
     }
 
-    private String getUrl(String url, Fetch.Protocol protocol, String portFromAnnotation) {
+    private String getUrl(String url) {
+
+        String portFromAnnotation = fetchAnnotation.port();
 
         String prefix = getUrlPrefix().isEmpty() ? getUrlPrefix() : getUrlPrefix() + ".";
 
         String portFallBackCheck = StringUtils.isNotEmpty(portFromAnnotation) ? ":" + portFromAnnotation : ":" + globalConfig.getPort();
         String port = ":".equals(portFallBackCheck) ? "" : portFallBackCheck;
 
-        String protocolValue = StringUtils.isNotEmpty(protocol.value) ? protocol.value : globalConfig.getProtocol();
-
         try {
-            if (StringUtils.isNotEmpty(protocolValue)) {
+            if (StringUtils.isNotEmpty(getProtocol())) {
                 // TODO: string replaces are ignored atm
                 url = removeProtocolFromString(url);
             }
 
-            URL urlRaw = new URL(protocolValue + prefix + url);
+            URL urlRaw = new URL(getProtocol() + prefix + url);
 
             if (url.matches(".*:[0-9]{2,6}.*") && StringUtils.isEmpty(portFromAnnotation)) {
                 port =  ":" + urlRaw.getPort();
             }
 
-            return protocolValue + urlRaw.getHost() + port + urlRaw.getFile();
+            return getProtocol() + urlRaw.getHost() + port + urlRaw.getFile();
 
         } catch (MalformedURLException e) {
             // log.error(e.getMessage(), e);

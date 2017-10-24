@@ -29,7 +29,6 @@ import org.xml.sax.SAXParseException;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import pagecontenttester.configurations.GlobalConfig;
 
 @Slf4j
 class FetchedPageForTest implements Page {
@@ -52,10 +51,6 @@ class FetchedPageForTest implements Page {
 
     public String getUrl() {
         return fetchedPage.getUrl();
-    }
-
-    public String getUrlPrefix() {
-        return fetchedPage.getUrlPrefix();
     }
 
     public int getStatusCode() {
@@ -116,10 +111,6 @@ class FetchedPageForTest implements Page {
 
     public String getStatusMessage() {
         return getResponse().statusMessage();
-    }
-
-    public GlobalConfig getConfig() {
-        return fetchedPage.getConfig();
     }
 
     public String getTitle() {

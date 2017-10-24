@@ -2,8 +2,10 @@ package pagecontenttester.fetcher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Collections;
 import java.util.concurrent.Future;
 
+import org.jsoup.Connection;
 import org.junit.Test;
 
 public class FetcherManagerTest {
@@ -66,6 +68,11 @@ public class FetcherManagerTest {
     private Parameters aValidRequest() {
         return Parameters.builder()
                 .urlToFetch("http://localhost:8089/example")
+                .userAgent("")
+                .device(FetchedPage.DeviceType.DESKTOP)
+                .referrer("")
+                .cookie(Collections.emptyMap())
+                .method(Connection.Method.GET)
                 .build();
     }
 
