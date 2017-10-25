@@ -4,8 +4,6 @@ import static java.lang.System.setProperty;
 import static org.fusesource.jansi.Ansi.Color.CYAN;
 import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -33,7 +31,7 @@ public class Fetcher {
                 final Connection connection = Jsoup.connect(params.getUrlToFetch())
                         .validateTLSCertificates(false)
                         .timeout(params.getTimeout())
-                        .userAgent(getUserAgent(params))
+                        .userAgent(params.getUserAgent())
                         .ignoreHttpErrors(true)
                         .proxy(GLOBAL_CONFIG.getProxy())
                         .followRedirects(params.isFollowRedirects())
@@ -46,8 +44,7 @@ public class Fetcher {
                     connection.cookies(params.getCookie());
                 }
 
-                System.out.println("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset()
-                        + params.getUrlToFetch() + " (for test: " + params.getTestName() + ")");
+                System.out.println("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + params.getUrlToFetch());
 
                 return connection.execute();
 
@@ -58,12 +55,5 @@ public class Fetcher {
                 System.out.println("\uD83D\uDD50 " + ansi().fg(YELLOW).bold().a("fetch timeout: ").reset() + "SocketRead time out after " + retryCount++ + ". try");
             }
         }
-    }
-
-    private String getUserAgent(Parameters params) {
-        if (params.getUserAgent().isEmpty()) {
-            return params.getDevice().equals(MOBILE) ? GLOBAL_CONFIG.getUserAgent(MOBILE) : GLOBAL_CONFIG.getUserAgent(DESKTOP);
-        }
-        return params.getUserAgent();
     }
 }

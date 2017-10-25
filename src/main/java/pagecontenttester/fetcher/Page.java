@@ -105,16 +105,6 @@ public interface Page {
     String getUrl();
 
     /**
-     * @return deviceType of fetched page was requested with (mobile or desktop user-agent)
-     */
-    FetchedPage.DeviceType getDeviceType();
-
-    /**
-     * @return true if fetched page was requested with a mobile user-agent
-     */
-    boolean isMobile();
-
-    /**
      * Get the response content type (e.g. "text/html");
      * @return the response content type
      */
@@ -138,6 +128,11 @@ public interface Page {
      * @return Location header
      */
     String getLocation();
+
+    /**
+     * @return User-Agent header
+     */
+    String getUserAgent();
 
     /**
      * @return Referer header

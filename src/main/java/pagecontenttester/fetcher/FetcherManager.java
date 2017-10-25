@@ -68,8 +68,7 @@ class FetcherManager {
             try {
                 FetchedPage fetchedPage = new FetchedPage(
                         params.getUrlToFetch(),
-                        fetcher.fetch(params),
-                        params.getDevice());
+                        fetcher.fetch(params));
                 future.complete(fetchedPage);
             } catch (Throwable e) {
                 future.completeExceptionally(e);

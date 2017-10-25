@@ -1,8 +1,8 @@
 package pagecontenttester.configurations;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
+import static pagecontenttester.annotations.Fetch.Device.DESKTOP;
+import static pagecontenttester.annotations.Fetch.Device.MOBILE;
 
 import org.junit.Test;
 

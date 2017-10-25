@@ -9,9 +9,9 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import pagecontenttester.annotations.Fetch.Device;
 import pagecontenttester.configurations.ConfigResolver;
 import pagecontenttester.configurations.GlobalConfig;
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
 import pagecontenttester.fetcher.Page;
 import pagecontenttester.fetcher.Parameters;
 
@@ -60,11 +60,11 @@ public class FetcherRule implements TestRule {
         return pagePicker.get(urlSnippet);
     }
 
-    public Page get(DeviceType deviceType) {
+    public Page get(Device deviceType) {
         return pagePicker.get(deviceType);
     }
 
-    public Page get(String urlSnippet, DeviceType deviceType) {
+    public Page get(String urlSnippet, Device deviceType) {
         return pagePicker.get(urlSnippet, deviceType);
     }
 

@@ -69,7 +69,6 @@ public class FetcherManagerTest {
         return Parameters.builder()
                 .urlToFetch("http://localhost:8089/example")
                 .userAgent("")
-                .device(FetchedPage.DeviceType.DESKTOP)
                 .referrer("")
                 .cookie(Collections.emptyMap())
                 .method(Connection.Method.GET)

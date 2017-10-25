@@ -57,14 +57,6 @@ class FetchedPageForTest implements Page {
         return getResponse().statusCode();
     }
 
-    public FetchedPage.DeviceType getDeviceType() {
-        return fetchedPage.getDeviceType();
-    }
-
-    public boolean isMobile() {
-        return fetchedPage.isMobile();
-    }
-
     public String getContentType() {
         return getResponse().contentType();
     }
@@ -83,6 +75,10 @@ class FetchedPageForTest implements Page {
 
     public Map<String, String> getHeaders() {
         return getResponse().headers();
+    }
+
+    public String getUserAgent() {
+        return getHeader("User-Agent"); /// HIEEEER!!!
     }
 
     public String getLocation() {

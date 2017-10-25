@@ -1,7 +1,6 @@
 package pagecontenttester.fetcher;
 
 import static org.jsoup.Connection.Response;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -15,19 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 public class FetchedPage {
 
     private final String url;
-    private final DeviceType deviceType;
     private final Response response;
     private Optional<Document> document = Optional.empty();
 
-    public FetchedPage(String url, Response response, DeviceType deviceType) {
+    public FetchedPage(String url, Response response) {
         this.url = url;
         this.response = response;
-        this.deviceType = deviceType;
-    }
-
-    public enum DeviceType {
-        DESKTOP,
-        MOBILE
     }
 
     @SneakyThrows
@@ -37,7 +29,6 @@ public class FetchedPage {
                 .urlToFetch(params.getUrlToFetch())
                 .method(params.getMethod())
                 .requestBody(params.getRequestBody())
-                .device(params.getDevice())
                 .userAgent(params.getUserAgent())
                 .referrer(params.getReferrer())
                 .followRedirects(params.isFollowRedirects())
@@ -68,14 +59,6 @@ public class FetchedPage {
 
     Response getResponse() {
         return response;
-    }
-
-    DeviceType getDeviceType() {
-        return deviceType;
-    }
-
-    boolean isMobile() {
-        return deviceType.equals(MOBILE);
     }
 
 }

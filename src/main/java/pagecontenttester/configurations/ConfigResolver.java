@@ -1,5 +1,9 @@
 package pagecontenttester.configurations;
 
+import static pagecontenttester.annotations.Fetch.Device.DESKTOP;
+import static pagecontenttester.annotations.Fetch.Device.MOBILE;
+import static pagecontenttester.annotations.Fetch.Protocol.NONE;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -7,11 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Connection;
 
 import pagecontenttester.annotations.Cookie;
 import pagecontenttester.annotations.Fetch;
-import pagecontenttester.fetcher.FetchedPage;
 import pagecontenttester.fetcher.Parameters;
 
 public class ConfigResolver {
@@ -30,9 +32,8 @@ public class ConfigResolver {
         Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
         return Parameters.builder()
                 .urlToFetch(getUrl(fetchAnnotation.url()))
-                .device(getDevice())
                 .userAgent(getUserAgent())
-                .method(getMethod())
+                .method(fetchAnnotation.method())
                 .referrer(getReferrer())
                 .followRedirects(isFollowingRedirects())
                 .timeout(getTimeout())
@@ -43,44 +44,57 @@ public class ConfigResolver {
     }
 
     private String getProtocol() {
-        return StringUtils.isNotEmpty(fetchAnnotation.protocol().value) ? fetchAnnotation.protocol().value : globalConfig.getProtocol();
-    }
-
-    private Connection.Method getMethod() {
-        return fetchAnnotation.method();
+        if (fetchAnnotation.protocol().equals(NONE)) {
+            return globalConfig.getProtocol();
+        } else {
+            return fetchAnnotation.protocol().value;
+        }
     }
 
     private String getUserAgent() {
-        return fetchAnnotation.userAgent();
-    }
-
-    private FetchedPage.DeviceType getDevice() {
-        return fetchAnnotation.device();
+        if (!fetchAnnotation.userAgent().isEmpty()) {
+            return fetchAnnotation.userAgent();
+        }
+        if (fetchAnnotation.device().equals(MOBILE)) {
+            return globalConfig.getUserAgent(MOBILE);
+        }
+        return globalConfig.getUserAgent(DESKTOP);
     }
 
     private int getRetryCount() {
-        return fetchAnnotation.retriesOnTimeout() == -1  ? globalConfig.getTimeoutMaxRetryCount() : fetchAnnotation.retriesOnTimeout();
+        if (fetchAnnotation.retriesOnTimeout() == -1) {
+            return globalConfig.getTimeoutMaxRetryCount();
+        } else {
+            return fetchAnnotation.retriesOnTimeout();
+        }
     }
 
     private int getTimeout() {
-        return fetchAnnotation.timeout() == 0 ? globalConfig.getTimeoutValue() : fetchAnnotation.timeout();
+        if (fetchAnnotation.timeout() == 0) {
+            return globalConfig.getTimeoutValue();
+        } else {
+            return fetchAnnotation.timeout();
+        }
     }
 
     private String getReferrer() {
-        return "referrer".equals(fetchAnnotation.referrer()) ? globalConfig.getReferrer() : fetchAnnotation.referrer();
+        if (fetchAnnotation.referrer().isEmpty()) {
+            return globalConfig.getReferrer();
+        } else {
+            return fetchAnnotation.referrer();
+        }
     }
 
     private boolean isFollowingRedirects() {
         return fetchAnnotation.followRedirects() && globalConfig.isFollowingRedirects();
-
     }
 
     private String getUrlPrefix() {
-        return fetchAnnotation.urlPrefix().isEmpty() ? globalConfig.getUrlPrefix() : fetchAnnotation.urlPrefix();
-    }
-
-    private String getPort() {
-        return fetchAnnotation.port().isEmpty() ? globalConfig.getPort() : fetchAnnotation.port();
+        if (fetchAnnotation.urlPrefix().isEmpty()) {
+            return globalConfig.getUrlPrefix();
+        } else {
+            return fetchAnnotation.urlPrefix();
+        }
     }
 
     private Map<String, String> getCookies(Cookie[] annotationCookies) {
