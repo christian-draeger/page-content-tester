@@ -78,19 +78,23 @@ class FetchedPageForTest implements Page {
     }
 
     public String getUserAgent() {
-        return getHeader("User-Agent"); /// HIEEEER!!!
+        return getHeader("User-Agent");
     }
 
     public String getLocation() {
-        return getResponse().header("Location");
+        return getHeader("Location");
     }
 
     public String getReferrer() {
-        return getResponse().header("Referer");
+        return getHeader("Referer");
     }
 
     public boolean hasHeader(String header) {
         return getResponse().hasHeader(header);
+    }
+
+    public boolean hasHeaderWithValue(String header, String value) {
+        return getResponse().hasHeaderWithValue(header, value);
     }
 
     public Map<String, String> getCookies() {

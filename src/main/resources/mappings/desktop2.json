@@ -8,10 +8,10 @@
     "bodyFileName": "example2.html",
     "headers": {
       "Content-Type": "text/html; charset=utf-8",
-      "Referer": "{{request.headers.Referer}}",
       "User-Agent": "{{request.headers.User-Agent}}",
       "Set-Cookie": "logged_in=no",
-      "Custom-Header": "custom value"
+      "Custom-Header": "custom value",
+      "Referer": "http://www.google.com"
     }
   }
 }

@@ -146,6 +146,8 @@ public interface Page {
      */
     boolean hasHeader(String header);
 
+    boolean hasHeaderWithValue(String header, String value);
+
     /**
      * Check if a cookie is present
      * @param cookieName name of cookie

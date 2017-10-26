@@ -11,7 +11,7 @@
       "User-Agent": "{{request.headers.User-Agent}}",
       "Set-Cookie": "logged_in=no",
       "Custom-Header": "custom value",
-      "Referer": "{{request.headers.Referer}}"
+      "Referer": "http://www.google.com"
     }
   }
 }

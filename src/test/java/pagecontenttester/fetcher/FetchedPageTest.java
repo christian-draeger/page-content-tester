@@ -38,11 +38,6 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    public void fetcher_should_return_referrer() {
-        assertThat(page.get().getReferrer()).isEqualTo("my.custom.referrer");
-    }
-
-    @Test
     public void fetcher_should_return_cookie_value() {
         assertThat(page.get().getCookieValue("logged_in")).isEqualTo("no");
     }
@@ -253,17 +248,23 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = URL2, userAgent = "my custom UserAgent")
     public void fetch_as_mobile_user_agent_by_annotation() {
         assertThat(page.get().getUserAgent()).isEqualTo("my custom UserAgent");
+        assertThat(page.get().hasHeaderWithValue("User-Agent", "my custom UserAgent")).isTrue();
     }
 
     @Test
-    @Fetch(url = URL1, referrer = "my.custom.referrer")
+    @Fetch(url = "localhost:8089/referrer", referrer = "my.custom.referrer")
     public void fetch_page_by_setting_custom_referrer() {
         String referrer = page.get().getReferrer();
         assertThat(referrer).isEqualTo("my.custom.referrer");
     }
 
     @Test
-    @Fetch(url = URL1)
+    public void fetcher_should_return_referrer() {
+        assertThat(page.get().getReferrer()).isEqualTo(globalConfig.getReferrer());
+    }
+
+    @Test
+    @Fetch(url = "localhost:8089/referrer")
     public void fetch_page_should_use_referrer_from_properties_by_default() {
         assertThat(page.get().getReferrer()).isEqualTo(globalConfig.getReferrer());
     }
