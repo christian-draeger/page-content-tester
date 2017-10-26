@@ -2,20 +2,19 @@ package pagecontenttester.fetcher;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.jsoup.Connection.Method.POST;
+import static pagecontenttester.annotations.Fetch.Device.DESKTOP;
+import static pagecontenttester.annotations.Fetch.Device.MOBILE;
 import static pagecontenttester.annotations.Fetch.Protocol.HTTPS;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Ignore;
@@ -32,8 +31,6 @@ public class FetchedPageTest extends PageContentTester {
     private static final String URL1 = "localhost:8089/example";
     private static final String URL2 = "localhost:8089/example2";
     private static final String URL3 = "localhost:8089/example3";
-    private static final String MOBILE_USER_AGENT = "Mozilla/5.0 (iPhone\\\\; CPU iPhone OS 6_1_4 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B350 Safari/8536.25";
-    private static final String USER_AGENT = "Mozilla/5.0 (X11\\\\; Ubuntu\\\\; Linux x86_64\\\\; rv\\\\:25.0)";
 
     @Test
     public void can_fetch_from_class_annotation() {
@@ -41,48 +38,18 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    public void fetcher_should_return_fetched_desktop_page_for_valid_url() {
-        assertThat(page.get().isMobile()).isFalse();
-    }
-
-    @Test
-    @Fetch(url = URL2, device = MOBILE)
-    public void fetcher_should_return_fetched_mobile_page_for_valid_url() {
-        assertThat(page.get().isMobile()).isTrue();
-    }
-
-    @Test
-    @Fetch(url = URL2, device = MOBILE)
-    public void fetcher_should_return_device_type_for_fetched_mobile_page() {
-        assertThat(page.get().getDeviceType()).isEqualTo(MOBILE);
-    }
-
-    @Test
-    @Fetch(url = URL2, device = DESKTOP)
-    public void fetcher_should_return_device_type_for_fetched_desktop_page() {
-        assertThat(page.get().getDeviceType()).isEqualTo(DESKTOP);
-    }
-
-    @Test
-    public void fetcher_should_return_referrer() {
-        assertThat(page.get().getConfig().getReferrer()).isEqualTo("http://www.google.com");
-    }
-
-    @Test
-    @Fetch(url = "www.idealo.de")
     public void fetcher_should_return_cookie_value() {
-        assertThat(page.get().getCookieValue("ipcuid")).isNotEmpty();
+        assertThat(page.get().getCookieValue("logged_in")).isEqualTo("no");
     }
 
     @Test
     public void fetcher_should_return_cookies() {
-        assertThat(page.get().getCookies(), either(hasEntry("logged_in", "no")).or(is(Collections.emptyMap())));
+        assertThat(page.get().getCookies()).contains(entry("logged_in", "no"));
     }
 
     @Test
-    @Fetch(url = "www.idealo.de")
     public void fetcher_should_return_cookie() {
-        assertThat(page.get().hasCookie("ipcuid")).isTrue();
+        assertThat(page.get().hasCookie("logged_in")).isTrue();
     }
 
     @Test
@@ -96,7 +63,6 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(url = "stackoverflow.com/")
     public void fetcher_should_return_page_body() {
         assertThat(page.get().getPageBody()).contains("<!DOCTYPE html>");
     }
@@ -192,10 +158,9 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(protocol = HTTPS, urlPrefix = "en", url = "wikipedia.org/proxy")
+    @Fetch(protocol = HTTPS, urlPrefix = "en.", url = "wikipedia.org/proxy")
     public void fetch_page_via_annotation_and_build_url() {
         assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org/proxy"));
-        assertThat(page.get().getUrlPrefix(), equalTo("en"));
     }
 
     @Test(expected = GetFetchedPageException.class)
@@ -207,31 +172,31 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = URL2)
     @Fetch(url = URL2, device = MOBILE)
     public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_page_by_url_and_device() {
-        assertThat(page.get(URL2, DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get(URL2, MOBILE).getDeviceType(), equalTo(MOBILE));
+        assertThat(page.get(URL2, DESKTOP).getUserAgent(), equalTo(DESKTOP.value));
+        assertThat(page.get(URL2, MOBILE).getUserAgent(), equalTo(MOBILE.value));
     }
 
     @Test
     @Fetch(url = URL2)
     @Fetch(url = URL2, device = MOBILE)
     public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_by_device() {
-        assertThat(page.get(DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get(MOBILE).getDeviceType(), equalTo(MOBILE));
+        assertThat(page.get(DESKTOP).getUserAgent(), equalTo(DESKTOP.value));
+        assertThat(page.get(MOBILE).getUserAgent(), equalTo(MOBILE.value));
     }
 
     @Test
     @Fetch(url = URL2)
     @Fetch(url = URL2, device = MOBILE)
     public void should_return_fetched_page_for_url_snippet_and_device() {
-        assertThat(page.get("example2", DESKTOP).getDeviceType(), equalTo(DESKTOP));
-        assertThat(page.get("example2", MOBILE).getDeviceType(), equalTo(MOBILE));
+        assertThat(page.get("example2", DESKTOP).getUserAgent(), equalTo(DESKTOP.value));
+        assertThat(page.get("example2", MOBILE).getUserAgent(), equalTo(MOBILE.value));
     }
 
     @Test
-    @Fetch(url = URL2)
-    @Fetch(url = URL2, device = MOBILE)
+    @Fetch(url = URL1)
+    @Fetch(url = URL1, device = MOBILE)
     public void should_return_fetched_page_for_url_snippet() {
-        assertThat(page.get("example2").getDeviceType(), equalTo(DESKTOP));
+        assertThat(page.get("example").getUserAgent(), equalTo(DESKTOP.value));
     }
 
     @Test(expected = GetFetchedPageException.class)
@@ -268,41 +233,43 @@ public class FetchedPageTest extends PageContentTester {
     }
 
     @Test
-    @Fetch(url = "whatsmyuseragent.org/", device = MOBILE)
+    @Fetch(url = URL2, device = MOBILE)
     public void fetch_as_mobile_device_by_annotation() {
-        String userAgent = page.get().getElement("p.intro-text").text();
-        assertThat(userAgent).contains(page.get().getConfig().getUserAgent(MOBILE));
+        assertThat(page.get().getUserAgent()).isEqualTo(MOBILE.value);
     }
 
     @Test
-    @Fetch(url = "whatsmyuseragent.org/")
+    @Fetch(url = URL2)
     public void fetch_as_default_user_agent_by_annotation() {
-        String userAgent = page.get().getElement("p.intro-text").text();
-        assertThat(userAgent).contains(page.get().getConfig().getUserAgent(DESKTOP));
+        assertThat(page.get().getUserAgent()).isEqualTo(DESKTOP.value);
     }
 
     @Test
-    @Fetch(url = "whatsmyuseragent.org/", userAgent = "my custom UserAgent")
+    @Fetch(url = URL2, userAgent = "my custom UserAgent")
     public void fetch_as_mobile_user_agent_by_annotation() {
-        String userAgent = page.get().getElement("p.intro-text").text();
-        assertThat(userAgent).contains("my custom UserAgent");
+        assertThat(page.get().getUserAgent()).isEqualTo("my custom UserAgent");
+        assertThat(page.get().hasHeaderWithValue("User-Agent", "my custom UserAgent")).isTrue();
     }
 
     @Test
-    @Fetch(url = URL1, referrer = "my.custom.referrer")
+    @Fetch(url = "localhost:8089/referrer", referrer = "my.custom.referrer")
     public void fetch_page_by_setting_custom_referrer() {
         String referrer = page.get().getReferrer();
         assertThat(referrer).isEqualTo("my.custom.referrer");
     }
 
     @Test
-    @Fetch(url = "www.whatismyreferer.com/")
-    public void fetch_page_should_use_referrer_from_properties_by_default() {
-        String referrer = page.get().getElement("strong").text();
-        assertThat(referrer).isEqualTo(config.getReferrer());
+    public void fetcher_should_return_referrer() {
+        assertThat(page.get().getReferrer()).isEqualTo(globalConfig.getReferrer());
     }
 
-    @Ignore("figure out how to configure qiremock to replay cookies")
+    @Test
+    @Fetch(url = "localhost:8089/referrer")
+    public void fetch_page_should_use_referrer_from_properties_by_default() {
+        assertThat(page.get().getReferrer()).isEqualTo(globalConfig.getReferrer());
+    }
+
+    @Ignore("figure out how to configure wiremock to replay cookies")
     @Test
     @Fetch( url = URL1,
             setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
@@ -310,7 +277,7 @@ public class FetchedPageTest extends PageContentTester {
         assertThat(page.get().getCookieValue("page-content-tester")).isEqualTo("wtf-666");
     }
 
-    @Ignore("figure out how to configure qiremock to replay cookies")
+    @Ignore("figure out how to configure wiremock to replay cookies")
     @Test
     @Fetch( url = URL1,
             setCookies = {  @Cookie(name = "page-content-tester", value = "wtf-666"),

@@ -7,16 +7,16 @@ import org.junit.runner.RunWith;
 import com.googlecode.junittoolbox.ParallelRunner;
 
 import pagecontenttester.annotations.FetcherRule;
-import pagecontenttester.configurations.Config;
+import pagecontenttester.configurations.GlobalConfig;
 
 @RunWith(ParallelRunner.class)
 public class PageContentTester {
 
-    protected static Config config = new Config();
+    protected static GlobalConfig globalConfig = new GlobalConfig();
 
     @Rule
     public FetcherRule page = new FetcherRule();
 
     @Rule
-    public Timeout globalTimeout = config.getGlobalTimeoutValue();
+    public Timeout globalTimeout = globalConfig.getGlobalTimeoutValue();
 }

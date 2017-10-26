@@ -6,36 +6,56 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class TypedProperties {
+import lombok.extern.slf4j.Slf4j;
 
-	private final Properties properties = new Properties();
+@Slf4j
+class TypedProperties {
 
-	TypedProperties(String resourceName) {
-		final InputStream inputStream = getClass().getResourceAsStream(resourceName);
-		try {
-			properties.load(inputStream);
-		} catch (IOException e) {
-			throw new ConfigurationException("could not read " + resourceName, e);
-		}
-	}
+    private final Properties properties = new Properties();
+    private static final String DEFAULTS_URL = "https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties";
+    private final InputStream defaultProperties = getClass().getResourceAsStream("/default.properties");
+    private InputStream customProperties;
 
-	String getStringValue(final String key) {
-	    return System.getProperty(key, properties.getProperty(key));
-	}
+    TypedProperties() {
+        try {
+            customProperties = getClass().getResourceAsStream("/paco.properties");
+            properties.load(customProperties);
+        } catch (Exception e) {
+            log.warn("could not find 'paco.properties' file under path main/test/resources -> fallback to defaults (can be found under {})", DEFAULTS_URL);
+            loadDefaultProperties();
+        }
+    }
 
-	boolean hasProperty(final String key) {
-		return getStringValue(key) != null;
-	}
+    String getStringValue(final String key) {
+        String customValue = System.getProperty(key, properties.getProperty(key));
+        if (customValue != null) {
+            return customValue;
+        }
+        loadDefaultProperties();
+        return System.getProperty(key, properties.getProperty(key));
+    }
 
-	int getIntValue(final String key) {
-		return Integer.parseInt(getStringValue(key));
-	}
+    boolean hasProperty(final String key) {
+        return getStringValue(key) != null;
+    }
 
-	boolean getBooleanValue(final String key) {
-		String value = getStringValue(key);
-		if (!("true".equals(value) || "false".equals(value))){
-			throw new ConfigurationException("trying to parse non boolean value as boolean");
-		}
-		return parseBoolean(getStringValue(key));
-	}
+    int getIntValue(final String key) {
+        return Integer.parseInt(getStringValue(key));
+    }
+
+    boolean getBooleanValue(final String key) {
+        String value = getStringValue(key);
+        if (!("true".equals(value) || "false".equals(value))) {
+            throw new ConfigurationException("trying to parse non boolean value as boolean");
+        }
+        return parseBoolean(getStringValue(key));
+    }
+
+    private void loadDefaultProperties() {
+        try {
+            properties.load(defaultProperties);
+        } catch (IOException e) {
+            throw new ConfigurationException("could not read default properties", e);
+        }
+    }
 }

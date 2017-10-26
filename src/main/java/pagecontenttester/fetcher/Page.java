@@ -7,15 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import pagecontenttester.configurations.Config;
-
 public interface Page {
-
-    /**
-     * Holds information of the global config values
-     * @return Config
-     */
-    Config getConfig();
 
     /**
      * get DOM Element of first CSS-selector match
@@ -88,12 +80,6 @@ public interface Page {
     int getElementCount(String cssSelector);
 
     /**
-     *
-     * @return used url prefix. will be empty string if no url prefix was set.
-     */
-    String getUrlPrefix();
-
-    /**
      * @return HTTP status code of fetched page
      */
     int getStatusCode();
@@ -117,16 +103,6 @@ public interface Page {
      * @return the requested url. this will not be updated if redirects occur
      */
     String getUrl();
-
-    /**
-     * @return deviceType of fetched page was requested with (mobile or desktop user-agent)
-     */
-    FetchedPage.DeviceType getDeviceType();
-
-    /**
-     * @return true if fetched page was requested with a mobile user-agent
-     */
-    boolean isMobile();
 
     /**
      * Get the response content type (e.g. "text/html");
@@ -154,6 +130,11 @@ public interface Page {
     String getLocation();
 
     /**
+     * @return User-Agent header
+     */
+    String getUserAgent();
+
+    /**
      * @return Referer header
      */
     String getReferrer();
@@ -164,6 +145,8 @@ public interface Page {
      * @return if the header is present in this request/response
      */
     boolean hasHeader(String header);
+
+    boolean hasHeaderWithValue(String header, String value);
 
     /**
      * Check if a cookie is present

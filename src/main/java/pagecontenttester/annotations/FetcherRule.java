@@ -3,19 +3,17 @@ package pagecontenttester.annotations;
 import static pagecontenttester.fetcher.FetchedPage.annotationCall;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import pagecontenttester.configurations.Config;
-import pagecontenttester.fetcher.FetchRequestParameters;
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import pagecontenttester.annotations.Fetch.Device;
+import pagecontenttester.configurations.ConfigResolver;
+import pagecontenttester.configurations.GlobalConfig;
 import pagecontenttester.fetcher.Page;
+import pagecontenttester.fetcher.Parameters;
 
 public class FetcherRule implements TestRule {
 
@@ -23,7 +21,7 @@ public class FetcherRule implements TestRule {
     private final AnnotationCollector annotationCollector = new AnnotationCollector();
 
     private List<Page> fetchedPages = new ArrayList<>();
-    private Config config = new Config();
+    private GlobalConfig globalConfig = new GlobalConfig();
     private String testName;
 
     @Override
@@ -36,33 +34,16 @@ public class FetcherRule implements TestRule {
                 if (!annotations.isEmpty()) {
                     testName = description.getDisplayName();
                 }
-                fetchFromAnnotation(annotations);
+                fetchFromAnnotation(annotations, testName);
                 statement.evaluate();
             }
         };
     }
 
-    private void fetchFromAnnotation(List<Fetch> fetchAnnotations) {
+    private void fetchFromAnnotation(List<Fetch> fetchAnnotations, String testName) {
         for (Fetch fetchAnnotation : fetchAnnotations) {
-            Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
-            final FetchRequestParameters fetchRequestParameters = FetchRequestParameters.builder()
-                    .urlToFetch(fetchAnnotation.url())
-                    .device(fetchAnnotation.device())
-                    .userAgent(fetchAnnotation.userAgent())
-                    .method(fetchAnnotation.method())
-                    .protocol(fetchAnnotation.protocol())
-                    .referrer(getReferrer(fetchAnnotation))
-                    .followRedirects(isFollowingRedirects(fetchAnnotation))
-                    .timeout(getTimeout(fetchAnnotation))
-                    .retriesOnTimeout(getRetryCount(fetchAnnotation))
-                    .cookie(getCookies(cookieAnnotation))
-                    .urlPrefix(getUrlPrefix(fetchAnnotation))
-                    .port(getPort(fetchAnnotation))
-                    .testName(testName)
-                    .build();
-
-            final Page fetchedPage = annotationCall(fetchRequestParameters);
-
+            Parameters parameters = new ConfigResolver(fetchAnnotation, testName).getRequestSpecificParams();
+            final Page fetchedPage = annotationCall(parameters);
             fetchedPages.add(fetchedPage);
         }
     }
@@ -79,11 +60,11 @@ public class FetcherRule implements TestRule {
         return pagePicker.get(urlSnippet);
     }
 
-    public Page get(DeviceType deviceType) {
+    public Page get(Device deviceType) {
         return pagePicker.get(deviceType);
     }
 
-    public Page get(String urlSnippet, DeviceType deviceType) {
+    public Page get(String urlSnippet, Device deviceType) {
         return pagePicker.get(urlSnippet, deviceType);
     }
 
@@ -91,45 +72,7 @@ public class FetcherRule implements TestRule {
         return fetchedPages;
     }
 
-    Config getConfig() {
-        return config;
-    }
-
-    private int getRetryCount(Fetch fetchPage) {
-        return fetchPage.retriesOnTimeout() == 0 ? config.getTimeoutMaxRetryCount() : fetchPage.retriesOnTimeout();
-    }
-
-    private int getTimeout(Fetch fetchPage) {
-        return fetchPage.timeout() == 0 ? config.getTimeoutValue() : fetchPage.timeout();
-    }
-
-    private String getReferrer(Fetch fetchPage) {
-        return "referrer".equals(fetchPage.referrer()) ? config.getReferrer() : fetchPage.referrer();
-    }
-
-    private boolean isFollowingRedirects(Fetch fetchPage) {
-        return fetchPage.followRedirects() && config.isFollowingRedirects();
-
-    }
-
-    private String getUrlPrefix(Fetch fetchPage) {
-        return fetchPage.urlPrefix().isEmpty() ? config.getUrlPrefix() : fetchPage.urlPrefix();
-    }
-
-    private String getPort(Fetch fetchPage) {
-        return fetchPage.port().isEmpty() ? config.getPort() : fetchPage.port();
-    }
-
-    private Map<String, String> getCookies(Cookie[] annotationCookies) {
-
-        HashMap<String, String> cookies = new HashMap<>();
-
-        for (Cookie annotationCookie : annotationCookies) {
-            if ("".equals(annotationCookie.name())) {
-                return Collections.emptyMap();
-            }
-            cookies.put(annotationCookie.name(), annotationCookie.value());
-        }
-        return cookies;
+    GlobalConfig getGlobalConfig() {
+        return globalConfig;
     }
 }

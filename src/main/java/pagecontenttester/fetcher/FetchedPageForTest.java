@@ -29,7 +29,6 @@ import org.xml.sax.SAXParseException;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import pagecontenttester.configurations.Config;
 
 @Slf4j
 class FetchedPageForTest implements Page {
@@ -54,20 +53,8 @@ class FetchedPageForTest implements Page {
         return fetchedPage.getUrl();
     }
 
-    public String getUrlPrefix() {
-        return fetchedPage.getUrlPrefix();
-    }
-
     public int getStatusCode() {
         return getResponse().statusCode();
-    }
-
-    public FetchedPage.DeviceType getDeviceType() {
-        return fetchedPage.getDeviceType();
-    }
-
-    public boolean isMobile() {
-        return fetchedPage.isMobile();
     }
 
     public String getContentType() {
@@ -90,16 +77,24 @@ class FetchedPageForTest implements Page {
         return getResponse().headers();
     }
 
+    public String getUserAgent() {
+        return getHeader("User-Agent");
+    }
+
     public String getLocation() {
-        return getResponse().header("Location");
+        return getHeader("Location");
     }
 
     public String getReferrer() {
-        return getResponse().header("Referer");
+        return getHeader("Referer");
     }
 
     public boolean hasHeader(String header) {
         return getResponse().hasHeader(header);
+    }
+
+    public boolean hasHeaderWithValue(String header, String value) {
+        return getResponse().hasHeaderWithValue(header, value);
     }
 
     public Map<String, String> getCookies() {
@@ -118,41 +113,37 @@ class FetchedPageForTest implements Page {
         return getResponse().statusMessage();
     }
 
-    public Config getConfig() {
-        return fetchedPage.getConfig();
-    }
-
     public String getTitle() {
         return getDocument().title();
     }
 
     public Elements getElements(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getDocument().select(cssSelector);
     }
 
     public Element getElement(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElements(cssSelector).first();
     }
 
     public Element getElementLastOf(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElements(cssSelector).last();
     }
 
     public Element getElement(String cssSelector, int index) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElements(cssSelector).get(index);
     }
 
     public boolean isElementPresent(String cssSelector) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElementCount(cssSelector) > 0;
     }
 
     public boolean isElementPresentNthTimes(String cssSelector, int numberOfOccurrences) {
-        hasSelector(cssSelector);
+        storeIfNotFound(cssSelector);
         return getElementCount(cssSelector) == numberOfOccurrences;
     }
 
@@ -178,7 +169,7 @@ class FetchedPageForTest implements Page {
         }
     }
 
-    private void hasSelector(String cssSelector) {
+    private void storeIfNotFound(String cssSelector) {
         if (getElementCount(cssSelector) == 0) {
             store("not-found");
         }

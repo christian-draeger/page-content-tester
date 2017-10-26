@@ -1,17 +1,17 @@
 package pagecontenttester.configurations;
 
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.MOBILE;
+import static pagecontenttester.annotations.Fetch.Device.MOBILE;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 import org.junit.rules.Timeout;
 
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import pagecontenttester.annotations.Fetch.Device;
 
-public class Config {
+public class GlobalConfig {
 
-    private final TypedProperties configs = new TypedProperties("/paco.properties");
+    private final TypedProperties configs = new TypedProperties();
 
     public int getTimeoutValue() {
         return configs.getIntValue("timeout");
@@ -25,11 +25,19 @@ public class Config {
         return configs.getIntValue("timeout.max.retry.count");
     }
 
-    public String getUserAgent(DeviceType deviceType) {
-        if (deviceType.equals(MOBILE)) {
+    public String getUserAgent(Device device) {
+        if (device.equals(MOBILE)) {
             return configs.getStringValue("mobile.userAgent");
         }
         return configs.getStringValue("desktop.userAgent");
+    }
+
+    public String getMobileUserAgent() {
+            return configs.getStringValue("mobile.userAgent");
+    }
+
+    public String getDesktopUserAgent() {
+            return configs.getStringValue("desktop.userAgent");
     }
 
     public boolean isFollowingRedirects() {
@@ -76,4 +84,5 @@ public class Config {
     public boolean isPacoAsciiActive() {
         return configs.getBooleanValue("paco.ascii");
     }
+
 }

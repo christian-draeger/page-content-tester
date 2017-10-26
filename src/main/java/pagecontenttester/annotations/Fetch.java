@@ -1,8 +1,8 @@
 package pagecontenttester.annotations;
 
 import static org.jsoup.Connection.Method.GET;
+import static pagecontenttester.annotations.Fetch.Device.DESKTOP;
 import static pagecontenttester.annotations.Fetch.Protocol.NONE;
-import static pagecontenttester.fetcher.FetchedPage.DeviceType.DESKTOP;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 import org.jsoup.Connection.Method;
 
-import pagecontenttester.fetcher.FetchedPage.DeviceType;
+import pagecontenttester.configurations.GlobalConfig;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
@@ -28,6 +28,17 @@ public @interface Fetch {
         public final String value;
 
         Protocol(String value) {
+            this.value = value;
+        }
+    }
+
+    enum Device {
+        DESKTOP(new GlobalConfig().getDesktopUserAgent()),
+        MOBILE(new GlobalConfig().getMobileUserAgent());
+
+        public final String value;
+
+        Device(String value) {
             this.value = value;
         }
     }
@@ -62,7 +73,13 @@ public @interface Fetch {
      * Defines the user Agent that will be send with the request.
      * This is helpful to emulate a websites behaviour regarding mobile devices or different browsers.
      */
-    DeviceType device() default DESKTOP;
+    Device device() default DESKTOP;
+
+    /**
+     * Defines a custom user Agent string that will be send with the request.
+     * If this options is set it will override the user agent set via {@link Device device()}
+     */
+    String userAgent() default "";
 
     /**
      * Defines the HTTP request method that should be used
@@ -70,9 +87,9 @@ public @interface Fetch {
     Method method() default GET;
 
     /**
-     * Defines the referrer that shpuld be set for a request
+     * Defines the referrer that should be set for a request
      */
-    String referrer() default "referrer";
+    String referrer() default "";
 
     /**
      * Defines the maximum time in milliseconds a request is allowed to take.
@@ -82,7 +99,7 @@ public @interface Fetch {
     /**
      * Defines the amount of retries if there has been a connection timeout
      */
-    int retriesOnTimeout() default 0;
+    int retriesOnTimeout() default -1;
 
     /**
      * Defines a Cookie or several Cookies the can be send with the request.
@@ -92,9 +109,4 @@ public @interface Fetch {
      * but the cookie has been send.
      */
     Cookie[] setCookies() default @Cookie();
-
-    /**
-     * Defines the user agent
-     */
-    String userAgent() default "";
 }

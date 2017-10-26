@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/example3"
+    "url": "/referrer"
   },
   "response": {
     "status": 200,
@@ -9,9 +9,9 @@
     "headers": {
       "Content-Type": "text/html; charset=utf-8",
       "User-Agent": "{{request.headers.User-Agent}}",
+      "Referer": "{{request.headers.Referer}}",
       "Set-Cookie": "logged_in=no",
-      "Custom-Header": "custom value",
-      "Referer": "http://www.google.com"
+      "Custom-Header": "custom value"
     }
   }
 }

@@ -1,6 +1,6 @@
 package pagecontenttester.annotations;
 
-import pagecontenttester.fetcher.FetchedPage;
+import pagecontenttester.annotations.Fetch.Device;
 import pagecontenttester.fetcher.Page;
 
 public class PagePicker {
@@ -24,7 +24,7 @@ public class PagePicker {
             if (recentlyFetchedPage.getUrl().endsWith(urlSnippet)) {
                 return recentlyFetchedPage;
             }
-            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getConfig().getPort(), "").endsWith(urlSnippet)) {
+            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getGlobalConfig().getPort(), "").endsWith(urlSnippet)) {
                 return recentlyFetchedPage;
             }
             if (recentlyFetchedPage.getUrl().contains(urlSnippet)) {
@@ -34,27 +34,27 @@ public class PagePicker {
         throw new GetFetchedPageException("could not find fetched page with url-snippet \"" + urlSnippet + "\"");
     }
 
-    public Page get(FetchedPage.DeviceType deviceType) {
+    public Page get(Device device) {
         for (Page recentlyFetchedPage : fetcherRule.getFetchedPages()) {
-            if (recentlyFetchedPage.getDeviceType().equals(deviceType)) {
+            if (recentlyFetchedPage.getUserAgent().equals(device.value)) {
                 return recentlyFetchedPage;
             }
         }
-        throw new GetFetchedPageException("could not find fetched page with deviceType \"" + deviceType + "\"");
+        throw new GetFetchedPageException("could not find fetched page with deviceType \"" + device + "\"");
     }
 
-    public Page get(String urlSnippet, FetchedPage.DeviceType deviceType) {
+    public Page get(String urlSnippet, Device device) {
         for (Page recentlyFetchedPage : fetcherRule.getFetchedPages()) {
-            if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {
+            if (recentlyFetchedPage.getUrl().endsWith(urlSnippet) && recentlyFetchedPage.getUserAgent().equals(device.value)) {
                 return recentlyFetchedPage;
             }
-            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getConfig().getPort(), "").endsWith(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {
+            if (recentlyFetchedPage.getUrl().replace(":" + fetcherRule.getGlobalConfig().getPort(), "").endsWith(urlSnippet) && recentlyFetchedPage.getUserAgent().equals(device.value)) {
                 return recentlyFetchedPage;
             }
-            if (recentlyFetchedPage.getUrl().contains(urlSnippet) && recentlyFetchedPage.getDeviceType().equals(deviceType)) {
+            if (recentlyFetchedPage.getUrl().contains(urlSnippet) && recentlyFetchedPage.getUserAgent().equals(device.value)) {
                 return recentlyFetchedPage;
             }
         }
-        throw new GetFetchedPageException("could not find fetched page with url-snippet: \"" + urlSnippet + "\" (" + deviceType + ")");
+        throw new GetFetchedPageException("could not find fetched page with url-snippet: \"" + urlSnippet + "\" (" + device + ")");
     }
 }
