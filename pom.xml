@@ -46,8 +46,13 @@
         <version.lombok>1.16.16</version.lombok>
         <version.apacheCommonsLang3>3.5</version.apacheCommonsLang3>
         <version.logback>1.2.1</version.logback>
-        <version.hamcrest>2.0.0.0</version.hamcrest>
         <version.json>20160810</version.json>
+        <assertj.version>3.8.0</assertj.version>
+        <httpclient.version>4.5</httpclient.version>
+        <awaitility.version>3.0.0</awaitility.version>
+        <jansi.version>1.16</jansi.version>
+        <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+        <surefire.plugin.version>2.19.1</surefire.plugin.version>
 
         <surefire.rerunFailingTestsCount>2</surefire.rerunFailingTestsCount>
     </properties>
@@ -82,14 +87,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-junit</artifactId>
-            <version>${version.hamcrest}</version>
-        </dependency>
-        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.8.0</version>
+            <version>${assertj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -114,18 +114,18 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5</version>
+            <version>${httpclient.version}</version>
         </dependency>
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility-proxy</artifactId>
-            <version>3.0.0</version>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.fusesource.jansi</groupId>
             <artifactId>jansi</artifactId>
-            <version>1.16</version>
+            <version>${jansi.version}</version>
         </dependency>
 
     </dependencies>
@@ -188,16 +188,14 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
-
 
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.5.1</version>
+                    <version>${maven.compiler.plugin.version}</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
@@ -207,19 +205,23 @@
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.20.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.19.1</version>
+                    <version>${surefire.plugin.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.apache.maven.surefire</groupId>
                             <artifactId>surefire-junit47</artifactId>
-                            <version>2.19.1</version>
+                            <version>${surefire.plugin.version}</version>
                         </dependency>
                     </dependencies>
                     <configuration>
                         <parallel>all</parallel>
                         <useUnlimitedThreads>true</useUnlimitedThreads>
-                        <!--<useSystemClassLoader>false</useSystemClassLoader>-->
                         <trimStackTrace>false</trimStackTrace>
                         <properties>
                             <property>

@@ -4,10 +4,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.awaitility.Awaitility.await;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.is;
 import static org.jsoup.Connection.Method.POST;
 import static pagecontenttester.annotations.Fetch.Device.DESKTOP;
 import static pagecontenttester.annotations.Fetch.Device.MOBILE;
@@ -112,36 +108,36 @@ public class FetchedPageTest extends PageContentTester {
 
     @Test
     public void fetcher_should_return_count_of_certain_element() {
-        assertThat(page.get().getElementCount("p"), is(2));
+        assertThat(page.get().getElementCount("p")).isEqualTo(2);
     }
 
     @Test
     public void fetcher_should_return_headers() {
-        assertThat(page.get().getHeaders(), hasEntry("Custom-Header", "custom value"));
+        assertThat(page.get().getHeaders()).contains(entry("Custom-Header", "custom value"));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void fetcher_should_return_null_for_non_existing_location_header() {
         String location = page.get().getLocation();
-        assertThat(location, is(null));
+        assertThat(location).isNull();
     }
 
     @Test
     public void fetcher_should_return_certain_header() {
-        assertThat(page.get().getHeader("Custom-Header"), equalTo("custom value"));
+        assertThat(page.get().getHeader("Custom-Header")).isEqualTo("custom value");
     }
 
     @Test
     public void fetcher_should_check_is_certain_header_is_present() {
-        assertThat(page.get().hasHeader("Custom-Header"), is(true));
+        assertThat(page.get().hasHeader("Custom-Header")).isTrue();
     }
 
     @Test
     @Fetch(url = URL1)
     @Fetch(url = URL2)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_index() {
-        assertThat(page.get(0).getUrl(), equalTo("http://" + URL1));
-        assertThat(page.get(1).getUrl(), equalTo("http://" + URL2));
+        assertThat(page.get(0).getUrl()).isEqualTo("http://" + URL1);
+        assertThat(page.get(1).getUrl()).isEqualTo("http://" + URL2);
     }
 
     @Test
@@ -160,7 +156,7 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     @Fetch(protocol = HTTPS, urlPrefix = "en.", url = "wikipedia.org/proxy")
     public void fetch_page_via_annotation_and_build_url() {
-        assertThat(page.get().getUrl(), equalTo("https://en.wikipedia.org/proxy"));
+        assertThat(page.get().getUrl()).isEqualTo("https://en.wikipedia.org/proxy");
     }
 
     @Test(expected = GetFetchedPageException.class)
@@ -172,31 +168,31 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = URL2)
     @Fetch(url = URL2, device = MOBILE)
     public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_page_by_url_and_device() {
-        assertThat(page.get(URL2, DESKTOP).getUserAgent(), equalTo(DESKTOP.value));
-        assertThat(page.get(URL2, MOBILE).getUserAgent(), equalTo(MOBILE.value));
+        assertThat(page.get(URL2, DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
+        assertThat(page.get(URL2, MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
     }
 
     @Test
     @Fetch(url = URL2)
     @Fetch(url = URL2, device = MOBILE)
     public void fetch_as_desktop_and_mobile_device_by_annotation_and_get_by_device() {
-        assertThat(page.get(DESKTOP).getUserAgent(), equalTo(DESKTOP.value));
-        assertThat(page.get(MOBILE).getUserAgent(), equalTo(MOBILE.value));
+        assertThat(page.get(DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
+        assertThat(page.get(MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
     }
 
     @Test
     @Fetch(url = URL2)
     @Fetch(url = URL2, device = MOBILE)
     public void should_return_fetched_page_for_url_snippet_and_device() {
-        assertThat(page.get("example2", DESKTOP).getUserAgent(), equalTo(DESKTOP.value));
-        assertThat(page.get("example2", MOBILE).getUserAgent(), equalTo(MOBILE.value));
+        assertThat(page.get("example2", DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
+        assertThat(page.get("example2", MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
     }
 
     @Test
     @Fetch(url = URL1)
     @Fetch(url = URL1, device = MOBILE)
     public void should_return_fetched_page_for_url_snippet() {
-        assertThat(page.get("example").getUserAgent(), equalTo(DESKTOP.value));
+        assertThat(page.get("example").getUserAgent()).isEqualTo(DESKTOP.value);
     }
 
     @Test(expected = GetFetchedPageException.class)
@@ -209,12 +205,12 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     public void get_name_of_test() {
         String testName = page.get().getTestName();
-        assertThat(testName, equalTo("get_name_of_test(pagecontenttester.fetcher.FetchedPageTest)"));
+        assertThat(testName).isEqualTo("get_name_of_test(pagecontenttester.fetcher.FetchedPageTest)");
     }
 
     @Test
     public void get_name_of_other_test() {
-        assertThat(page.get().getTestName(), equalTo("get_name_of_other_test(pagecontenttester.fetcher.FetchedPageTest)"));
+        assertThat(page.get().getTestName()).isEqualTo("get_name_of_other_test(pagecontenttester.fetcher.FetchedPageTest)");
     }
 
     @Test
@@ -290,17 +286,17 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     @Fetch(url = URL1, method = POST)
     public void do_post_request_and_check_response() throws Exception {
-        assertThat(page.get().getJsonResponse().get("data"), equalTo("some value"));
+        assertThat(page.get().getJsonResponse().get("data")).isEqualTo("some value");
     }
 
     @Test
     public void should_return_true_for_certain_count_of_certain_element() {
-        assertThat(page.get().isElementPresentNthTimes("h1", 1), is(true));
+        assertThat(page.get().isElementPresentNthTimes("h1", 1)).isTrue();
     }
 
     @Test
     public void should_return_false_for_invalid_count_of_certain_element() {
-        assertThat(page.get().isElementPresentNthTimes("h1", 100), is(false));
+        assertThat(page.get().isElementPresentNthTimes("h1", 100)).isFalse();
     }
 
     private void assertFileContent(File file, String contains) {
