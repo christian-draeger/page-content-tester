@@ -1,4 +1,4 @@
-package pagecontenttester.fetcher;
+package paco.fetcher;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -8,7 +8,7 @@ import java.util.Collections;
 import org.jsoup.Connection;
 import org.junit.Test;
 
-import pagecontenttester.runner.PageContentTester;
+import paco.runner.PageContentTester;
 
 public class FetcherTest extends PageContentTester {
 

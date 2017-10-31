@@ -8,7 +8,7 @@
     <artifactId>page-content-tester</artifactId>
     <version>1.7.4</version>
 
-    <name>Page Content Tester</name>
+    <name>Paco (the page content tester)</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
     <url>https://christian-draeger.github.io/page-content-tester/</url>
 
@@ -18,6 +18,11 @@
             <email>christian.draeger1@gmail.com</email>
         </developer>
     </developers>
+
+    <issueManagement>
+        <system>github</system>
+        <url>http://github.com/christian-draeger/page-content-tester/issues</url>
+    </issueManagement>
 
     <licenses>
         <license>
@@ -34,8 +39,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <autoReleaseAfterClose>false</autoReleaseAfterClose>
         <protocol/>
         <urlPrefix/>
         <port/>
@@ -85,6 +90,12 @@
                     <artifactId>hamcrest-core</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.stephenc.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+            <version>1.0-1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -226,7 +237,7 @@
                         <properties>
                             <property>
                                 <name>listener</name>
-                                <value>pagecontenttester.runner.TestListener</value>
+                                <value>paco.runner.TestListener</value>
                             </property>
                         </properties>
                     </configuration>
@@ -236,12 +247,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>auto</id>
-            <properties>
-                <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </properties>
-        </profile>
         <profile>
             <id>release</id>
             <build>
@@ -254,7 +259,7 @@
                         <configuration>
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>${autoReleaseAfterClose}</autoReleaseAfterClose>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                     <plugin>

@@ -1,4 +1,4 @@
-package pagecontenttester.fetcher;
+package paco.fetcher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

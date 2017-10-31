@@ -1,6 +1,6 @@
-package pagecontenttester.annotations;
+package paco.annotations;
 
-import static pagecontenttester.fetcher.FetchedPage.annotationCall;
+import static paco.fetcher.FetchedPage.annotationCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import pagecontenttester.annotations.Fetch.Device;
-import pagecontenttester.configurations.ConfigResolver;
-import pagecontenttester.configurations.GlobalConfig;
-import pagecontenttester.fetcher.Page;
-import pagecontenttester.fetcher.Parameters;
+import paco.annotations.Fetch.Device;
+import paco.configurations.ConfigResolver;
+import paco.configurations.GlobalConfig;
+import paco.fetcher.Page;
+import paco.fetcher.Parameters;
 
 public class FetcherRule implements TestRule {
 
