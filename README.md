@@ -25,8 +25,8 @@ So Paco was born as an alternative and he's doing his job rapidly fast and relia
 The Setup is pretty easy (see __[Setup](#setup)__)
 
 The Execution of the tests is managed with jUnit and Surefire/Failsafe. The intention of **Paco** is to run a big amount of tests in parallel, therefore it provides a parent pom (usage is optional) that is doing all the parallelization setup for you (see __[Configure the Page-Fetcher](#configure-the-page-fetcher)__). 
-All test classes placed under `/src/test/java` and names matching `**/*Test.java` will be executed surefire (maven-phase: test),
-all with name matching `**/*IT.java` will be executed fail-safe (maven-phase: integration-test).
+All test classes placed under `/src/test/java` and names matching `**/*Test.java` will be executed by surefire (maven-phase: test),
+all with name matching `**/*IT.java` will be executed by fail-safe (maven-phase: integration-test).
 
 Beside that **Paco** has a bunch of convenient methods to easily write nicely readable tests. It provides easy access to request data (like cookies, headers, etc.), test-config data, and Dom checks (like isElementPresent, getElement, get value of html tags/attributes, etc, etc...)
 
@@ -46,8 +46,6 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 ```
 - to get the best parallelization result of PageContentTester and don't having the overhead of finding the best setup add this parent pom to your pom.xml
   - it will setup all the configurations for an efficient parallelization of your jUnit tests automatically
-    - you can annotate single test classes with `@NotThreadSafe` if there are race conditions in your tests. This way you can isolate conflicting groups of tests, run them sequentially and still run other test classes in parallel. 
-    In general it's always a matter of your test setup or the tests itself if race conditions prevent you from a parallel execution. The `@NotThreadSafe`-annotation should just be seen as little workaround as long as you make the affected tests work in parallel.
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section of the [parent pom](https://search.maven.org/#artifactdetails%7Cio.github.christian-draeger%7Cpage-content-tester-parent%7C1.0%7Cpom)
   - if you want to setup jUnit yourself just don't use the parent pom
 
@@ -70,6 +68,13 @@ From time to time you may have specific behaviour for a certain test, so it's no
 In this case use the configuration possibilities of the `@Fetch`-annotation.
     - nearly all values can be set individually for test methods and classes via Annotation as well (see __[Test Examples](#test-examples)__)
         - annotated values will always win over global config
+        
+#### Exclude Tests from parallel execution
+Some tests are not intended to run parallel or it would be big hassle to make them work in parallel?
+You can annotate single test classes with `@NotThreadSafe` if there are race conditions in your tests. This way you can isolate conflicting groups of tests, run them sequentially and still run other test classes in parallel. 
+In general it's always a matter of your test setup or the tests itself if race conditions prevent you from a parallel execution. The `@NotThreadSafe`-annotation should just be seen as little workaround as long as you make the affected tests work in parallel.
+You should always try to isolate your tests enough that they don't affect each other either running in parallel or running sequentially.
+    
 
 <h2 align="center">Test Examples</h2>
 
