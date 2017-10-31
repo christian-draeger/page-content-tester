@@ -205,26 +205,26 @@ public class FetchedPageTest extends PageContentTester {
     @Test
     public void get_name_of_test() {
         String testName = page.get().getTestName();
-        assertThat(testName).isEqualTo("get_name_of_test(pagecontenttester.fetcher.FetchedPageTest)");
+        assertThat(testName).isEqualTo("get_name_of_test(paco.fetcher.FetchedPageTest)");
     }
 
     @Test
     public void get_name_of_other_test() {
-        assertThat(page.get().getTestName()).isEqualTo("get_name_of_other_test(pagecontenttester.fetcher.FetchedPageTest)");
+        assertThat(page.get().getTestName()).isEqualTo("get_name_of_other_test(paco.fetcher.FetchedPageTest)");
     }
 
     @Test
     @Fetch(url = URL1)
     public void can_store_page_body() throws IOException, InterruptedException {
         page.get().storePageBody();
-        File file = new File("target/paco/stored/can_store_page_body(pagecontenttester.fetcher.FetchedPageTest).html");
+        File file = new File("target/paco/stored/can_store_page_body(paco.fetcher.FetchedPageTest).html");
         assertFileContent(file, "<title>i'm the title</title>");
     }
 
     @Test
     public void store_page_body_if_element_not_present() throws IOException {
         page.get().getElements("dfghfjhg");
-        File file = new File("target/paco/not-found/store_page_body_if_element_not_present(pagecontenttester.fetcher.FetchedPageTest).html");
+        File file = new File("target/paco/not-found/store_page_body_if_element_not_present(paco.fetcher.FetchedPageTest).html");
         assertFileContent(file, "<title>i'm the title</title>");
     }
 

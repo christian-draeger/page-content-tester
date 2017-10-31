@@ -13,7 +13,7 @@
         </encoder>
     </appender>
 
-    <logger name="pagecontenttester.fetcher" level="INFO">
+    <logger name="paco.fetcher" level="INFO">
         <appender-ref ref="PLAIN"/>
     </logger>
 
