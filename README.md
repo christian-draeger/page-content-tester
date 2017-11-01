@@ -76,7 +76,7 @@ In general it's always a matter of your test setup or the tests itself if race c
 You should always try to isolate your tests enough that they don't affect each other either running in parallel or running sequentially.
 
 #### Response Caching
-**Paco** provides an built in loading cache that is enabled by default. It avoids you from making duplicate calls and make your test suite run faster.    
+**Paco** provides an built in loading cache that is enabled by default. It avoids you from making duplicate calls and make your test suite run faster. if don't want your duplicate calls taken from cache it can be deactivated via `paco.properties`.
 
 <h2 align="center">Test Examples</h2>
 
