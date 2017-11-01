@@ -74,7 +74,9 @@ Some tests are not intended to run parallel or it would be big hassle to make th
 You can annotate single test classes with `@NotThreadSafe` if there are race conditions in your tests. This way you can isolate conflicting groups of tests, run them sequentially and still run other test classes in parallel. 
 In general it's always a matter of your test setup or the tests itself if race conditions prevent you from a parallel execution. The `@NotThreadSafe`-annotation should just be seen as little workaround as long as you make the affected tests work in parallel.
 You should always try to isolate your tests enough that they don't affect each other either running in parallel or running sequentially.
-    
+
+#### Response Caching
+**Paco** provides an built in loading cache that is enabled by default. It avoids you from making duplicate calls and make your test suite run faster.    
 
 <h2 align="center">Test Examples</h2>
 
