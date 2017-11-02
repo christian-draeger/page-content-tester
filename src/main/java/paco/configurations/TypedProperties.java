@@ -14,11 +14,10 @@ class TypedProperties {
     private final Properties properties = new Properties();
     private static final String DEFAULTS_URL = "https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties";
     private final InputStream defaultProperties = getClass().getResourceAsStream("/default.properties");
-    private InputStream customProperties;
 
     TypedProperties() {
         try {
-            customProperties = getClass().getResourceAsStream("/paco.properties");
+            InputStream customProperties = getClass().getResourceAsStream("/paco.properties");
             properties.load(customProperties);
         } catch (Exception e) {
             log.warn("could not find 'paco.properties' file under path main/test/resources -> fallback to defaults (can be found under {})", DEFAULTS_URL);

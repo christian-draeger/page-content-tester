@@ -65,9 +65,132 @@ If you want to change some of these values just place a `paco.properties` file i
     - you can override all default values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your projects `paco.properties file (these settings will be used global)
 
 From time to time you may have specific behaviour for a certain test, so it's not always suffice to only have global settings.
-In this case use the configuration possibilities of the `@Fetch`-annotation.
-    - nearly all values can be set individually for test methods and classes via Annotation as well (see __[Test Examples](#test-examples)__)
-        - annotated values will always win over global config
+In this case use the configuration possibilities of the `@Fetch`-annotation or the parameters builder.
+    - nearly all values can be set individually for test methods and classes via Annotation or parameters builder as well (see __[Test Examples](#test-examples)__)
+        - annotated values or values set via parameters builder will always win over global config
+        
+#### the @Fetch annotation
+If you want to configure your http call using constant values using the annotation is preferred.
+The fetch process will be finished before your actual test starts, which is good because you can not run into race conditions.
+You can set test specific values for the used protocol, referrer, user-agent, device (if you don't need a specific user-agent string), the used http method (get, post, delete, ...), port, url-prefix, request timeout, retries on timeout, setting cookies and if the request should follow redirects.
+All these parameters are optional and if not set taken from your global config.
+The only parameter always required is url.
+
+     
+```
+public class UsingFetchAnnotationTest extends Paco {
+
+    @Test
+    @Fetch(url = "localhost:8089/example")
+    public void get_page_and_check_title() {
+        assertThat(page.getTitle()).isEqualTo("example title");
+    }
+    
+    
+    @Test
+    @Fetch(url = "localhost:8089/example", method = POST)
+    public void post_and_check_response_body() {
+        assertThat(page.getContentType()).isEqualTo("application/json");
+        assertThat(page.getJsonResponse().get("data")).isEqualTo("some value");
+    }
+}
+```   
+
+The **@Fetch** annotation can be used on methods as well as on classes.
+```
+@Fetch(url = "localhost:8089/example")
+public class UsingFetchAnnotationTest extends Paco {
+
+    @Test
+    public void get_page_and_check_title() {
+        assertThat(page.getTitle()).isEqualTo("example title");
+    }
+}
+```
+
+Furthermore the **@Fetch** annotation is repeatable. This allows you to fetch multiple pages before running your actual test.
+If you fetch multiple pages there are 3 possibilities to get a page object inside your test and do your stuff with the response.
+
+1. by index (possible because all fetches via annotation on a class or method will be done sequentially, means they are always in correct order)
+
+```
+public class UsingMultipleFetchAnnotationsTest extends Paco {
+
+    @Test
+    @Fetch(url = "localhost:8089/example")
+    @Fetch(url = "localhost:8089/anotherExample")
+    public void get_page_and_check_title() {
+        assertThat(page.get(0).getTitle()).isEqualTo("example title");
+        assertThat(page.get(1).getTitle()).isEqualTo("anotherExample title");
+    }
+}
+```   
+2. by url snippet (which should be better readable as using the index in most cases)
+```
+public class UsingMultipleFetchAnnotationsTest extends Paco {
+
+    @Test
+    @Fetch(url = "localhost:8089/example")
+    @Fetch(url = "localhost:8089/anotherExample")
+    public void get_page_and_check_title() {
+        assertThat(page.get("example").getTitle()).isEqualTo("example title");
+        assertThat(page.get("anotherExample").getTitle()).isEqualTo("anotherExample title");
+    }
+}
+```   
+3. by device type
+```
+public class UsingMultipleFetchAnnotationsTest extends Paco {
+
+    @Test
+    @Fetch(url = "localhost:8089/example")
+	@Fetch(url = "localhost:8089/example", device = MOBILE)
+	public void get_page_and_check_user_agent() {
+		assertThat(page.get(DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
+		assertThat(page.get(MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
+	}
+}
+```   
+
+4. by url snipped and device type (useful if you want to fetch a page with a desktop user-agent and a mobile user-agent to check differences etc.)
+```
+public class UsingMultipleFetchAnnotationsTest extends Paco {
+
+    @Test
+    @Fetch(url = "localhost:8089/example")
+	@Fetch(url = "localhost:8089/example", device = MOBILE)
+	@Fetch(url = "localhost:8089/anotherExample")
+	public void get_page_and_check_user_agent() {
+		assertThat(page.get("example", DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
+		assertThat(page.get("example", MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
+		assertThat(page.get("anotherExample").getUserAgent()).isEqualTo(DESKTOP.value);
+	}
+}
+```   
+
+
+#### the fetcher method
+From time to time it's necessary to pass dynamic values to your http call configuration. Another possible scenario could be that you need to do a http call, do something different and doing another http call afterwards.
+In these cases you should use the fetcher method and pass your configuration values by using the params method and override the global config values you want to change via the builder the params method returns.
+     
+```
+public class UsingFetcherMethodTest extends Paco {
+
+    @Test
+    public void get_page_and_check_title() {
+        final Page page = fetcher(params().urlToFetch("http://localhost:8089/example").build());
+        assertThat(page.getTitle()).isEqualTo("i'm the title");
+    }
+
+    @Test
+    public void post_and_check_response_body() {
+        final Page page = fetcher(params().urlToFetch("http://localhost:8089/example").method(POST).build());
+        assertThat(page.getContentType()).isEqualTo("application/json");
+        assertThat(page.getJsonResponse().get("data")).isEqualTo("some value");
+    }
+}
+```     
+     
         
 #### Exclude Tests from parallel execution
 Some tests are not intended to run parallel or it would be big hassle to make them work in parallel?
@@ -80,6 +203,7 @@ You should always try to isolate your tests enough that they don't affect each o
 
 <h2 align="center">Test Examples</h2>
 
+#### Overview of possibilities on your Page object (the response)
 ```
 public class ExampleUsageTest extends PageContentTester {
 
@@ -87,7 +211,7 @@ public class ExampleUsageTest extends PageContentTester {
     private static final String GOOGLE_URL = "http://www.google.de";
 
     @Test
-    @FetchPage(GITHUB_URL)
+    @Fetch(GITHUB_URL)
     public void fetch_url_via_annotation() {
         assertThat(page.get().getElementCount("h1"), is(1));
     }
@@ -99,8 +223,8 @@ public class ExampleUsageTest extends PageContentTester {
     }
 
     @Test
-    @FetchPage(GITHUB_URL)
-    @FetchPage(GOOGLE_URL)
+    @Fetch(GITHUB_URL)
+    @FetchGOOGLE_URL)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_url_snippet() {
 
         FetchedPage github = page.get("github");
@@ -119,26 +243,13 @@ public class ExampleUsageTest extends PageContentTester {
     }
 
     @Test
-    @FetchPage(GITHUB_URL)
-    @FetchPage(GOOGLE_URL)
+    @Fetch(GITHUB_URL)
+    @Fetch(GOOGLE_URL)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_index() {
         FetchedPage github = page.get(0);
         FetchedPage google = page.get(1);
 
         assertThat(github.isElementPresent("h1"), is(true));
-
-        assertThat(google.isElementPresent("#footer"), is(true));
-        assertThat(google.getUrl(), equalTo(GOOGLE_URL));
-    }
-
-    @Test
-    public void fetch_multiple_pages_in_test_method() {
-        FetchedPage github = fetchPage(GITHUB_URL);
-        FetchedPage google = fetchPage(GOOGLE_URL);
-
-        assertThat(github.isElementPresent("h1"), is(true));
-        assertThat(github.getUrl(), equalTo(GITHUB_URL));
-
         assertThat(google.isElementPresent("#footer"), is(true));
         assertThat(google.getUrl(), equalTo(GOOGLE_URL));
     }

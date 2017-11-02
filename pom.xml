@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.7.4</version>
+    <version>1.7.5</version>
 
     <name>Paco (the page content tester)</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
@@ -73,23 +73,11 @@
             <groupId>com.googlecode.junit-toolbox</groupId>
             <artifactId>junit-toolbox</artifactId>
             <version>${version.jUnitToolbox}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-library</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${version.junit}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.stephenc.jcip</groupId>
@@ -229,6 +217,7 @@
                     <configuration>
                         <parallel>all</parallel>
                         <useUnlimitedThreads>true</useUnlimitedThreads>
+                        <useSystemClassLoader>false</useSystemClassLoader>
                         <trimStackTrace>false</trimStackTrace>
                         <properties>
                             <property>

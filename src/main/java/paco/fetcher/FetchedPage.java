@@ -23,7 +23,7 @@ public class FetchedPage {
     }
 
     @SneakyThrows
-    public static Page annotationCall(Parameters params) {
+    public static Page fetcher(Parameters params) {
 
         final Parameters cacheKey = Parameters.builder()
                 .urlToFetch(params.getUrlToFetch())

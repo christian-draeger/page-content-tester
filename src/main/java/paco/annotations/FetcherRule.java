@@ -1,6 +1,6 @@
 package paco.annotations;
 
-import static paco.fetcher.FetchedPage.annotationCall;
+import static paco.fetcher.FetchedPage.fetcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class FetcherRule implements TestRule {
     private void fetchFromAnnotation(List<Fetch> fetchAnnotations, String testName) {
         for (Fetch fetchAnnotation : fetchAnnotations) {
             Parameters parameters = new ConfigResolver(fetchAnnotation, testName).getRequestSpecificParams();
-            final Page fetchedPage = annotationCall(parameters);
+            final Page fetchedPage = fetcher(parameters);
             fetchedPages.add(fetchedPage);
         }
     }
