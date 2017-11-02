@@ -40,7 +40,6 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
         <groupId>io.github.christian-draeger</groupId>
         <artifactId>page-content-tester</artifactId>
         <version>${version.from.maven.central.badge}</version>
-        <scope>test</scope>
     </dependency>
 </dependencies>
 ```
@@ -53,7 +52,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 <parent>
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester-parent</artifactId>
-    <version>1.1</version>
+    <version>${version.from.maven.central.badge}</version>
     <relativePath/>
 </parent>
 ```
