@@ -73,6 +73,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 ```
 
 <h2 align="center">Configuration</h2>
+
 ## configure your request
 By default global fetcher settings will be taken. These are pre-configured by the values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties).
 If you want to change some of these values just place a `paco.properties` file in your project under `src/test/resources/`.
