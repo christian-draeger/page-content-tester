@@ -26,6 +26,7 @@
 		* __[the fetcher method](#the-fetcher-method)__
 		* __[exclude tests from parallel execution](#exclude-tests-from-parallel-execution)__
 		* __[caching](#caching)__
+	* __[Test Examples](#test-examples)__
 		* __[Overview of possibilities on your Page object (the response)](#overview-of-possibilities-on-your-page-object-the-response)__
 * __[Example Project](#example-project)__
 * __[License](#license)__
