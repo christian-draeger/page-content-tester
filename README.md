@@ -144,11 +144,11 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 
     @Test
     @Fetch(url = "localhost:8089/example")
-	@Fetch(url = "localhost:8089/example", device = MOBILE)
-	public void get_page_and_check_user_agent() {
-		assertThat(page.get(DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
-		assertThat(page.get(MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
-	}
+    @Fetch(url = "localhost:8089/example", device = MOBILE)
+    public void get_page_and_check_user_agent() {
+	assertThat(page.get(DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
+	assertThat(page.get(MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
+    }
 }
 ```   
 
@@ -158,13 +158,13 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 
     @Test
     @Fetch(url = "localhost:8089/example")
-	@Fetch(url = "localhost:8089/example", device = MOBILE)
-	@Fetch(url = "localhost:8089/anotherExample")
-	public void get_page_and_check_user_agent() {
-		assertThat(page.get("example", DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
-		assertThat(page.get("example", MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
-		assertThat(page.get("anotherExample").getUserAgent()).isEqualTo(DESKTOP.value);
-	}
+    @Fetch(url = "localhost:8089/example", device = MOBILE)
+    @Fetch(url = "localhost:8089/anotherExample")
+    public void get_page_and_check_user_agent() {
+	assertThat(page.get("example", DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
+	assertThat(page.get("example", MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
+	assertThat(page.get("anotherExample").getUserAgent()).isEqualTo(DESKTOP.value);
+    }
 }
 ```   
 
