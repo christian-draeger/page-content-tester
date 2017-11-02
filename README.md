@@ -59,17 +59,17 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 ```
 
 
-#### Configure the Page-Fetcher
+## Configure the Page-Fetcher
 The global fetcher settings are pre-configured by the values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties).
 If you want to change some of these values just place a `paco.properties` file in your project under `src/test/resources/`.
-    - you can override all default values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your projects `paco.properties file (these settings will be used global)
+- you can override all default values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your projects `paco.properties` file (these settings will be used global)
 
 From time to time you may have specific behaviour for a certain test, so it's not always suffice to only have global settings.
 In this case use the configuration possibilities of the `@Fetch`-annotation or the parameters builder.
-    - nearly all values can be set individually for test methods and classes via Annotation or parameters builder as well (see __[Test Examples](#test-examples)__)
-        - annotated values or values set via parameters builder will always win over global config
+- nearly all values can be set individually for test methods and classes via Annotation or parameters builder as well (see __[Test Examples](#test-examples)__)
+- annotated values or values set via parameters builder will always win over global config
         
-#### the @Fetch annotation
+### the @Fetch annotation
 If you want to configure your http call using constant values using the annotation is preferred.
 The fetch process will be finished before your actual test starts, which is good because you can not run into race conditions.
 You can set test specific values for the used protocol, referrer, user-agent, device (if you don't need a specific user-agent string), the used http method (get, post, delete, ...), port, url-prefix, request timeout, retries on timeout, setting cookies and if the request should follow redirects.
@@ -111,7 +111,7 @@ public class UsingFetchAnnotationTest extends Paco {
 Furthermore the **@Fetch** annotation is repeatable. This allows you to fetch multiple pages before running your actual test.
 If you fetch multiple pages there are 3 possibilities to get a page object inside your test and do your stuff with the response.
 
-1. by index (possible because all fetches via annotation on a class or method will be done sequentially, means they are always in correct order)
+#### 1. by index (possible because all fetches via annotation on a class or method will be done sequentially, means they are always in correct order)
 
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
@@ -125,7 +125,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
     }
 }
 ```   
-2. by url snippet (which should be better readable as using the index in most cases)
+#### 2. by url snippet (which should be better readable as using the index in most cases)
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
@@ -138,7 +138,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
     }
 }
 ```   
-3. by device type
+#### 3. by device type
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
@@ -152,7 +152,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 }
 ```   
 
-4. by url snipped and device type (useful if you want to fetch a page with a desktop user-agent and a mobile user-agent to check differences etc.)
+#### 4. by url snipped and device type (useful if you want to fetch a page with a desktop user-agent and a mobile user-agent to check differences etc.)
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
@@ -169,7 +169,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 ```   
 
 
-#### the fetcher method
+### the fetcher method
 From time to time it's necessary to pass dynamic values to your http call configuration. Another possible scenario could be that you need to do a http call, do something different and doing another http call afterwards.
 In these cases you should use the fetcher method and pass your configuration values by using the params method and override the global config values you want to change via the builder the params method returns.
      
@@ -192,18 +192,18 @@ public class UsingFetcherMethodTest extends Paco {
 ```     
      
         
-#### Exclude Tests from parallel execution
+### Exclude Tests from parallel execution
 Some tests are not intended to run parallel or it would be big hassle to make them work in parallel?
 You can annotate single test classes with `@NotThreadSafe` if there are race conditions in your tests. This way you can isolate conflicting groups of tests, run them sequentially and still run other test classes in parallel. 
 In general it's always a matter of your test setup or the tests itself if race conditions prevent you from a parallel execution. The `@NotThreadSafe`-annotation should just be seen as little workaround as long as you make the affected tests work in parallel.
 You should always try to isolate your tests enough that they don't affect each other either running in parallel or running sequentially.
 
-#### Response Caching
+### Response Caching
 **Paco** provides an built in loading cache that is enabled by default. It avoids you from making duplicate calls and make your test suite run faster. if don't want your duplicate calls taken from cache it can be deactivated via `paco.properties`.
 
 <h2 align="center">Test Examples</h2>
 
-#### Overview of possibilities on your Page object (the response)
+### Overview of possibilities on your Page object (the response)
 ```
 public class ExampleUsageTest extends PageContentTester {
 
