@@ -59,13 +59,13 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 ```
 
 
-## Configure the Page-Fetcher
-The global fetcher settings are pre-configured by the values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties).
+## Configure your request
+By default global fetcher settings will be taken. These are pre-configured by the values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties).
 If you want to change some of these values just place a `paco.properties` file in your project under `src/test/resources/`.
 - you can override all default values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your projects `paco.properties` file (these settings will be used global)
 
 From time to time you may have specific behaviour for a certain test, so it's not always suffice to only have global settings.
-In this case use the configuration possibilities of the `@Fetch`-annotation or the parameters builder.
+In this case use the configuration possibilities of the __[`@Fetch`-annotation](#the-@Fetch-annotation)__ or the  __[`fetcher()`-method](#the-fetcher-method)__.
 - nearly all values can be set individually for test methods and classes via Annotation or parameters builder as well (see __[Test Examples](#test-examples)__)
 - annotated values or values set via parameters builder will always win over global config
         
