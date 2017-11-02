@@ -14,6 +14,21 @@
 <br>
 </p>
 
+* __[About](#about)__
+* __[Setup](#setup)__
+* __[Configuration](#configuration)__
+	* __[configure your request](#configure-your-request)__
+		* __[the fetch annotation](#the-fetch-annotation)__
+			* __[on methods](#on-methods)__
+			* __[on classes](#on-classes)__
+			* __[mutliple fetches (repeatable)](#mutliple-fetches-repeatable)__
+				* __[page picker](#page-picker)__
+		* __[the fetcher method](#the-fetcher-method)__
+		* __[exclude tests from parallel execution](#exclude-tests-from-parallel-execution)__
+		* __[caching](#caching)__
+		* __[Overview of possibilities on your Page object (the response)](#overview-of-possibilities-on-your-page-object-the-response)__
+* __[Example Project](#example-project)__
+* __[License](#license)__
 
 <h2 align="center">About</h2>
 
@@ -24,7 +39,7 @@ So Paco was born as an alternative and he's doing his job rapidly fast and relia
 **Paco** allows you to configure all your test specific data individually and directly in place (on your test method and/or test class) via annotations. You only need to describe how you want to fetch an http response (e.g. requesting a  web page by using a proxy, mobile userAgent, setting cookies, add a specific referrer, doing a POST that sends some request body, etc). 
 The Setup is pretty easy (see __[Setup](#setup)__)
 
-The Execution of the tests is managed with jUnit and Surefire/Failsafe. The intention of **Paco** is to run a big amount of tests in parallel, therefore it provides a parent pom (usage is optional) that is doing all the parallelization setup for you (see __[Configure the Page-Fetcher](#configure-the-page-fetcher)__). 
+The Execution of the tests is managed with jUnit and Surefire/Failsafe. The intention of **Paco** is to run a big amount of tests in parallel, therefore it provides a parent pom (usage is optional) that is doing all the parallelization setup for you (see __[configure your request](#configure-your-request)__). 
 All test classes placed under `/src/test/java` and names matching `**/*Test.java` will be executed by surefire (maven-phase: test),
 all with name matching `**/*IT.java` will be executed by fail-safe (maven-phase: integration-test).
 
@@ -57,7 +72,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 </parent>
 ```
 
-
+<h2 align="center">Configuration</h2>
 ## configure your request
 By default global fetcher settings will be taken. These are pre-configured by the values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties).
 If you want to change some of these values just place a `paco.properties` file in your project under `src/test/resources/`.
@@ -75,7 +90,7 @@ You can set test specific values for the used protocol, referrer, user-agent, de
 All these parameters are optional and if not set taken from your global config.
 The only required parameter is url.
 
-     
+#### on methods  
 ```
 public class UsingFetchAnnotationTest extends Paco {
 
@@ -95,6 +110,7 @@ public class UsingFetchAnnotationTest extends Paco {
 }
 ```   
 
+#### on classes
 The **@Fetch** annotation can be used on methods as well as on classes.
 ```
 @Fetch(url = "localhost:8089/example")
@@ -106,11 +122,12 @@ public class UsingFetchAnnotationTest extends Paco {
     }
 }
 ```
-
+#### mutliple fetches (repeatable)
 Furthermore the **@Fetch** annotation is repeatable. This allows you to fetch multiple pages before running your actual test.
 If you fetch multiple pages there are 3 possibilities to get a page object inside your test and do your stuff with the response.
 
-#### 1. by index (possible because all fetches via annotation on a class or method will be done sequentially, means they are always in correct order)
+##### page picker
+###### 1. by index (possible because all fetches via annotation on a class or method will be done sequentially, means they are always in correct order)
 
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
@@ -124,7 +141,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
     }
 }
 ```   
-#### 2. by url snippet (which should be better readable as using the index in most cases)
+###### 2. by url snippet (which should be better readable as using the index in most cases)
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
@@ -137,7 +154,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
     }
 }
 ```   
-#### 3. by device type
+###### 3. by device type
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
@@ -151,7 +168,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 }
 ```   
 
-#### 4. by url snipped and device type (useful if you want to fetch a page with a desktop user-agent and a mobile user-agent to check differences etc.)
+###### 4. by url snipped and device type (useful if you want to fetch a page with a desktop user-agent and a mobile user-agent to check differences etc.)
 ```
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
@@ -197,7 +214,7 @@ You can annotate single test classes with `@NotThreadSafe` if there are race con
 In general it's always a matter of your test setup or the tests itself if race conditions prevent you from a parallel execution. The `@NotThreadSafe`-annotation should just be seen as little workaround as long as you make the affected tests work in parallel.
 You should always try to isolate your tests enough that they don't affect each other either running in parallel or running sequentially.
 
-### Response Caching
+### Caching
 **Paco** provides an built in loading cache that is enabled by default. It avoids you from making duplicate calls and make your test suite run faster. if don't want your duplicate calls taken from cache it can be deactivated via `paco.properties`.
 
 <h2 align="center">Test Examples</h2>
