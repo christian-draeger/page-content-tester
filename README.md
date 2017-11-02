@@ -74,7 +74,7 @@ If you want to configure your http call using constant values using the annotati
 The fetch process will be finished before your actual test starts, which is good because you can not run into race conditions.
 You can set test specific values for the used protocol, referrer, user-agent, device (if you don't need a specific user-agent string), the used http method (get, post, delete, ...), port, url-prefix, request timeout, retries on timeout, setting cookies and if the request should follow redirects.
 All these parameters are optional and if not set taken from your global config.
-The only parameter always required is url.
+The only required parameter is url.
 
      
 ```
