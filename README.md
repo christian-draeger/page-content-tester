@@ -65,11 +65,11 @@ If you want to change some of these values just place a `paco.properties` file i
 - you can override all default values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your projects `paco.properties` file (these settings will be used global)
 
 From time to time you may have specific behaviour for a certain test, so it's not always suffice to only have global settings.
-In this case use the configuration possibilities of the __[`@Fetch`-annotation](#the-@Fetch-annotation)__ or the  __[`fetcher()`-method](#the-fetcher-method)__.
+In this case use the configuration possibilities of the __[`@Fetch`-annotation](#the-Fetch-annotation)__ or the  __[`fetcher()`-method](#the-fetcher-method)__.
 - nearly all values can be set individually for test methods and classes via Annotation or parameters builder as well (see __[Test Examples](#test-examples)__)
 - annotated values or values set via parameters builder will always win over global config
         
-### the @Fetch annotation
+### the Fetch annotation
 If you want to configure your http call using constant values using the annotation is preferred.
 The fetch process will be finished before your actual test starts, which is good because you can not run into race conditions.
 You can set test specific values for the used protocol, referrer, user-agent, device (if you don't need a specific user-agent string), the used http method (get, post, delete, ...), port, url-prefix, request timeout, retries on timeout, setting cookies and if the request should follow redirects.
