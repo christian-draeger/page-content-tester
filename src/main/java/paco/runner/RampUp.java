@@ -35,7 +35,7 @@ public class RampUp {
                     + ansi().bold().fg(paco).a("`.___.'").reset(),
             ansi().bold().fg(paco).a("      (__)").reset()
                     +""+ ansi().fg(banner).a("  \\  ╠≡═- ").reset()
-                    + ansi().fg(version).a("version 1.7.4").reset()
+                    + ansi().fg(version).a("version 1.8.0").reset()
                     + ansi().fg(banner).a(" -═≡╣  /").reset(),
             ansi().fg(banner).a("            /__╚═════════════════════╝__\\\n").reset());
 

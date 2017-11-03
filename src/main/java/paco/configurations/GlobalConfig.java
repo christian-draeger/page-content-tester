@@ -11,78 +11,76 @@ import paco.annotations.Fetch.Device;
 
 public class GlobalConfig {
 
-    private final TypedProperties configs = new TypedProperties();
-
-    public int getTimeoutValue() {
-        return configs.getIntValue("timeout");
+    int getTimeoutValue() {
+        return TypedProperties.getIntValue("paco.timeout");
     }
 
     public Timeout getGlobalTimeoutValue() {
-        return Timeout.millis(configs.getIntValue("global.timeout"));
+        return Timeout.millis(TypedProperties.getIntValue("paco.globalTimeout"));
     }
 
-    public int getTimeoutMaxRetryCount() {
-        return configs.getIntValue("timeout.max.retry.count");
+    int getTimeoutMaxRetryCount() {
+        return TypedProperties.getIntValue("paco.maxRetryCountOnTimeOut");
     }
 
     public String getUserAgent(Device device) {
         if (device.equals(MOBILE)) {
-            return configs.getStringValue("mobile.userAgent");
+            return TypedProperties.getStringValue("paco.mobileUserAgent");
         }
-        return configs.getStringValue("desktop.userAgent");
+        return TypedProperties.getStringValue("paco.desktopUserAgent");
     }
 
     public String getMobileUserAgent() {
-            return configs.getStringValue("mobile.userAgent");
+            return TypedProperties.getStringValue("paco.mobileUserAgent");
     }
 
     public String getDesktopUserAgent() {
-            return configs.getStringValue("desktop.userAgent");
+            return TypedProperties.getStringValue("paco.desktopUserAgent");
     }
 
-    public boolean isFollowingRedirects() {
-        return configs.getBooleanValue("follow.redirects");
+    boolean isFollowingRedirects() {
+        return TypedProperties.getBooleanValue("paco.followRedirects");
     }
 
     public boolean isIgnoringContentType() {
-        return configs.getBooleanValue("ignore.content-type");
+        return TypedProperties.getBooleanValue("paco.ignoreContentType");
     }
 
     public String getReferrer() {
-        return configs.getStringValue("referrer");
+        return TypedProperties.getStringValue("paco.referrer");
     }
 
     public boolean isCacheDuplicatesActive() {
-        return configs.getBooleanValue("cache.duplicates");
+        return TypedProperties.getBooleanValue("paco.cacheDuplicates");
     }
 
     public boolean isCacheDuplicatesLogActive() {
-        return configs.getBooleanValue("cache.log.duplicates");
+        return TypedProperties.getBooleanValue("paco.logCachedDuplicates");
     }
 
     public Proxy getProxy() {
-        if (configs.getStringValue("proxy.host").isEmpty() || configs.getStringValue("proxy.port").isEmpty()) {
+        if (TypedProperties.getStringValue("paco.proxyHost").isEmpty() || TypedProperties.getStringValue("paco.proxyPort").isEmpty()) {
             return null;
         }
         return new Proxy(
                 Proxy.Type.HTTP,
-                InetSocketAddress.createUnresolved(configs.getStringValue("proxy.host"), configs.getIntValue("proxy.port")));
+                InetSocketAddress.createUnresolved(TypedProperties.getStringValue("paco.proxyHost"), TypedProperties.getIntValue("paco.proxyPort")));
     }
 
-    public String getUrlPrefix() {
-        return configs.getStringValue("urlPrefix");
+    String getUrlPrefix() {
+        return TypedProperties.getStringValue("paco.urlPrefix");
     }
 
-    public String getProtocol() {
-        return configs.getStringValue("protocol");
+    String getProtocol() {
+        return TypedProperties.getStringValue("paco.protocol");
     }
 
     public String getPort() {
-        return configs.getStringValue("port");
+        return TypedProperties.getStringValue("paco.port");
     }
 
     public boolean isPacoAsciiActive() {
-        return configs.getBooleanValue("paco.ascii");
+        return TypedProperties.getBooleanValue("paco.ascii");
     }
 
 }

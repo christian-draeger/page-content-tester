@@ -1,60 +1,53 @@
 package paco.configurations;
 
-import static java.lang.Boolean.parseBoolean;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class TypedProperties {
 
-    private final Properties properties = new Properties();
     private static final String DEFAULTS_URL = "https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties";
-    private final InputStream defaultProperties = getClass().getResourceAsStream("/default.properties");
+    private static TypedProperties instance;
+    private Config config;
 
     TypedProperties() {
-        try {
-            InputStream customProperties = getClass().getResourceAsStream("/paco.properties");
-            properties.load(customProperties);
-        } catch (Exception e) {
-            log.warn("could not find 'paco.properties' file under path main/test/resources -> fallback to defaults (can be found under {})", DEFAULTS_URL);
-            loadDefaultProperties();
-        }
+        config = ConfigFactory.load(TypedProperties.class.getClassLoader(), System.getProperty("paco.properties", "paco.properties"));
     }
 
-    String getStringValue(final String key) {
-        String customValue = System.getProperty(key, properties.getProperty(key));
-        if (customValue != null) {
-            return customValue;
+    private static synchronized TypedProperties getInstance() {
+        if (instance == null) {
+            instance = new TypedProperties();
         }
-        loadDefaultProperties();
-        return System.getProperty(key, properties.getProperty(key));
+        return instance;
+    }
+
+
+    static String getStringValue(String key) {
+        String value = "";
+        if (!key.equals("")) {
+            // dots are not allowed in POSIX environmental variables
+            value = System.getenv(key.replace(".", "_"));
+            if (value == null) {
+                value = TypedProperties.getInstance().config.getString(key);
+            }
+
+        }
+        return value;
+    }
+
+    static int getIntValue(String key) {
+        return TypedProperties.getInstance().config.getInt(key);
+    }
+
+    static boolean getBooleanValue(String key) {
+        return TypedProperties.getInstance().config.getBoolean(key);
     }
 
     boolean hasProperty(final String key) {
         return getStringValue(key) != null;
     }
 
-    int getIntValue(final String key) {
-        return Integer.parseInt(getStringValue(key));
-    }
 
-    boolean getBooleanValue(final String key) {
-        String value = getStringValue(key);
-        if (!("true".equals(value) || "false".equals(value))) {
-            throw new ConfigurationException("trying to parse non boolean value as boolean");
-        }
-        return parseBoolean(getStringValue(key));
-    }
-
-    private void loadDefaultProperties() {
-        try {
-            properties.load(defaultProperties);
-        } catch (IOException e) {
-            throw new ConfigurationException("could not read default properties", e);
-        }
-    }
 }

@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.7.5</version>
+    <version>1.8.0</version>
 
     <name>Paco (the page content tester)</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
@@ -41,6 +41,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
         <protocol/>
         <urlPrefix/>
         <port/>
@@ -58,6 +60,7 @@
         <jansi.version>1.16</jansi.version>
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <surefire.plugin.version>2.19.1</surefire.plugin.version>
+        <typesafeconfig.version>1.3.1</typesafeconfig.version>
 
         <surefire.rerunFailingTestsCount>2</surefire.rerunFailingTestsCount>
     </properties>
@@ -121,6 +124,11 @@
             <groupId>org.fusesource.jansi</groupId>
             <artifactId>jansi</artifactId>
             <version>${jansi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafeconfig.version}</version>
         </dependency>
 
     </dependencies>
