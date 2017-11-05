@@ -2,8 +2,7 @@
 
 if [ -n "$(git status --porcelain)" ]; then
 	git status --porcelain
-  	echo "there are changes";
-  	echo "please commit everything so we have a reproducible git commit ID as LambdaCD version";
+  	echo "there are changes - please commit everything before uploading a release";
   	exit 1;
 fi
 
