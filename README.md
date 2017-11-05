@@ -60,7 +60,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
     <relativePath/>
 </parent>
 ```
-- if you want to setup jUnit yourself just don't use the parent pom and add the dependency to the dependencies-section of your pom.xml (not recommended because you will loose the test runner and parallelization)
+- if you want to setup jUnit and surefire yourself just don't use the parent pom and add the dependency to the dependencies-section of your pom.xml (not recommended because you will loose the test runner and parallelization)
 ```
 <dependency>
     <groupId>io.github.christian-draeger</groupId>
