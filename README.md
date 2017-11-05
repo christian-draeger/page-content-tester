@@ -48,21 +48,9 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 
 <h2 align="center">Setup</h2>
 
-* add the following dependency to your pom.xml
-
-```
-<dependencies>
-    <dependency>
-        <groupId>io.github.christian-draeger</groupId>
-        <artifactId>page-content-tester</artifactId>
-        <version>${version.from.maven.central.badge}</version>
-    </dependency>
-</dependencies>
-```
-- to get the best parallelization result of PageContentTester and don't having the overhead of finding the best setup add this parent pom to your pom.xml
+- to get the best parallelization result add this parent pom to your pom.xml
   - it will setup all the configurations for an efficient parallelization of your jUnit tests automatically
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section of the [parent pom](https://search.maven.org/#artifactdetails%7Cio.github.christian-draeger%7Cpage-content-tester-parent%7C1.0%7Cpom)
-  - if you want to setup jUnit yourself just don't use the parent pom
 
 ```
 <parent>
@@ -71,6 +59,14 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
     <version>${version.from.maven.central.badge}</version>
     <relativePath/>
 </parent>
+```
+- if you want to setup jUnit yourself just don't use the parent pom and add the dependency to the dependencies-section of your pom.xml (not recommended because you will loose the test runner and parallelization)
+```
+<dependency>
+    <groupId>io.github.christian-draeger</groupId>
+    <artifactId>page-content-tester</artifactId>
+    <version>${version.from.maven.central.badge}</version>
+</dependency>
 ```
 
 <h2 align="center">Configuration</h2>
