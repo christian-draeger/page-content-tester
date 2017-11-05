@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class TypedProperties {
 
-    private static final String DEFAULTS_URL = "https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties";
     private static TypedProperties instance;
     private Config config;
 
@@ -26,7 +25,7 @@ class TypedProperties {
 
     static String getStringValue(String key) {
         String value = "";
-        if (!key.equals("")) {
+        if (!key.equals(value)) {
             // dots are not allowed in POSIX environmental variables
             value = System.getenv(key.replace(".", "_"));
             if (value == null) {
@@ -44,10 +43,4 @@ class TypedProperties {
     static boolean getBooleanValue(String key) {
         return TypedProperties.getInstance().config.getBoolean(key);
     }
-
-    boolean hasProperty(final String key) {
-        return getStringValue(key) != null;
-    }
-
-
 }
