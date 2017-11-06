@@ -2,14 +2,14 @@ package paco.fetcher;
 
 import org.jsoup.Connection;
 import org.junit.Test;
-import paco.runner.PageContentTester;
+import paco.runner.Paco;
 
 import java.io.IOException;
 import java.util.Collections;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public class FetcherTest extends PageContentTester {
+public class FetcherTest extends Paco {
 
     private Fetcher fetcher = new Fetcher();
 

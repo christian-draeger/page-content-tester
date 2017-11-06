@@ -6,7 +6,7 @@ import org.junit.Test;
 import paco.annotations.Cookie;
 import paco.annotations.Fetch;
 import paco.annotations.GetFetchedPageException;
-import paco.runner.PageContentTester;
+import paco.runner.Paco;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import static paco.annotations.Fetch.Device.MOBILE;
 import static paco.annotations.Fetch.Protocol.HTTPS;
 
 @Fetch(url = "localhost/example", port = "8089")
-public class FetchedPageTest extends PageContentTester {
+public class FetchedPageTest extends Paco {
 
     private static final String URL1 = "localhost:8089/example";
     private static final String URL2 = "localhost:8089/example2";

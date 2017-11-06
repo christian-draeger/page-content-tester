@@ -1,15 +1,14 @@
 package paco.fetcher;
 
+import net.jcip.annotations.NotThreadSafe;
+import org.junit.Test;
+import paco.annotations.Fetch;
+import paco.runner.Paco;
+
 import javax.xml.XMLConstants;
 
-import org.junit.Test;
-
-import net.jcip.annotations.NotThreadSafe;
-import paco.annotations.Fetch;
-import paco.runner.PageContentTester;
-
 @NotThreadSafe
-public class XMLValidationTest extends PageContentTester {
+public class XMLValidationTest extends Paco {
 
     @Test
     @Fetch(url = "localhost:8089/xml")

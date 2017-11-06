@@ -1,13 +1,12 @@
 package paco.fetcher;
 
+import org.junit.Test;
+import paco.annotations.Fetch;
+import paco.runner.Paco;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
-
-import paco.annotations.Fetch;
-import paco.runner.PageContentTester;
-
-public class FetchMultipleFromMethodTest extends PageContentTester {
+public class FetchMultipleFromMethodTest extends Paco {
 
     @Test
     @Fetch(url = "localhost/example", port = "8089")
