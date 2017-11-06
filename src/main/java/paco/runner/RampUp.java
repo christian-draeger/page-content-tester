@@ -1,16 +1,13 @@
 package paco.runner;
 
-import static org.fusesource.jansi.Ansi.Color.CYAN;
-import static org.fusesource.jansi.Ansi.Color.GREEN;
-import static org.fusesource.jansi.Ansi.Color.MAGENTA;
-import static org.fusesource.jansi.Ansi.ansi;
+import org.fusesource.jansi.Ansi;
+import paco.configurations.GlobalConfig;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.fusesource.jansi.Ansi;
-
-import paco.configurations.GlobalConfig;
+import static org.fusesource.jansi.Ansi.Color.*;
+import static org.fusesource.jansi.Ansi.ansi;
 
 
 public class RampUp {
@@ -35,7 +32,7 @@ public class RampUp {
                     + ansi().bold().fg(paco).a("`.___.'").reset(),
             ansi().bold().fg(paco).a("      (__)").reset()
                     +""+ ansi().fg(banner).a("  \\  ╠≡═- ").reset()
-                    + ansi().fg(version).a("version 1.8.0").reset()
+                    + ansi().fg(version).a("version 1.8.1").reset()
                     + ansi().fg(banner).a(" -═≡╣  /").reset(),
             ansi().fg(banner).a("            /__╚═════════════════════╝__\\\n").reset());
 
