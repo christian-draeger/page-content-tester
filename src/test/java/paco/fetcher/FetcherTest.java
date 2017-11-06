@@ -1,14 +1,13 @@
 package paco.fetcher;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import org.jsoup.Connection;
+import org.junit.Test;
+import paco.runner.PageContentTester;
 
 import java.io.IOException;
 import java.util.Collections;
 
-import org.jsoup.Connection;
-import org.junit.Test;
-
-import paco.runner.PageContentTester;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class FetcherTest extends PageContentTester {
 
@@ -24,6 +23,7 @@ public class FetcherTest extends PageContentTester {
         return Parameters.builder()
                 .urlToFetch("http://localhost:8089/example")
                 .userAgent("")
+                .requestBody("")
                 .referrer("")
                 .cookie(Collections.emptyMap())
                 .method(Connection.Method.GET)

@@ -1,5 +1,16 @@
 package paco.fetcher;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
+import org.junit.Test;
+import paco.annotations.Cookie;
+import paco.annotations.Fetch;
+import paco.annotations.GetFetchedPageException;
+import paco.runner.PageContentTester;
+
+import java.io.File;
+import java.io.IOException;
+
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
@@ -8,18 +19,6 @@ import static org.jsoup.Connection.Method.POST;
 import static paco.annotations.Fetch.Device.DESKTOP;
 import static paco.annotations.Fetch.Device.MOBILE;
 import static paco.annotations.Fetch.Protocol.HTTPS;
-
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import paco.annotations.Cookie;
-import paco.annotations.Fetch;
-import paco.annotations.GetFetchedPageException;
-import paco.runner.PageContentTester;
 
 @Fetch(url = "localhost/example", port = "8089")
 public class FetchedPageTest extends PageContentTester {
@@ -287,6 +286,12 @@ public class FetchedPageTest extends PageContentTester {
     @Fetch(url = URL1, method = POST)
     public void do_post_request_and_check_response() throws Exception {
         assertThat(page.get().getJsonResponse().get("data")).isEqualTo("some value");
+    }
+
+    @Test
+    @Fetch(url = "localhost:8089/replay-post", method = POST, requestBody = "{\"data\":\"value\"}")
+    public void do_post_request_with_body_and_check_response() throws Exception {
+        assertThat(page.get().getJsonResponse().get("data")).isEqualTo("value");
     }
 
     @Test

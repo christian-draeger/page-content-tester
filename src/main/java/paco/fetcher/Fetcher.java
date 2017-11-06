@@ -1,18 +1,17 @@
 package paco.fetcher;
 
-import static java.lang.System.setProperty;
-import static org.fusesource.jansi.Ansi.Color.CYAN;
-import static org.fusesource.jansi.Ansi.Color.YELLOW;
-import static org.fusesource.jansi.Ansi.ansi;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import paco.configurations.GlobalConfig;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-
-import lombok.extern.slf4j.Slf4j;
-import paco.configurations.GlobalConfig;
+import static java.lang.System.setProperty;
+import static org.fusesource.jansi.Ansi.Color.CYAN;
+import static org.fusesource.jansi.Ansi.Color.YELLOW;
+import static org.fusesource.jansi.Ansi.ansi;
 
 @Slf4j
 public class Fetcher {
@@ -42,6 +41,10 @@ public class Fetcher {
 
                 if (!params.getCookie().isEmpty()) {
                     connection.cookies(params.getCookie());
+                }
+
+                if (!params.getRequestBody().isEmpty()) {
+                    connection.requestBody(params.getRequestBody());
                 }
 
                 System.out.println("\uD83D\uDD3D " + ansi().fg(CYAN).bold().a("fetched page : ").reset() + params.getUrlToFetch());

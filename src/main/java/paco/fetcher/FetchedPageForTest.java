@@ -1,21 +1,7 @@
 package paco.fetcher;
 
-import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.jsoup.Connection.Response;
@@ -27,8 +13,20 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Map;
+
+import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
 
 @Slf4j
 class FetchedPageForTest implements Page {
@@ -66,7 +64,8 @@ class FetchedPageForTest implements Page {
     }
 
     public JSONObject getJsonResponse() {
-        return new JSONObject(getResponse().body());
+        String clean = getResponse().body().replace("&amp;", "&").replace("&quot;", "\"");
+        return new JSONObject(clean);
     }
 
     public String getHeader(String header) {

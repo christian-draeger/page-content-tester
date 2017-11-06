@@ -1,8 +1,9 @@
 package paco.configurations;
 
-import static paco.annotations.Fetch.Device.DESKTOP;
-import static paco.annotations.Fetch.Device.MOBILE;
-import static paco.annotations.Fetch.Protocol.NONE;
+import org.apache.commons.lang3.StringUtils;
+import paco.annotations.Cookie;
+import paco.annotations.Fetch;
+import paco.fetcher.Parameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,11 +11,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
-import paco.annotations.Cookie;
-import paco.annotations.Fetch;
-import paco.fetcher.Parameters;
+import static paco.annotations.Fetch.Device.DESKTOP;
+import static paco.annotations.Fetch.Device.MOBILE;
+import static paco.annotations.Fetch.Protocol.NONE;
 
 public class ConfigResolver {
 
@@ -34,6 +33,7 @@ public class ConfigResolver {
                 .urlToFetch(getUrl(fetchAnnotation.url()))
                 .userAgent(getUserAgent())
                 .method(fetchAnnotation.method())
+                .requestBody(fetchAnnotation.requestBody())
                 .referrer(getReferrer())
                 .followRedirects(isFollowingRedirects())
                 .timeout(getTimeout())

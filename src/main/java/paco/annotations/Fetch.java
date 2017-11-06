@@ -1,18 +1,13 @@
 package paco.annotations;
 
+import org.jsoup.Connection.Method;
+import paco.configurations.GlobalConfig;
+
+import java.lang.annotation.*;
+
 import static org.jsoup.Connection.Method.GET;
 import static paco.annotations.Fetch.Device.DESKTOP;
 import static paco.annotations.Fetch.Protocol.NONE;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.jsoup.Connection.Method;
-
-import paco.configurations.GlobalConfig;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
@@ -63,6 +58,11 @@ public @interface Fetch {
      * Adds a port to the url.
      */
     String port() default "";
+
+    /**
+     * Adds a request body.
+     */
+    String requestBody() default "";
 
     /**
      * Defines if the requested url should follow redirects.

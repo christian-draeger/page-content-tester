@@ -1,12 +1,12 @@
 package paco.fetcher;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.jsoup.Connection;
+import org.junit.Test;
 
 import java.util.Collections;
 import java.util.concurrent.Future;
 
-import org.jsoup.Connection;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FetcherManagerTest {
 
@@ -70,6 +70,7 @@ public class FetcherManagerTest {
                 .urlToFetch("http://localhost:8089/example")
                 .userAgent("")
                 .referrer("")
+                .requestBody("")
                 .cookie(Collections.emptyMap())
                 .method(Connection.Method.GET)
                 .build();

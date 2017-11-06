@@ -1,11 +1,11 @@
 package paco.configurations;
 
-import static org.jsoup.Connection.Method.GET;
-import static paco.annotations.Fetch.Device.DESKTOP;
+import paco.fetcher.Parameters;
 
 import java.util.Collections;
 
-import paco.fetcher.Parameters;
+import static org.jsoup.Connection.Method.GET;
+import static paco.annotations.Fetch.Device.DESKTOP;
 
 public class FetcherMethodOptions {
 
@@ -18,6 +18,7 @@ public class FetcherMethodOptions {
                 .urlToFetch("")
                 .userAgent(config.getUserAgent(DESKTOP))
                 .method(GET)
+                .requestBody("")
                 .referrer(config.getReferrer())
                 .followRedirects(config.isFollowingRedirects())
                 .timeout(config.getTimeoutValue())
