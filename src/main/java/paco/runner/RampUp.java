@@ -10,9 +10,10 @@ import static org.fusesource.jansi.Ansi.Color.*;
 import static org.fusesource.jansi.Ansi.ansi;
 
 
-public class RampUp {
+class RampUp {
 
-    protected static GlobalConfig globalConfig = new GlobalConfig();
+    private static GlobalConfig globalConfig = new GlobalConfig();
+    private static String versionString = new Version().getVersion();
 
     private static Ansi.Color paco = CYAN;
     private static Ansi.Color banner = MAGENTA;
@@ -32,7 +33,7 @@ public class RampUp {
                     + ansi().bold().fg(paco).a("`.___.'").reset(),
             ansi().bold().fg(paco).a("      (__)").reset()
                     +""+ ansi().fg(banner).a("  \\  ╠≡═- ").reset()
-                    + ansi().fg(version).a("version 1.8.1").reset()
+                    + ansi().fg(version).a(versionString).reset()
                     + ansi().fg(banner).a(" -═≡╣  /").reset(),
             ansi().fg(banner).a("            /__╚═════════════════════╝__\\\n").reset());
 
