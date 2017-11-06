@@ -72,13 +72,11 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 <h2 align="center">Configuration</h2>
 
 ## configure your request
-By default global fetcher settings will be taken. These are pre-configured by the values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties).
-If you want to change some of these values just place a `paco.properties` file in your project under `src/test/resources/`.
-- you can override all default values from [default.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/default.properties) in your projects `paco.properties` file (these settings will be used global)
+Set your global fetcher settings by placing a `paco.properties` file in your project under `src/test/resources/` and paste the values [paco.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/paco.properties) to the file.
 
 From time to time you may have specific behaviour for a certain test, so it's not always suffice to only have global settings.
 In this case use the configuration possibilities of the __[`@Fetch`-annotation](#the-fetch-annotation)__ or the  __[`fetcher()`-method](#the-fetcher-method)__.
-- nearly all values can be set individually for test methods and classes via Annotation or parameters builder as well (see __[Test Examples](#test-examples)__)
+- nearly all values can be set individually for test methods and classes via Annotation or parameters builder
 - annotated values or values set via parameters builder will always win over global config
         
 ### the fetch annotation
@@ -98,9 +96,16 @@ public class UsingFetchAnnotationTest extends Paco {
         assertThat(page.getTitle()).isEqualTo("example title");
     }
     
-    
+    // assuming we have a rest endpoint that will answer with {"data": "some value"}
     @Test
     @Fetch(url = "localhost:8089/example", method = POST)
+    public void post_and_check_response_body() {
+        assertThat(page.getContentType()).isEqualTo("application/json");
+        assertThat(page.getJsonResponse().get("data")).isEqualTo("some value");
+    }
+    // POST with request body
+    @Test
+    @Fetch(url = "localhost:8089/example", method = POST, requestBody = "{\"key\":\"value\"}")
     public void post_and_check_response_body() {
         assertThat(page.getContentType()).isEqualTo("application/json");
         assertThat(page.getJsonResponse().get("data")).isEqualTo("some value");
@@ -198,9 +203,14 @@ public class UsingFetcherMethodTest extends Paco {
 
     @Test
     public void post_and_check_response_body() {
-        final Page page = fetcher(params().urlToFetch("http://localhost:8089/example").method(POST).build());
+        String body = "{\"data\":\"test2\"}";
+        final Page page = fetcher(params()
+                .urlToFetch("http://localhost:8089/replay-post-body")
+                .method(POST)
+                .requestBody(body)
+                .build());
         assertThat(page.getContentType()).isEqualTo("application/json");
-        assertThat(page.getJsonResponse().get("data")).isEqualTo("some value");
+        assertThat(page.getJsonResponse().get("data")).isEqualTo("test2");
     }
 }
 ```     
