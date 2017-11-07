@@ -12,9 +12,15 @@ import static paco.annotations.Fetch.Device.MOBILE;
 public class FetchSingleFromMethodTest extends Paco {
 
     @Test
-    @Fetch(url = "localhost/example", port = "8089")
+    @Fetch(url = "localhost/example")
     public void can_fetch_from_method_annotation() {
         assertThat(page.get().getTitle()).contains("i'm the title");
+    }
+
+    @Test
+    @Fetch(url = "localhost/example")
+    public void can_fetch_from_method_and_get_by_url_snippet() {
+        assertThat(page.get("ex").getTitle()).contains("i'm the title");
     }
 
     @Test(expected = GetFetchedPageException.class)

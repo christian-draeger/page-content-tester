@@ -30,7 +30,7 @@ public class FetchMultipleFromClassAndMethodTest extends Paco {
     @Fetch(protocol = HTTPS, url = "localhost/example", port = "8090")
     @Fetch(protocol = HTTPS, url = "localhost/example3", port = "8090")
     public void can_fetch_from_method_annotation() {
-        assertThat(page.get("example", DESKTOP).getTitle()).endsWith("title");
+        assertThat(page.get("exam", DESKTOP).getTitle()).endsWith("title");
         assertThat(page.get(1).getTitle()).endsWith("title3");
     }
 
