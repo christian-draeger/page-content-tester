@@ -5,7 +5,7 @@
 <p align="left">
 <br>
 <a target="_blank" href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22">
-	<img border-width="0" src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=flat-square&logoWidth=16"/>
+	<img border-width="0" src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=flat-square&label=maven%20central%20%20%20%20"/>
 </a><br>
 <a target="_blank" href="https://travis-ci.org/christian-draeger/page-content-tester">
 	<img border-width="0" src="https://img.shields.io/travis/christian-draeger/page-content-tester/master.svg?style=flat-square&logoWidth=8&label=ci%20master%20build"/>
