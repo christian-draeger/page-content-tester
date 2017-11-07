@@ -23,7 +23,7 @@
 	<img  border-width="0" src="https://img.shields.io/codecov/c/github/christian-draeger/page-content-tester/master.svg?style=flat-square&logoWidth=30&label=test%20coverage"/>
 </a><br>
 <a target="_blank" href="https://github.com/christian-draeger/page-content-tester/blob/master/LICENSE">
-	<img  border-width="0" src="https://img.shields.io/github/license/christian-draeger/page-content-tester.svg?style=flat-square&label=%20"/>
+	<img  border-width="0" src="https://img.shields.io/badge/license-GNU%20GPL%20v3.0-blue.svg?style=flat-square&logoWidth=14"/>
 </a><br><br>
 </p>
 
