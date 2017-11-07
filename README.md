@@ -27,7 +27,7 @@
 </a><br><br>
 </p>
 
-<h2 align="center">Table of contents</h2>
+## Table of contents
 
 * __[About](#about)__
 * __[Setup](#setup)__
