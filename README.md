@@ -8,7 +8,7 @@
 	<img border-width="0" src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=flat-square&label=maven%20central%20%20%20%20"/>
 </a><br>
 <a target="_blank" href="https://travis-ci.org/christian-draeger/page-content-tester">
-	<img border-width="0" src="https://img.shields.io/travis/christian-draeger/page-content-tester/master.svg?style=flat-square&logoWidth=8&label=ci%20master%20build"/>
+	<img border-width="0" src="https://img.shields.io/travis/christian-draeger/page-content-tester/master.svg?style=flat-square&label=ci%20master%20build%20%20"/>
 </a><br>
 <a href="https://github.com/christian-draeger/page-content-tester/issues">
 	<img  border-width="0" src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg?style=flat-square&label=reported%20issues%20%20"/>
@@ -23,7 +23,7 @@
 	<img  border-width="0" src="https://img.shields.io/codecov/c/github/christian-draeger/page-content-tester/master.svg?style=flat-square&label=test%20coverage%20%20%20%20%20%20%20%20"/>
 </a><br>
 <a target="_blank" href="https://github.com/christian-draeger/page-content-tester/blob/master/LICENSE">
-	<img  border-width="0" src="https://img.shields.io/badge/license-GNU%20GPL%20v3.0-blue.svg?style=flat-square&logoWidth=14"/>
+	<img  border-width="0" src="https://img.shields.io/badge/license%20-GNU%20%20GPL%20%20v3.0-blue.svg?style=flat-square&logoWidth=2"/>
 </a><br><br>
 </p>
 
