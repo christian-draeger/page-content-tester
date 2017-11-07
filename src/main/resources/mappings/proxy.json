@@ -4,6 +4,7 @@
     "urlPattern": ".*/proxy.*"
   },
   "response": {
+    "status": 301,
     "proxyBaseUrl" : "http://localhost:8089/example"
   }
 }

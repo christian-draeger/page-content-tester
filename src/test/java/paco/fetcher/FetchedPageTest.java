@@ -132,14 +132,6 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = URL1)
-    @Fetch(url = URL2)
-    public void fetch_multiple_pages_via_annotation_and_get_pages_by_index() {
-        assertThat(page.get(0).getUrl()).isEqualTo("http://" + URL1);
-        assertThat(page.get(1).getUrl()).isEqualTo("http://" + URL2);
-    }
-
-    @Test
     @Fetch(url = URL2)
     @Fetch(url = URL3)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_url_snippet() {

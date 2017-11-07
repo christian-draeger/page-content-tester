@@ -8,10 +8,8 @@ import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import paco.response.XmlErrorHandler;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -202,23 +200,5 @@ class FetchedPageForTest implements Page {
         Source source = new DOMSource(document);
         validator.setErrorHandler(new XmlErrorHandler());
         validator.validate(source);
-    }
-
-    private static class XmlErrorHandler implements ErrorHandler {
-
-        @Override
-        public void warning(SAXParseException exception) throws SAXException {
-            throw new RuntimeException(exception);
-        }
-
-        @Override
-        public void error(SAXParseException exception) throws SAXException {
-            throw new RuntimeException(exception);
-        }
-
-        @Override
-        public void fatalError(SAXParseException exception) throws SAXException {
-            throw new RuntimeException(exception);
-        }
     }
 }
