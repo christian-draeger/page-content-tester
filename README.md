@@ -11,16 +11,16 @@
 	<img border-width="0" src="https://img.shields.io/travis/christian-draeger/page-content-tester/master.svg?style=flat-square&logoWidth=8&label=ci%20master%20build"/>
 </a><br>
 <a href="https://github.com/christian-draeger/page-content-tester/issues">
-	<img  border-width="0" src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg?style=flat-square&logoWidth=8&label=reported%20issues"/>
+	<img  border-width="0" src="https://img.shields.io/github/issues/christian-draeger/page-content-tester.svg?style=flat-square&label=reported%20issues%20%20"/>
 </a><br>
 <a target="_blank" href="https://sonarqube.com/dashboard?id=io.github.christian-draeger%3Apage-content-tester">
-	<img  border-width="0" src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square&logoWidth=2&label=sonarqube%20scan"/>
+	<img  border-width="0" src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square&label=sonarqube%20%20%20%20%20%20%20%20"/>
 </a><br>
 <a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436">
-	<img  border-width="0" src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square&logoWidth=16&label=overall%20code%20quality"/>
+	<img  border-width="0" src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square&label=overall%20code%20quality%20%20%20%20"/>
 </a><br>
 <a target="_blank" href="https://codecov.io/gh/christian-draeger/page-content-tester">
-	<img  border-width="0" src="https://img.shields.io/codecov/c/github/christian-draeger/page-content-tester/master.svg?style=flat-square&logoWidth=30&label=test%20coverage"/>
+	<img  border-width="0" src="https://img.shields.io/codecov/c/github/christian-draeger/page-content-tester/master.svg?style=flat-square&label=test%20coverage%20%20%20%20%20%20%20%20"/>
 </a><br>
 <a target="_blank" href="https://github.com/christian-draeger/page-content-tester/blob/master/LICENSE">
 	<img  border-width="0" src="https://img.shields.io/badge/license-GNU%20GPL%20v3.0-blue.svg?style=flat-square&logoWidth=14"/>
