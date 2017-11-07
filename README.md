@@ -17,7 +17,7 @@
 	<img  border-width="0" src="https://img.shields.io/badge/Sonarqube-passing-brightgreen.svg?style=flat-square&logoWidth=2&label=sonarqube%20scan"/>
 </a><br>
 <a target="_blank" href="https://www.codacy.com/app/christian.draeger1/page-content-tester/dashboard?bid=4765436">
-	<img  border-width="0" src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square&logoWidth=56"/>
+	<img  border-width="0" src="https://img.shields.io/codacy/grade/5a18e89828cf47778e2679c290b4a9f4/master.svg?style=flat-square&logoWidth=16&label=overall%20code%20quality"/>
 </a><br>
 <a target="_blank" href="https://codecov.io/gh/christian-draeger/page-content-tester">
 	<img  border-width="0" src="https://img.shields.io/codecov/c/github/christian-draeger/page-content-tester/master.svg?style=flat-square&logoWidth=30&label=test%20coverage"/>
@@ -26,6 +26,8 @@
 	<img  border-width="0" src="https://img.shields.io/github/license/christian-draeger/page-content-tester.svg?style=flat-square&label=%20"/>
 </a><br><br>
 </p>
+
+<h2 align="center">Table of contents</h2>
 
 * __[About](#about)__
 * __[Setup](#setup)__
