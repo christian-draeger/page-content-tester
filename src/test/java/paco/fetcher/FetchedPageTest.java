@@ -20,12 +20,12 @@ import static paco.annotations.Fetch.Device.DESKTOP;
 import static paco.annotations.Fetch.Device.MOBILE;
 import static paco.annotations.Fetch.Protocol.HTTPS;
 
-@Fetch(url = "localhost/example", port = "8089")
+@Fetch(url = "localhost/example")
 public class FetchedPageTest extends Paco {
 
-    private static final String URL1 = "localhost:8089/example";
-    private static final String URL2 = "localhost:8089/example2";
-    private static final String URL3 = "localhost:8089/example3";
+    private static final String URL1 = "localhost/example";
+    private static final String URL2 = "localhost/example2";
+    private static final String URL3 = "localhost/example3";
 
     @Test
     public void can_fetch_from_class_annotation() {
@@ -75,7 +75,7 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = "www.idealo.de", followRedirects = false)
+    @Fetch(url = "www.idealo.de", followRedirects = false, port = "80")
     public void fetcher_should_not_redirect() {
         assertThat(page.get().getStatusCode()).isEqualTo(301);
     }
@@ -144,8 +144,9 @@ public class FetchedPageTest extends Paco {
         page.get("unknown");
     }
 
+    @Ignore
     @Test
-    @Fetch(protocol = HTTPS, urlPrefix = "en.", url = "wikipedia.org/proxy")
+    @Fetch(protocol = HTTPS, urlPrefix = "en.", url = "wikipedia.org/proxy", port = "80")
     public void fetch_page_via_annotation_and_build_url() {
         assertThat(page.get().getUrl()).isEqualTo("https://en.wikipedia.org/proxy");
     }
@@ -209,14 +210,14 @@ public class FetchedPageTest extends Paco {
     public void can_store_page_body() throws IOException, InterruptedException {
         page.get().storePageBody();
         File file = new File("target/paco/stored/can_store_page_body(paco.fetcher.FetchedPageTest).html");
-        assertFileContent(file, "<title>i'm the title</title>");
+        assertTitle(file);
     }
 
     @Test
     public void store_page_body_if_element_not_present() throws IOException {
         page.get().getElements("dfghfjhg");
         File file = new File("target/paco/not-found/store_page_body_if_element_not_present(paco.fetcher.FetchedPageTest).html");
-        assertFileContent(file, "<title>i'm the title</title>");
+        assertTitle(file);
     }
 
     @Test
@@ -296,8 +297,8 @@ public class FetchedPageTest extends Paco {
         assertThat(page.get().isElementPresentNthTimes("h1", 100)).isFalse();
     }
 
-    private void assertFileContent(File file, String contains) {
+    private void assertTitle(File file) {
         await().atMost(5, SECONDS).untilAsserted(() ->
-                assertThat(FileUtils.readFileToString(file).contains(contains)));
+                assertThat(FileUtils.readFileToString(file).contains("<title>i'm the title</title>")));
     }
 }
