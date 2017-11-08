@@ -55,7 +55,7 @@ So Paco was born as an alternative and he's doing his job rapidly fast and relia
 **Paco** allows you to configure all your test specific data individually and directly in place (on your test method and/or test class) via annotations. You only need to describe how you want to fetch an http response (e.g. requesting a  web page by using a proxy, mobile userAgent, setting cookies, add a specific referrer, doing a POST that sends some request body, etc). 
 The Setup is pretty easy (see __[Setup](#setup)__)
 
-The Execution of the tests is managed with jUnit and Surefire/Failsafe. The intention of **Paco** is to run a big amount of tests in parallel, therefore it provides a parent pom (usage is optional) that is doing all the parallelization setup for you (see __[configure your request](#configure-your-request)__). 
+The Execution of the tests is managed with jUnit and Surefire/Failsafe. The intention of **Paco** is to run a big amount of tests in parallel, therefore it provides a parent pom (usage is optional but recommended) that is doing all the parallelization setup for you (see __[configure your request](#configure-your-request)__). 
 All test classes placed under `/src/test/java` and names matching `**/*Test.java` will be executed by surefire (maven-phase: test),
 all with name matching `**/*IT.java` will be executed by fail-safe (maven-phase: integration-test).
 
@@ -63,7 +63,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 
 <h2 align="center">Setup</h2>
 
-- to get the best parallelization result add this parent pom to your pom.xml
+- to get the best parallelization result add this parent pom to your pom.xml (recommended)
   - it will setup all the configurations for an efficient parallelization of your jUnit tests automatically
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section of the [parent pom](https://search.maven.org/#artifactdetails%7Cio.github.christian-draeger%7Cpage-content-tester-parent%7C1.0%7Cpom)
 
@@ -87,21 +87,23 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 <h2 align="center">Configuration</h2>
 
 ## configure your request
-Set your global fetcher settings by placing a `paco.properties` file in your project under `src/test/resources/` and paste the values [paco.properties](https://github.com/christian-draeger/page-content-tester/blob/master/src/test/resources/paco.properties) to the file.
+### configure your defaults
+This is completely optional. **Paco** will use [default values](https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/default.properties) for all request if you don't specify them. If you have more special cases you can override them by placing a `paco.properties` file in your project under `src/main/resources/` and set different values for certain properties **or** invoke the parameters directly as command line option when executing maven, e.g. `mvn clean test -Dport=8081` will run all your tests that have not set a specific port against this port.
 
 From time to time you may have specific behaviour for a certain test, so it's not always suffice to only have global settings.
 In this case use the configuration possibilities of the __[`@Fetch`-annotation](#the-fetch-annotation)__ or the  __[`fetcher()`-method](#the-fetcher-method)__.
 - nearly all values can be set individually for test methods and classes via Annotation or parameters builder
 - annotated values or values set via parameters builder will always win over global config
-        
-### the fetch annotation
+
+### configure request specific options
+#### the fetch annotation
 If you want to configure your http call using constant values using the annotation is preferred.
 The fetch process will be finished before your actual test starts, which is good because you can not run into race conditions.
 You can set test specific values for the used protocol, referrer, user-agent, device (if you don't need a specific user-agent string), the used http method (get, post, delete, ...), port, url-prefix, request timeout, retries on timeout, setting cookies and if the request should follow redirects.
 All these parameters are optional and if not set taken from your global config.
 The only required parameter is url.
 
-#### on methods  
+##### on methods  
 ```
 public class UsingFetchAnnotationTest extends Paco {
 
@@ -128,7 +130,7 @@ public class UsingFetchAnnotationTest extends Paco {
 }
 ```   
 
-#### on classes
+##### on classes
 The **@Fetch** annotation can be used on methods as well as on classes.
 ```
 @Fetch(url = "localhost:8089/example")
@@ -140,11 +142,11 @@ public class UsingFetchAnnotationTest extends Paco {
     }
 }
 ```
-#### mutliple fetches (repeatable)
+##### mutliple fetches (repeatable)
 Furthermore the **@Fetch** annotation is repeatable. This allows you to fetch multiple pages before running your actual test.
 If you fetch multiple pages there are 3 possibilities to get a page object inside your test and do your stuff with the response.
 
-##### page picker
+###### page picker
 ###### 1. by index (possible because all fetches via annotation on a class or method will be done sequentially, means they are always in correct order)
 
 ```
@@ -203,7 +205,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 ```   
 
 
-### the fetcher method
+#### the fetcher method
 From time to time it's necessary to pass dynamic values to your http call configuration. Another possible scenario could be that you need to do a http call, do something different and doing another http call afterwards.
 In these cases you should use the fetcher method and pass your configuration values by using the params method and override the global config values you want to change via the builder the params method returns.
      
@@ -332,7 +334,7 @@ public class ExampleUsageTest extends PageContentTester {
 
 <h2 align="center">Example Project</h2>
 
-To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. You will also get a feeling how long a test run will take using the PageContentTester (analysing and checking dom elements within ±1000 tests that are fetching an url is getting done in less than 10sec with a proper internet connection)
+To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. It includes simple test classes for nearly all possible examples. While executing you will recognize that the test execution it's pretty fast. To get a feeling how long a test run will take: in a real world project that is analysing and checking dom elements within ±1000 tests that are fetching an url, the hole test suite is done in 10-20sec with a proper internet connection.
 
 <h2 align="center">License</h2>
 
