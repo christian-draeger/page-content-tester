@@ -28,10 +28,6 @@ class TypedProperties {
     }
 
     static String getStringValue(final String key) {
-        String customValue = System.getProperty(key, mergedProperties.getProperty(key));
-        if (customValue != null) {
-            return customValue;
-        }
         return System.getProperty(key, mergedProperties.getProperty(key));
     }
 
@@ -46,5 +42,4 @@ class TypedProperties {
         }
         return parseBoolean(getStringValue(key));
     }
-
 }
