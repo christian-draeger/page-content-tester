@@ -277,7 +277,7 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = URL1, method = POST)
+    @Fetch(url = URL1, method = POST, retriesOnTimeout = 2, timeout = 5000)
     public void do_post_request_and_check_response() throws Exception {
         assertThat(page.get().getJsonResponse().get("data")).isEqualTo("some value");
     }
