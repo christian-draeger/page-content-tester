@@ -13,20 +13,30 @@ public class FetcherTest extends Paco {
 
     private Fetcher fetcher = new Fetcher();
 
+    private static int counter = 0;
+
+    @Test
+    public void success_on_second_try() throws IOException {
+        if (counter == 0) {
+            counter++;
+            fetcher.fetch(aValidRequest().timeout(1).build());
+        }
+        fetcher.fetch(aValidRequest().timeout(10000).build());
+    }
+
     @Test
     public void fetcher_should_return_response_for_valid_url() throws IOException {
-        Connection.Response response = fetcher.fetch(aValidRequest());
+        Connection.Response response = fetcher.fetch(aValidRequest().build());
         assertThat(response.parse().title()).isEqualTo("i'm the title");
     }
 
-    private Parameters aValidRequest() {
+    private Parameters.ParametersBuilder aValidRequest() {
         return Parameters.builder()
                 .urlToFetch("http://localhost:8089/example")
                 .userAgent("")
                 .requestBody("")
                 .referrer("")
                 .cookie(Collections.emptyMap())
-                .method(Connection.Method.GET)
-                .build();
+                .method(Connection.Method.GET);
     }
 }
