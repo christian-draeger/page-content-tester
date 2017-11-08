@@ -7,9 +7,7 @@ import java.util.Collections;
 import static org.jsoup.Connection.Method.GET;
 import static paco.annotations.Fetch.Device.DESKTOP;
 
-public class FetcherMethodOptions {
-
-    private FetcherMethodOptions(){}
+public class FetcherMethodOptions { //NOSONAR
 
     private static GlobalConfig config = new GlobalConfig();
 
