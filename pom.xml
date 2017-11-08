@@ -141,16 +141,6 @@
     </distributionManagement>
 
     <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.properties</include>
-                </includes>
-            </testResource>
-        </testResources>
-
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -175,15 +165,15 @@
             <plugin>
                 <groupId>uk.co.deliverymind</groupId>
                 <artifactId>wiremock-maven-plugin</artifactId>
-                <version>2.6.0</version>
+                <version>2.7.0</version>
                 <executions>
                     <execution>
-                        <phase>generate-test-sources</phase>
+                        <phase>test-compile</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <dir>target/classes</dir>
+                            <dir>target/test-classes</dir>
                             <params>
                                 --port=8089 --https-port=8090 --global-response-templating
                             </params>

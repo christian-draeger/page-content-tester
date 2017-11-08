@@ -16,7 +16,7 @@ public class FetcherTest extends Paco {
     private static int counter = 0;
 
     @Test
-    public void success_on_second_try() throws IOException {
+    public void retry_on_connection_timeout() throws IOException {
         if (counter == 0) {
             counter++;
             fetcher.fetch(aValidRequest().timeout(1).build());
