@@ -242,13 +242,13 @@ You should always try to isolate your tests enough that they don't affect each o
 ### Caching
 **Paco** provides an built in loading cache that is enabled by default. It avoids you from making duplicate calls and make your test suite run faster. if you don't want your duplicate calls taken from cache it can be deactivated via `paco.properties` or command line argument.
 
-	add cacheDuplicates=false to your paco.properties file
-	or start your tests with `mvn clean verify -DcacheDuplicates=false`
+> add `cacheDuplicates=false` to your paco.properties file
+> or start your tests with `mvn clean verify -DcacheDuplicates=false`
 	
 By default all duplicate calls that will be taken from cache will appear on your console output. It can be deactivated via `paco.properties` or command line argument.
 
-	add logCachedDuplicates=false to your paco.properties file
-	or start your tests with `mvn clean verify -logCachedDuplicates=false`
+> add `logCachedDuplicates=false` to your paco.properties file
+> or start your tests with `mvn clean verify -logCachedDuplicates=false`
 
 <h2 align="center">Test Examples</h2>
 
