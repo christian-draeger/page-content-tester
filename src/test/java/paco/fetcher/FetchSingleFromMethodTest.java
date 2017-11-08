@@ -46,5 +46,4 @@ public class FetchSingleFromMethodTest extends Paco {
     public void throw_exeption_on_wrong_url_snippet_and_wrong_device() {
         page.get("dfgfs", DESKTOP);
     }
-
 }
