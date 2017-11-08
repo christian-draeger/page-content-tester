@@ -8,20 +8,10 @@ import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.InputSource;
 import paco.response.XmlErrorHandler;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Map;
 
 import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
@@ -185,20 +175,10 @@ class FetchedPageForTest implements Page {
     @Override
     @SneakyThrows
     public void validateXml(String xsdPath, boolean namespaceAware, String schemaLanguage) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        validateXml(xsdPath, namespaceAware, schemaLanguage, getPageBody());
+    }
 
-        factory.setNamespaceAware(namespaceAware);
-
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        org.w3c.dom.Document document = builder.parse(new InputSource(new StringReader(getPageBody())));
-
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(schemaLanguage);
-        Source schemaSource = new StreamSource(getClass().getResourceAsStream(xsdPath));
-
-        Schema schema = schemaFactory.newSchema(schemaSource);
-        Validator validator = schema.newValidator();
-        Source source = new DOMSource(document);
-        validator.setErrorHandler(new XmlErrorHandler());
-        validator.validate(source);
+    private void validateXml(String xsdPath, boolean namespaceAware, String schemaLanguage, String pageBody) {
+        new XmlErrorHandler().validateXml(xsdPath, namespaceAware, schemaLanguage, pageBody);
     }
 }

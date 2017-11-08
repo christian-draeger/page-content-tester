@@ -132,10 +132,11 @@ public class FetchedPageTest extends Paco {
     }
 
     @Test
-    @Fetch(url = URL2)
+    @Fetch(protocol = HTTPS, url = URL2, port = "8090")
     @Fetch(url = URL3)
     public void fetch_multiple_pages_via_annotation_and_get_pages_by_url_snippet() {
-        assertThat(page.get("example2").getTitle()).isEqualTo("i'm the title2");
+        System.out.println(page.get(0).getUrl());
+        assertThat(page.get("8090/example2").getTitle()).isEqualTo("i'm the title2");
         assertThat(page.get("example3").getTitle()).isEqualTo("i'm the title3");
     }
 
