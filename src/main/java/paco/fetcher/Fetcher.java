@@ -1,6 +1,5 @@
 package paco.fetcher;
 
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import paco.configurations.GlobalConfig;
@@ -13,7 +12,6 @@ import static org.fusesource.jansi.Ansi.Color.CYAN;
 import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
 
-@Slf4j
 public class Fetcher {
 
     private static final GlobalConfig GLOBAL_CONFIG = new GlobalConfig();

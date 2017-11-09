@@ -36,7 +36,6 @@ public class TypedPropertiesTest {
         assertThat(TypedProperties.getBooleanValue("foo")).isEqualTo(false);
     }
 
-
     @Test
     public void paco_properties_overrides_default_properties() {
         assertThat(TypedProperties.getStringValue("bar")).isEqualTo("false");

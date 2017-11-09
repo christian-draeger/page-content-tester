@@ -1,20 +1,13 @@
 package paco.fetcher;
 
-import static org.fusesource.jansi.Ansi.ansi;
-
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import paco.configurations.GlobalConfig;
 
-@Slf4j
+import java.util.Set;
+import java.util.concurrent.*;
+
+import static org.fusesource.jansi.Ansi.ansi;
+
 class FetcherManager {
 
     private GlobalConfig globalConfig = new GlobalConfig();

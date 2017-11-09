@@ -1,15 +1,14 @@
 package paco.configurations;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import static java.lang.Boolean.parseBoolean;
 
-@Slf4j
 class TypedProperties {
 
+    private static final Logger LOGGER = Logger.getLogger(TypedProperties.class.getName());
     private static Properties mergedProperties;
 
     static {
@@ -23,7 +22,7 @@ class TypedProperties {
         try {
             mergedProperties.load(TypedProperties.class.getResourceAsStream("/paco.properties"));
         } catch (Exception e) {
-            // do nothing
+            LOGGER.info("could not load paco.properties -> fallback to default.properties");
         }
     }
 

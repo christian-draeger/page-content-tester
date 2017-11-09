@@ -1,7 +1,6 @@
 package paco.fetcher;
 
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 import org.jsoup.Connection.Response;
@@ -13,11 +12,14 @@ import paco.response.XmlErrorHandler;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import static java.util.logging.Level.WARNING;
 import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
 
-@Slf4j
 class FetchedPageForTest implements Page {
+
+    private static final Logger LOGGER = Logger.getLogger(FetchedPageForTest.class.getName());
 
     private final FetchedPage fetchedPage;
     private String testName;
@@ -152,7 +154,7 @@ class FetchedPageForTest implements Page {
         try {
             FileUtils.writeStringToFile(new File("target/paco/" + folder,  getTestName() + ".html"), getPageBody());
         } catch (IOException e) {
-            log.warn("could not store page body for url: {} while executing test: {}", getUrl(), getTestName());
+            LOGGER.log(WARNING,"could not store page body for url: " + getUrl() + " while executing test: " + getTestName());
         }
     }
 

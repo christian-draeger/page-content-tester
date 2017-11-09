@@ -1,16 +1,13 @@
 package paco.fetcher;
 
-import static org.jsoup.Connection.Response;
+import lombok.SneakyThrows;
+import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.Optional;
 
-import org.jsoup.nodes.Document;
+import static org.jsoup.Connection.Response;
 
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class FetchedPage {
 
     private final String url;
