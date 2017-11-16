@@ -20,6 +20,7 @@ public class Parameters {
     private int retriesOnTimeout;
     private Map<String, String> cookie;
     private Map<String, String> headers;
+    private Map<String, Integer> proxy;
     private String testName;
 
 }

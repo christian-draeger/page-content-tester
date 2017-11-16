@@ -1,11 +1,9 @@
 package paco.fetcher;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
-import paco.annotations.Cookie;
-import paco.annotations.Fetch;
-import paco.annotations.GetFetchedPageException;
-import paco.annotations.Header;
+import paco.annotations.*;
 import paco.runner.Paco;
 
 import java.io.File;
@@ -289,6 +287,13 @@ public class FetchedPageTest extends Paco {
     public void can_set_header_via_annotation() throws Exception {
         // TODO: find out how to replay custom header from wiremock
         // assertThat(page.get().getHeader("Custom-Header")).isEqualTo("testHeader");
+    }
+
+    @Ignore
+    @Test
+    @Fetch( url = URL4, proxy = @Proxy(host = "/proxy", port = 8089))
+    public void can_set_proxy_via_annotation() throws Exception {
+        // TODO: find out how to call url through proxy via wiremock
     }
 
     @Test

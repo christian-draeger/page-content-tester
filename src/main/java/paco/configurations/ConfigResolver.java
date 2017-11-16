@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import paco.annotations.Cookie;
 import paco.annotations.Fetch;
 import paco.annotations.Header;
+import paco.annotations.Proxy;
 import paco.fetcher.Parameters;
 
 import java.net.MalformedURLException;
@@ -31,6 +32,7 @@ public class ConfigResolver {
 
         Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
         Header[] headerAnnotation = fetchAnnotation.header();
+        Proxy proxyAnnotation = fetchAnnotation.proxy();
         return Parameters.builder()
                 .urlToFetch(getUrl(fetchAnnotation.url()))
                 .userAgent(getUserAgent())
@@ -42,6 +44,7 @@ public class ConfigResolver {
                 .timeout(getTimeout())
                 .retriesOnTimeout(getRetryCount())
                 .cookie(getCookies(cookieAnnotation))
+                .proxy(getProxy(proxyAnnotation))
                 .testName(testName)
                 .build();
     }
@@ -124,6 +127,16 @@ public class ConfigResolver {
             headers.put(annotationHeader.name(), annotationHeader.value());
         }
         return headers;
+    }
+
+    private Map<String, Integer> getProxy(Proxy annotationProxy) {
+
+        final int port = annotationProxy.port();
+        final String host = annotationProxy.host();
+        if (!host.isEmpty() && port != -1) {
+            return Collections.singletonMap(host, port);
+        }
+        return globalConfig.getProxy();
     }
 
     private String getUrl(String url) {

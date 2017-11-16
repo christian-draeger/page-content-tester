@@ -23,6 +23,7 @@ public class FetcherMethodOptions { //NOSONAR
                 .retriesOnTimeout(config.getTimeoutMaxRetryCount())
                 .testName("")
                 .headers(Collections.emptyMap())
+                .proxy(Collections.emptyMap())
                 .cookie(Collections.emptyMap());
     }
 }

@@ -5,7 +5,10 @@ import org.jsoup.Jsoup;
 import paco.configurations.GlobalConfig;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.SocketTimeoutException;
+import java.util.Map;
 
 import static java.lang.System.setProperty;
 import static org.fusesource.jansi.Ansi.Color.CYAN;
@@ -37,7 +40,7 @@ public class Fetcher {
                         .userAgent(params.getUserAgent())
                         .referrer(params.getReferrer())
 
-                        .proxy(GLOBAL_CONFIG.getProxy())
+                        .proxy(createProxy(params.getProxy()))
                         .maxBodySize(0)
                         .timeout(params.getTimeout());
 
@@ -64,5 +67,16 @@ public class Fetcher {
                 System.out.println("\uD83D\uDD50 " + ansi().fg(YELLOW).bold().a("fetch timeout: ").reset() + "SocketRead time out after " + retryCount++ + ". try");
             }
         }
+    }
+
+    private Proxy createProxy(Map<String, Integer> proxy) {
+
+        if (proxy.isEmpty()) {
+            return null;
+        }
+        final String host = proxy.keySet().iterator().next();
+        final Integer port = proxy.values().iterator().next();
+        return new Proxy(Proxy.Type.HTTP,
+                InetSocketAddress.createUnresolved(host, port));
     }
 }

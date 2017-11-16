@@ -121,4 +121,9 @@ public @interface Fetch {
      */
     Header[] header() default @Header();
 
+    /**
+     * Defines proxy that will be used for request.
+     */
+    Proxy proxy() default @Proxy();
+
 }

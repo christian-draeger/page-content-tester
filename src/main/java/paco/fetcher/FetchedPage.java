@@ -26,6 +26,7 @@ public class FetchedPage {
                 .urlToFetch(params.getUrlToFetch())
                 .method(params.getMethod())
                 .requestBody(params.getRequestBody())
+                .proxy(params.getProxy())
                 .userAgent(params.getUserAgent())
                 .referrer(params.getReferrer())
                 .followRedirects(params.isFollowRedirects())

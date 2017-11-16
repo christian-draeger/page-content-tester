@@ -11,12 +11,8 @@ import paco.response.XmlErrorHandler;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static java.util.logging.Level.WARNING;
 import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
@@ -113,14 +109,6 @@ class FetchedPageForTest implements Page {
     public Elements getElements(String cssSelector) {
         storeIfNotFound(cssSelector);
         return getDocument().select(cssSelector);
-    }
-
-    private List<Integer> getListOfSelectors(String selector, Function<Element, Optional<Integer>> optionalMethod) {
-        return getElements(selector).stream()
-                .map(optionalMethod)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
     }
 
     public Element getElement(String cssSelector) {

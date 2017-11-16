@@ -38,6 +38,7 @@ public class FetcherTest extends Paco {
                 .referrer("")
                 .cookie(Collections.emptyMap())
                 .headers(Collections.emptyMap())
+                .proxy(Collections.emptyMap())
                 .method(Connection.Method.GET);
     }
 }

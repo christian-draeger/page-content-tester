@@ -3,8 +3,8 @@ package paco.configurations;
 import org.junit.rules.Timeout;
 import paco.annotations.Fetch.Device;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
+import java.util.Collections;
+import java.util.Map;
 
 import static paco.annotations.Fetch.Device.MOBILE;
 
@@ -57,13 +57,13 @@ public class GlobalConfig {
         return TypedProperties.getBooleanValue("logCachedDuplicates");
     }
 
-    public Proxy getProxy() {
-        if (TypedProperties.getStringValue("proxyHost").isEmpty() || TypedProperties.getStringValue("proxyPort").isEmpty()) {
-            return null;
+    public Map<String, Integer> getProxy() {
+        String host = TypedProperties.getStringValue("proxyHost");
+        String port = TypedProperties.getStringValue("proxyPort");
+        if (host.isEmpty() || port.isEmpty()) {
+            return Collections.emptyMap();
         }
-        return new Proxy(
-                Proxy.Type.HTTP,
-                InetSocketAddress.createUnresolved(TypedProperties.getStringValue("proxyHost"), TypedProperties.getIntValue("proxyPort")));
+        return Collections.singletonMap(TypedProperties.getStringValue("proxyHost"), TypedProperties.getIntValue("proxyPort"));
     }
 
     String getUrlPrefix() {
