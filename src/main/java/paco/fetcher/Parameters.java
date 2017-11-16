@@ -1,11 +1,10 @@
 package paco.fetcher;
 
-import java.util.Map;
-
-import org.jsoup.Connection;
-
 import lombok.Builder;
 import lombok.Value;
+import org.jsoup.Connection;
+
+import java.util.Map;
 
 @Value
 @Builder
@@ -20,6 +19,7 @@ public class Parameters {
     private int timeout;
     private int retriesOnTimeout;
     private Map<String, String> cookie;
+    private Map<String, String> headers;
     private String testName;
 
 }

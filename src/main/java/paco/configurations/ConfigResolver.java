@@ -3,6 +3,7 @@ package paco.configurations;
 import org.apache.commons.lang3.StringUtils;
 import paco.annotations.Cookie;
 import paco.annotations.Fetch;
+import paco.annotations.Header;
 import paco.fetcher.Parameters;
 
 import java.net.MalformedURLException;
@@ -29,11 +30,13 @@ public class ConfigResolver {
     public Parameters getRequestSpecificParams() {
 
         Cookie[] cookieAnnotation = fetchAnnotation.setCookies();
+        Header[] headerAnnotation = fetchAnnotation.header();
         return Parameters.builder()
                 .urlToFetch(getUrl(fetchAnnotation.url()))
                 .userAgent(getUserAgent())
                 .method(fetchAnnotation.method())
                 .requestBody(fetchAnnotation.requestBody())
+                .headers(getHeaders(headerAnnotation))
                 .referrer(getReferrer())
                 .followRedirects(isFollowingRedirects())
                 .timeout(getTimeout())
@@ -108,6 +111,19 @@ public class ConfigResolver {
             cookies.put(annotationCookie.name(), annotationCookie.value());
         }
         return cookies;
+    }
+
+    private Map<String, String> getHeaders(Header[] annotationHeaders) {
+
+        HashMap<String, String> headers = new HashMap<>();
+
+        for (Header annotationHeader : annotationHeaders) {
+            if (annotationHeader.name().isEmpty()) {
+                return Collections.emptyMap();
+            }
+            headers.put(annotationHeader.name(), annotationHeader.value());
+        }
+        return headers;
     }
 
     private String getUrl(String url) {

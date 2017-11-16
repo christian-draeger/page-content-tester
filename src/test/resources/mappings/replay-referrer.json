@@ -11,7 +11,7 @@
       "User-Agent": "{{request.headers.User-Agent}}",
       "Referer": "{{request.headers.Referer}}",
       "Set-Cookie": "logged_in=no",
-      "Custom-Header": "custom value"
+      "Custom-Header": "{{request.headers.Custom-Header}}"
     }
   }
 }

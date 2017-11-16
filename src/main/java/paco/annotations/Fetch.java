@@ -108,11 +108,17 @@ public @interface Fetch {
     int retriesOnTimeout() default -1;
 
     /**
-     * Defines a Cookie or several Cookies the can be send with the request.
+     * Defines a Cookie or several Cookies that can be send with the request.
      * See the @Cookie annotation for more information how to set values for a cookie.
      * If the requested server does not know the cookie it can happen that it won't be replayed from the server,
      * what means that under circumstances you are not able to ask for the cookie in your fetched page result,
      * but the cookie has been send.
      */
     Cookie[] setCookies() default @Cookie();
+
+    /**
+     * Defines a custom header or several custom header that can be send with the request.
+     */
+    Header[] header() default @Header();
+
 }

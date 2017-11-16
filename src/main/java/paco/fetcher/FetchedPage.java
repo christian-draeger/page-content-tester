@@ -32,6 +32,7 @@ public class FetchedPage {
                 .timeout(params.getTimeout())
                 .retriesOnTimeout(params.getRetriesOnTimeout())
                 .cookie(params.getCookie())
+                .headers(params.getHeaders())
                 .build();
 
         FetchedPage page = FetcherManager.getInstance().submit(cacheKey, params.getTestName()).get();

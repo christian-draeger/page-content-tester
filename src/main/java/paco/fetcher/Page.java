@@ -1,11 +1,11 @@
 package paco.fetcher;
 
-import java.util.Map;
-
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.util.Map;
 
 public interface Page {
 
@@ -25,11 +25,6 @@ public interface Page {
     Element getElement(String cssSelector, int index);
 
     /**
-     * @return value of title tag
-     */
-    String getTitle();
-
-    /**
      * get DOM Elements of matching CSS-selectors
      * @param cssSelector to pick DOM-element
      * @return Elements
@@ -42,6 +37,12 @@ public interface Page {
      * @return Element
      */
     Element getElementLastOf(String cssSelector);
+
+    /**
+     * @param cssSelector to pick DOM-element
+     * @return number of matching CSS-selectors
+     */
+    int getElementCount(String cssSelector);
 
     /**
      * @param cssSelector to pick DOM-element
@@ -72,12 +73,6 @@ public interface Page {
      * @param folder - name of folder
      */
     void store(String folder);
-
-    /**
-     * @param cssSelector to pick DOM-element
-     * @return number of matching CSS-selectors
-     */
-    int getElementCount(String cssSelector);
 
     /**
      * @return HTTP status code of fetched page
@@ -171,13 +166,32 @@ public interface Page {
     Map<String, String> getCookies();
 
     /**
+     * @return value of title tag
+     */
+    String getTitle();
+
+    /**
      * @return the response body in JSON format
      */
     JSONObject getJsonResponse();
 
+    /**
+     * Check if response is valid xml and matches xsd.
+     * This will also check for namespace with schema language W3C_XML_SCHEMA_NS_URI
+     */
     void validateXml(String xsdPath);
 
+    /**
+     * Check if response is valid xml and matches xsd.
+     * Additional switch if the validation should be aware of namespace.
+     */
     void validateXml(String xsdPath, boolean namespaceAware);
 
+    /**
+     * Check if response is valid xml and matches xsd.
+     * Additional switch if the validation should be aware of namespace and with
+     * possibility to change the schema language by string or use String values from
+     * the javax.xml.XMLConstants interface
+     */
     void validateXml(String xsdPath, boolean namespaceAware, String schemaLanguage);
 }

@@ -72,6 +72,7 @@ public class FetcherManagerTest {
                 .referrer("")
                 .requestBody("")
                 .cookie(Collections.emptyMap())
+                .headers(Collections.emptyMap())
                 .method(Connection.Method.GET)
                 .build();
     }

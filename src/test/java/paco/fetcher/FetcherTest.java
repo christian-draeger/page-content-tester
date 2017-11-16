@@ -37,6 +37,7 @@ public class FetcherTest extends Paco {
                 .requestBody("")
                 .referrer("")
                 .cookie(Collections.emptyMap())
+                .headers(Collections.emptyMap())
                 .method(Connection.Method.GET);
     }
 }

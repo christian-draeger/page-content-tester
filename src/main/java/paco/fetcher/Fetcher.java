@@ -25,20 +25,28 @@ public class Fetcher {
 
         while(true) {
             try {
-                final Connection connection = Jsoup.connect(params.getUrlToFetch())
+                final Connection connection = Jsoup
+                        .connect(params.getUrlToFetch())
+                        .method(params.getMethod())
+
                         .validateTLSCertificates(false)
-                        .timeout(params.getTimeout())
-                        .userAgent(params.getUserAgent())
                         .ignoreHttpErrors(true)
-                        .proxy(GLOBAL_CONFIG.getProxy())
                         .followRedirects(params.isFollowRedirects())
                         .ignoreContentType(GLOBAL_CONFIG.isIgnoringContentType())
-                        .method(params.getMethod())
+
+                        .userAgent(params.getUserAgent())
+                        .referrer(params.getReferrer())
+
+                        .proxy(GLOBAL_CONFIG.getProxy())
                         .maxBodySize(0)
-                        .referrer(params.getReferrer());
+                        .timeout(params.getTimeout());
 
                 if (!params.getCookie().isEmpty()) {
                     connection.cookies(params.getCookie());
+                }
+
+                if (!params.getHeaders().isEmpty()) {
+                    connection.headers(params.getCookie());
                 }
 
                 if (!params.getRequestBody().isEmpty()) {
