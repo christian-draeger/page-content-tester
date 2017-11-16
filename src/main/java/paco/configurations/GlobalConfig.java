@@ -1,13 +1,12 @@
 package paco.configurations;
 
-import static paco.annotations.Fetch.Device.MOBILE;
+import org.junit.rules.Timeout;
+import paco.annotations.Fetch.Device;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-import org.junit.rules.Timeout;
-
-import paco.annotations.Fetch.Device;
+import static paco.annotations.Fetch.Device.MOBILE;
 
 public class GlobalConfig {
 
@@ -69,6 +68,10 @@ public class GlobalConfig {
 
     String getUrlPrefix() {
         return TypedProperties.getStringValue("urlPrefix");
+    }
+
+    String getUrlPrefixSeparator() {
+        return TypedProperties.getStringValue("urlPrefixSeparator");
     }
 
     String getProtocol() {

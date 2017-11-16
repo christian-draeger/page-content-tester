@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static paco.annotations.Fetch.Device.DESKTOP;
 import static paco.annotations.Fetch.Device.MOBILE;
-import static paco.annotations.Fetch.Protocol.NONE;
+import static paco.annotations.Fetch.Protocol.DEFAULT;
 
 public class ConfigResolver {
 
@@ -44,10 +44,10 @@ public class ConfigResolver {
     }
 
     private String getProtocol() {
-        if (fetchAnnotation.protocol().equals(NONE)) {
-            return globalConfig.getProtocol();
+        if (fetchAnnotation.protocol().equals(DEFAULT)) {
+            return globalConfig.getProtocol() + "://";
         } else {
-            return fetchAnnotation.protocol().value;
+            return fetchAnnotation.protocol().value + "://";
         }
     }
 
@@ -91,9 +91,9 @@ public class ConfigResolver {
 
     private String getUrlPrefix() {
         if (fetchAnnotation.urlPrefix().isEmpty()) {
-            return globalConfig.getUrlPrefix();
+            return globalConfig.getUrlPrefix() + globalConfig.getUrlPrefixSeparator();
         } else {
-            return fetchAnnotation.urlPrefix();
+            return fetchAnnotation.urlPrefix() + fetchAnnotation.urlPrefixSeparator();
         }
     }
 

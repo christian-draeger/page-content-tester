@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 import static org.jsoup.Connection.Method.GET;
 import static paco.annotations.Fetch.Device.DESKTOP;
-import static paco.annotations.Fetch.Protocol.NONE;
+import static paco.annotations.Fetch.Protocol.DEFAULT;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
@@ -15,10 +15,10 @@ import static paco.annotations.Fetch.Protocol.NONE;
 public @interface Fetch {
 
     enum Protocol {
-        HTTP("http://"),
-        HTTPS("https://"),
-        FTP("ftp://"),
-        NONE("");
+        HTTP("http"),
+        HTTPS("https"),
+        FTP("ftp"),
+        DEFAULT("");
 
         public final String value;
 
@@ -46,13 +46,19 @@ public @interface Fetch {
     /**
      * Protocol that will be used
      */
-    Protocol protocol() default NONE;
+    Protocol protocol() default DEFAULT;
 
     /**
      * Prefix that will be added between protocol and url.
      * e.g. the "en." in http://en.wikipedia.org
      */
     String urlPrefix() default "";
+
+    /**
+     * Prefix that will be added between protocol and url.
+     * e.g. the "en." in http://en.wikipedia.org
+     */
+    String urlPrefixSeparator() default "";
 
     /**
      * Adds a port to the url.

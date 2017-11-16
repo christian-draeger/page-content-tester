@@ -145,11 +145,19 @@ public class FetchedPageTest extends Paco {
         page.get("unknown");
     }
 
-    @Ignore
     @Test
-    @Fetch(protocol = HTTPS, urlPrefix = "en.", url = "wikipedia.org/proxy", port = "80")
+    @Fetch(urlPrefix = "en.", url = "wikipedia.org", port = "80")
     public void fetch_page_via_annotation_and_build_url() {
-        assertThat(page.get().getUrl()).isEqualTo("https://en.wikipedia.org/proxy");
+        assertThat(page.get().getUrl()).isEqualTo("http://en.wikipedia.org:80");
+    }
+
+    @Test
+    @Fetch( urlPrefix = "en",
+            urlPrefixSeparator = ".",
+            url = "wikipedia.org",
+            port = "80")
+    public void fetch_page_via_annotation_and_build_url_with_separator() {
+        assertThat(page.get().getUrl()).isEqualTo("http://en.wikipedia.org:80");
     }
 
     @Test(expected = GetFetchedPageException.class)
