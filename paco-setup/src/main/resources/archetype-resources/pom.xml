@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>$io.github.christian-draeger</groupId>
+    <artifactId>$paco-setup</artifactId>
+    <version>$0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Paco Tests</name>
+    <description>A Template Test Project</description>
+    <url>https://github.com/christian-draeger/page-content-tester</url>
+
+    <properties>
+        <surefire.rerunFailingTestsCount>1</surefire.rerunFailingTestsCount>
+        <assertj.version>3.8.0</assertj.version>
+    </properties>
+
+    <parent>
+        <groupId>io.github.christian-draeger</groupId>
+        <artifactId>page-content-tester-parent</artifactId>
+        <version>1.8.3</version>
+        <relativePath/>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>
