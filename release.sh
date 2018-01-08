@@ -7,5 +7,5 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 mvn clean deploy -Prelease
-cd src/main/java/paco/parent
+cd /parent
 mvn clean deploy -Prelease
