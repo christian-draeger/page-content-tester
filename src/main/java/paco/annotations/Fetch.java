@@ -76,6 +76,12 @@ public @interface Fetch {
     boolean followRedirects() default true;
 
     /**
+     * Defines if the response for a duplicate call (call with the exact same parameters)
+     * will be taken cache
+     */
+    boolean cacheDuplicate() default true;
+
+    /**
      * Defines the user Agent that will be send with the request.
      * This is helpful to emulate a websites behaviour regarding mobile devices or different browsers.
      */

@@ -20,8 +20,8 @@ public class FetcherManagerTest {
 
     @Test
     public void singleFutureForDuplicateRequest() throws Exception {
-        final Future<FetchedPage> future1 = FetcherManager.getInstance().submit(Parameters.builder().build(), getUniqueTestName());
-        final Future<FetchedPage> future2 = FetcherManager.getInstance().submit(Parameters.builder().build(), getUniqueTestName());
+        final Future<FetchedPage> future1 = FetcherManager.getInstance().submit(aValidRequest(), getUniqueTestName());
+        final Future<FetchedPage> future2 = FetcherManager.getInstance().submit(aValidRequest(), getUniqueTestName());
         assertThat(future1).isSameAs(future2);
     }
 
@@ -72,6 +72,7 @@ public class FetcherManagerTest {
                 .referrer("")
                 .requestBody("")
                 .cookie(Collections.emptyMap())
+                .cacheDuplicate(true)
                 .headers(Collections.emptyMap())
                 .proxy(Collections.emptyMap())
                 .method(Connection.Method.GET)

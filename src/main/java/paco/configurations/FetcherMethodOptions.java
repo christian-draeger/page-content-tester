@@ -19,6 +19,7 @@ public class FetcherMethodOptions { //NOSONAR
                 .requestBody("")
                 .referrer(config.getReferrer())
                 .followRedirects(config.isFollowingRedirects())
+                .cacheDuplicate(config.isCacheDuplicatesActive())
                 .timeout(config.getTimeoutValue())
                 .retriesOnTimeout(config.getTimeoutMaxRetryCount())
                 .testName("")

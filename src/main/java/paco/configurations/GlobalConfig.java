@@ -86,4 +86,8 @@ public class GlobalConfig {
         return TypedProperties.getBooleanValue("ascii");
     }
 
+    public int getThreadPoolAmount() {
+        return TypedProperties.getIntValue("threadPool");
+    }
+
 }

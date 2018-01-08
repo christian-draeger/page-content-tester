@@ -29,6 +29,7 @@ public class FetchedPage {
                 .proxy(params.getProxy())
                 .userAgent(params.getUserAgent())
                 .referrer(params.getReferrer())
+                .cacheDuplicate(params.isCacheDuplicate())
                 .followRedirects(params.isFollowRedirects())
                 .timeout(params.getTimeout())
                 .retriesOnTimeout(params.getRetriesOnTimeout())

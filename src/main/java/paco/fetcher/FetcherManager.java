@@ -12,7 +12,7 @@ class FetcherManager {
 
     private GlobalConfig globalConfig = new GlobalConfig();
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(20);
+    private ExecutorService executorService = Executors.newFixedThreadPool(globalConfig.getThreadPoolAmount());
 
     private ConcurrentHashMap<Parameters, CompletableFuture<FetchedPage>> requestMap = new ConcurrentHashMap<>();
 
@@ -27,7 +27,7 @@ class FetcherManager {
     Future<FetchedPage> submit(Parameters params, String testName) {
         final CompletableFuture<FetchedPage> future = new CompletableFuture<>();
         final Future<FetchedPage> oldValue = requestMap.putIfAbsent(params, future);
-        if (oldValue == null || cacheIsOff() || calledTestMethods.contains(testName)) {
+        if (oldValue == null || !params.isCacheDuplicate() || calledTestMethods.contains(testName)) {
             final FetcherWorker fetcherWorker = new FetcherWorker(params, future);
             executorService.submit(fetcherWorker);
             calledTestMethods.add(testName);
@@ -40,10 +40,6 @@ class FetcherManager {
             calledTestMethods.add(testName);
             return requestMap.get(params);
         }
-    }
-
-    private boolean cacheIsOff() {
-        return !globalConfig.isCacheDuplicatesActive();
     }
 
     private FetcherManager() {

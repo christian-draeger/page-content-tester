@@ -1,10 +1,10 @@
 package paco.configurations;
 
+import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static paco.annotations.Fetch.Device.DESKTOP;
 import static paco.annotations.Fetch.Device.MOBILE;
-
-import org.junit.Test;
 
 public class GlobalConfigTest {
 
@@ -51,6 +51,11 @@ public class GlobalConfigTest {
     @Test
     public void should_return_caching_config() {
         assertThat(globalConfig.isCacheDuplicatesActive()).isTrue();
+    }
+
+    @Test
+    public void should_return_thread_pool_config() {
+        assertThat(globalConfig.getThreadPoolAmount()).isEqualTo(20);
     }
 
 }

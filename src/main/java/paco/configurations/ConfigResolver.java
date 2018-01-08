@@ -41,6 +41,7 @@ public class ConfigResolver {
                 .headers(getHeaders(headerAnnotation))
                 .referrer(getReferrer())
                 .followRedirects(isFollowingRedirects())
+                .cacheDuplicate(isCachingDuplicates())
                 .timeout(getTimeout())
                 .retriesOnTimeout(getRetryCount())
                 .cookie(getCookies(cookieAnnotation))
@@ -93,6 +94,10 @@ public class ConfigResolver {
 
     private boolean isFollowingRedirects() {
         return fetchAnnotation.followRedirects() && globalConfig.isFollowingRedirects();
+    }
+
+    private boolean isCachingDuplicates() {
+        return fetchAnnotation.cacheDuplicate() && globalConfig.isCacheDuplicatesActive();
     }
 
     private String getUrlPrefix() {

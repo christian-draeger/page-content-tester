@@ -16,6 +16,7 @@ public class Parameters {
     private String requestBody;
     private String referrer;
     private boolean followRedirects;
+    private boolean cacheDuplicate;
     private int timeout;
     private int retriesOnTimeout;
     private Map<String, String> cookie;
