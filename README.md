@@ -88,7 +88,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 
 ## configure your request
 ### configure your defaults
-This is completely optional. **Paco** will use [default values](https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/default.properties) for all request if you don't specify them. If you have more special cases you can override them by placing a `paco.properties` file in your project under `src/main/resources/` and set different values for certain properties **or** invoke the parameters directly as command line option when executing maven, e.g. `mvn clean test -Dport=8081` will run all your tests that have not set a specific port against this port.
+This is completely optional. **Paco** will use [default values](https://github.com/christian-draeger/page-content-tester/blob/master/src/main/resources/default.properties) for all request if you don't specify them. If you have more special cases you can override them by placing a `paco.properties` file in your project under `src/main/resources/` or `src/main/resources/` and set different values for certain properties **or** invoke the parameters directly as command line option when executing maven, e.g. `mvn clean test -Dport=8081` will run all your tests that have not set a specific port against this port.
 
 From time to time you may have specific behaviour for a certain test, so it's not always suffice to only have global settings.
 In this case use the configuration possibilities of the __[`@Fetch`-annotation](#the-fetch-annotation)__ or the  __[`fetcher()`-method](#the-fetcher-method)__.
