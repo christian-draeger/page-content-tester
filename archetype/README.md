@@ -4,6 +4,9 @@ to add the archetype to your local maven archetype catalog run the following fro
     
     mvn clean install
     
+using the archetype to generate a new project run
+
+    mvn archetype:generate -DarchetypeGroupId=io.github.christian-draeger -DarchetypeArtifactId=paco-archetype -DarchetypeVersion=1.0.1 -DgroupId=your.groupid -DartifactId=your-artifactId
     
 GOOD TO KNOW:
 The most simple and reliable way to create an new archetype is to create a simple maven project that describes the intended structure, dependencies and minimal java classes. 
