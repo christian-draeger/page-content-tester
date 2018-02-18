@@ -79,10 +79,13 @@ class HomeSplash extends React.Component {
         <Logo img_src={imgUrl('paco.png')} />
         <div className="inner">
           <ProjectTitle />
+          <a target="_blank" href="https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.christian-draeger%22%20AND%20a%3A%22page-content-tester%22">
+            <img className="mvn-badge" src="https://img.shields.io/maven-central/v/io.github.christian-draeger/page-content-tester.svg?style=for-the-badge"></img>
+          </a>
           <PromoSection>
-            <Button href="#try">Try It Out</Button>
+            <Button href="#why">Why?</Button>
+            <Button href="#how">Setup</Button>
             <Button href={docUrl('doc1.html', language)}>Example Link</Button>
-            <Button href={docUrl('doc2.html', language)}>Example Link 2</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -102,17 +105,23 @@ const Block = props => (
 const Features = props => (
   <Block layout="fourColumn">
     {[
+        {
+            title: 'robust and fast',
+            content: 'The content of my second feature',
+            image: imgUrl('docusaurus.svg'),
+            imageAlign: 'top',
+        },
       {
+        title: 'non-blocking and highly parallelized',
         content: 'This is the content of my feature',
-        image: imgUrl('docusaurus.svg'),
+        image: imgUrl('rocket.png'),
         imageAlign: 'top',
-        title: 'Feature One',
       },
       {
-        content: 'The content of my second feature',
-        image: imgUrl('docusaurus.svg'),
+        title: 'e@sy to use',
+        content: 'Paco allows you to configure all your test specific data individually and directly in place (on your test method and/or test class) via annotations. You only need to describe how you want to fetch an http response (e.g. requesting a web page by using a proxy, mobile userAgent, setting cookies, add a specific referrer, doing a POST that sends some request body, etc).',
+        image: imgUrl('annotation.png'),
         imageAlign: 'top',
-        title: 'Feature Two',
       },
     ]}
   </Block>
@@ -128,20 +137,20 @@ const FeatureCallout = props => (
 );
 
 const LearnHow = props => (
-  <Block background="light">
+  <Block id="why" background="light">
     {[
       {
-        content: 'Talk about learning how to use this',
+        title: 'Why would you use Paco?',
+        content: ' The motivation of bringing this little buffed out guy to live have been the need of having a robust and fast solution to relieve a long running and unstable Selenium suite. After a code dive through these Selenium tests it turned out that lots of them were just checking things (like Dom elements, displayed data, cookies, etc) without the need of interacting with a web browser. So Paco was born as an alternative and he is doing his job rapidly fast and reliable. In a bigger test project where this framework is in use it runs ~400 tests in less than 10 seconds. When using Paco you can focus on your tests itself instead of messing around with setting up a complex test project yourself.',
         image: imgUrl('docusaurus.svg'),
         imageAlign: 'right',
-        title: 'Learn How',
       },
     ]}
   </Block>
 );
 
 const TryOut = props => (
-  <Block id="try">
+  <Block id="how">
     {[
       {
         content: 'Talk about trying this out',

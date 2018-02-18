@@ -4,6 +4,8 @@ title: Latin-ish
 sidebar_label: Example Page
 ---
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.akathist.maven.plugins.launch4j/launch4j-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.akathist.maven.plugins.launch4j/launch4j-maven-plugin/) 
+
 Check the [documentation](https://docusaurus.io) for how to use Docusaurus.
 
 ## Lorem
