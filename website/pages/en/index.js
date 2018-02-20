@@ -194,12 +194,12 @@ const Showcase = props => {
   return (
     <div className="productShowcaseSection paddingBottom">
       <h2>{"Who's Using This?"}</h2>
-      <p>This project is used by all these people</p>
       <div className="logos">{showcase}</div>
       <div className="more-users">
-        <a className="button" href={pageUrl('users.html', props.language)}>
-          More {siteConfig.title} Users
-        </a>
+      <a href="https://github.com/christian-draeger/page-content-tester/edit/gh-pages/website/siteConfig.js"
+        className="button">
+        Add your project or company
+      </a>
       </div>
     </div>
   );
