@@ -211,6 +211,7 @@ class Index extends React.Component {
 
     return (
       <div>
+      <a href="https://github.com/christian-draeger/page-content-tester"><img className="fork-me" src={imgUrl('forkme.png')} alt="Fork me on GitHub" /></a>
         <HomeSplash language={language} />
         <div className="mainContainer">
           <Features />

@@ -15,7 +15,25 @@
 @media only screen and (min-width: 1500px) {
 }
 
+.fixedHeaderContainer {
+    z-index: 0;
+}
+
 .mvn-badge {
     height: 37px;
     border-radius: 3px;
+}
+
+.fork-me {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+}
+
+@media only screen and (min-width: 1350px) {
+    .fork-me {
+        display: block;
+    }
 }
