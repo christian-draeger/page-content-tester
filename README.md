@@ -46,7 +46,7 @@
 * __[Example Project](#example-project)__
 * __[License](#license)__
 
-<h2 align="center">About</h2>
+## About
 
 **Paco** is a Java based framework for non-blocking and highly parallelized Dom testing.
 The motivation of bringing this little buffed out guy to live have been the need of having a robust and fast solution to relieve a long running and unstable Selenium suite. After a code dive through these Selenium tests it turned out that lots of them were just checking things (like Dom elements, displayed data, cookies, etc) without the need of interacting with a web browser.
@@ -61,13 +61,13 @@ all with name matching `**/*IT.java` will be executed by fail-safe (maven-phase:
 
 Beside that **Paco** has a bunch of convenient methods to easily write nicely readable tests. It provides easy access to request data (like cookies, headers, etc.), test-config data, and Dom checks (like isElementPresent, getElement, get value of html tags/attributes, etc, etc...)
 
-<h2 align="center">Setup</h2>
+## Setup
 
 - to get the best parallelization result add this parent pom to your pom.xml (recommended)
   - it will setup all the configurations for an efficient parallelization of your jUnit tests automatically
     - if you want to know what the exact predefined junit settings are just have a look at the pluginManagement section of the [parent pom](https://search.maven.org/#artifactdetails%7Cio.github.christian-draeger%7Cpage-content-tester-parent%7C1.0%7Cpom)
 
-```
+```xml
 <parent>
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester-parent</artifactId>
@@ -76,7 +76,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 </parent>
 ```
 - if you want to setup jUnit and surefire yourself just don't use the parent pom and add the dependency to the dependencies-section of your pom.xml (not recommended because you will loose the test runner and parallelization)
-```
+```xml
 <dependency>
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
@@ -84,7 +84,7 @@ Beside that **Paco** has a bunch of convenient methods to easily write nicely re
 </dependency>
 ```
 
-<h2 align="center">Configuration</h2>
+## Configuration
 
 ## configure your request
 ### configure your defaults
@@ -104,11 +104,11 @@ All these parameters are optional and if not set taken from your global config.
 The only required parameter is url.
 
 ##### on methods  
-```
+```JAVA
 public class UsingFetchAnnotationTest extends Paco {
 
     @Test
-    @Fetch(url = "localhost:8089/example")
+    @Fetch(url = "localhost/example", port = "8089")
     public void get_page_and_check_title() {
         assertThat(page.getTitle()).isEqualTo("example title");
     }
@@ -122,7 +122,7 @@ public class UsingFetchAnnotationTest extends Paco {
     }
     // POST with request body
     @Test
-    @Fetch(url = "localhost:8089/example", method = POST, requestBody = "{\"key\":\"value\"}")
+    @Fetch(url = "localhost/example", port = "8089", method = POST, requestBody = "{\"key\":\"value\"}")
     public void post_and_check_response_body() {
         assertThat(page.getContentType()).isEqualTo("application/json");
         assertThat(page.getJsonResponse().get("data")).isEqualTo("some value");
@@ -132,8 +132,9 @@ public class UsingFetchAnnotationTest extends Paco {
 
 ##### on classes
 The **@Fetch** annotation can be used on methods as well as on classes.
-```
-@Fetch(url = "localhost:8089/example")
+```JAVA
+@Test
+@Fetch(url = "localhost/example", port = "8089")
 public class UsingFetchAnnotationTest extends Paco {
 
     @Test
@@ -149,12 +150,12 @@ If you fetch multiple pages there are 3 possibilities to get a page object insid
 ###### page picker
 ###### 1. by index (possible because all fetches via annotation on a class or method will be done sequentially, means they are always in correct order)
 
-```
+```JAVA
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
     @Test
-    @Fetch(url = "localhost:8089/example")
-    @Fetch(url = "localhost:8089/anotherExample")
+    @Fetch(url = "localhost/example", port = "8089")
+    @Fetch(url = "localhost/anortherexample", port = "8089")
     public void get_page_and_check_title() {
         assertThat(page.get(0).getTitle()).isEqualTo("example title");
         assertThat(page.get(1).getTitle()).isEqualTo("anotherExample title");
@@ -162,7 +163,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 }
 ```   
 ###### 2. by url snippet (which should be better readable as using the index in most cases)
-```
+```JAVA
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
     @Test
@@ -175,12 +176,12 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 }
 ```   
 ###### 3. by device type
-```
+```JAVA
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
     @Test
-    @Fetch(url = "localhost:8089/example")
-    @Fetch(url = "localhost:8089/example", device = MOBILE)
+    @Fetch(url = "localhost/example", port = "8089")
+    @Fetch(url = "localhost/example", port = "8089", device = MOBILE)
     public void get_page_and_check_user_agent() {
 	assertThat(page.get(DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
 	assertThat(page.get(MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
@@ -189,13 +190,13 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 ```   
 
 ###### 4. by url snipped and device type (useful if you want to fetch a page with a desktop user-agent and a mobile user-agent to check differences etc.)
-```
+```JAVA
 public class UsingMultipleFetchAnnotationsTest extends Paco {
 
     @Test
-    @Fetch(url = "localhost:8089/example")
-    @Fetch(url = "localhost:8089/example", device = MOBILE)
-    @Fetch(url = "localhost:8089/anotherExample")
+    @Fetch(url = "localhost/example", port = "8089")
+    @Fetch(url = "localhost/example", port = "8089", device = MOBILE)
+    @Fetch(url = "localhost/anotherExample", port = "8089")
     public void get_page_and_check_user_agent() {
 	assertThat(page.get("example", DESKTOP).getUserAgent()).isEqualTo(DESKTOP.value);
 	assertThat(page.get("example", MOBILE).getUserAgent()).isEqualTo(MOBILE.value);
@@ -209,7 +210,7 @@ public class UsingMultipleFetchAnnotationsTest extends Paco {
 From time to time it's necessary to pass dynamic values to your http call configuration. Another possible scenario could be that you need to do a http call, do something different and doing another http call afterwards.
 In these cases you should use the fetcher method and pass your configuration values by using the params method and override the global config values you want to change via the builder the params method returns.
      
-```
+```JAVA
 public class UsingFetcherMethodTest extends Paco {
 
     @Test
@@ -250,10 +251,10 @@ By default all duplicate calls that will be taken from cache will appear on your
 > add `logCachedDuplicates=false` to your paco.properties file
 > or start your tests with `mvn clean verify -logCachedDuplicates=false`
 
-<h2 align="center">Test Examples</h2>
+## Test Examples
 
 ### Overview of possibilities on your Page object (the response)
-```
+```JAVA
 public class ExampleUsageTest extends PageContentTester {
 
     private static final String GITHUB_URL = "https://github.com/christian-draeger";
@@ -318,8 +319,8 @@ public class ExampleUsageTest extends PageContentTester {
     }
     
     @Test
-    @Fetch( url = "http://www.html-kit.com/tools/cookietester/",
-            setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
+    @Fetch(url = "http://www.html-kit.com/tools/cookietester/",
+           setCookies = @Cookie(name = "page-content-tester", value = "wtf-666"))
     public void can_set_cookie_via_annotation() {
         assertThat(page.get().getPageBody(), both(containsString("page-content-tester"))
                                             .and(containsString("wtf-666")));
@@ -340,11 +341,11 @@ public class ExampleUsageTest extends PageContentTester {
 }
 ```
 
-<h2 align="center">Example Project</h2>
+## Example Project
 
 To see the PageContentTester in action you can checkout or fork the corresponding [example project](https://github.com/christian-draeger/page-content-tester-example). it will give an overview of what and how things can be done. It includes simple test classes for nearly all possible examples. While executing you will recognize that the test execution it's pretty fast. To get a feeling how long a test run will take: in a real world project that is analysing and checking dom elements within ±1000 tests that are fetching an url, the hole test suite is done in 10-20sec with a proper internet connection.
 
-<h2 align="center">License</h2>
+## License
 
 Paco is [GPLv3+](LICENSE).
 It just works because of other awesome open-source libraries. Please check the [third party licenses](https://github.com/christian-draeger/page-content-tester/blob/master/LIBRARIES.md).
