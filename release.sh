@@ -9,5 +9,5 @@ fi
 mvn clean deploy -Prelease
 cd ./parent
 mvn clean deploy -Prelease
-cd ../archetype
-mvn clean deploy -Prelease
+#cd ../archetype
+#mvn clean deploy -Prelease
