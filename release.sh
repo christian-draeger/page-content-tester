@@ -7,7 +7,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 mvn clean deploy -Prelease
-cd /parent
+cd ./parent
 mvn clean deploy -Prelease
-cd /archetype
+cd ../archetype
 mvn clean deploy -Prelease
