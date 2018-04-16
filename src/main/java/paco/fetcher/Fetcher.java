@@ -49,7 +49,7 @@ public class Fetcher {
                 }
 
                 if (!params.getHeaders().isEmpty()) {
-                    connection.headers(params.getCookie());
+                    connection.headers(params.getHeaders());
                 }
 
                 if (!params.getRequestBody().isEmpty()) {
