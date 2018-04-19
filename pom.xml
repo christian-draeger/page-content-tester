@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.8.5</version>
+    <version>1.8.6</version>
 
     <name>Paco (the page content tester)</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>
@@ -47,7 +47,7 @@
         <urlPrefix/>
         <port/>
 
-        <version.jSoup>1.11.2</version.jSoup>
+        <version.jSoup>1.10.3</version.jSoup>
         <version.jUnitToolbox>2.4</version.jUnitToolbox>
         <version.junit>4.12</version.junit>
         <version.lombok>1.16.20</version.lombok>

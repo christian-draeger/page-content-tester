@@ -5,7 +5,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester-parent</artifactId>
-    <version>1.8.5</version>
+    <version>1.8.6</version>
 
     <packaging>pom</packaging>
 
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>io.github.christian-draeger</groupId>
             <artifactId>page-content-tester</artifactId>
-            <version>1.8.4</version>
+            <version>1.8.6</version>
         </dependency>
         <dependency>
             <groupId>com.github.stephenc.jcip</groupId>
