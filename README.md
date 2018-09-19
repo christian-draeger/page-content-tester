@@ -1,7 +1,7 @@
 ---
 description: >-
-  **Paco** is a Java based framework for non-blocking and highly parallelized
-  Dom testing.
+  Paco is a Java based framework for non-blocking and highly parallelized Dom
+  testing.
 ---
 
 # Introduction
