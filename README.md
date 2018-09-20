@@ -1,8 +1,8 @@
 # Introduction
 
-### Paco is a Java based framework for non-blocking and highly parallelized Dom testing.
+> ### Paco is a Java based framework for non-blocking and highly parallelized Dom testing.
 
-#### why?
+### why?
 
 The motivation of bringing this little buffed out guy to live have been the need of having a robust and fast solution to relieve a long running and unstable Selenium suite. After a code dive through these Selenium tests it turned out that lots of them were just checking things \(like Dom elements, displayed data, cookies, etc\) without the need of interacting with a web browser.
 
@@ -19,4 +19,6 @@ Paco allows you to configure all your test specific data individually and direct
 #### Readability and Focus
 
 Due to the given convenient methods regarding response relevant data and using the provided jUnit rule, you'll end up with nicely readable and easy to write tests without boilerplate code.
+
+### 
 
