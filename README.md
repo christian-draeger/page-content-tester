@@ -2,6 +2,8 @@
 
 > ### Paco is a Java based framework for non-blocking and highly parallelized Dom testing.
 
+![](.gitbook/assets/paco.png)
+
 ### why?
 
 The motivation of bringing this little buffed out guy to live have been the need of having a robust and fast solution to relieve a long running and unstable Selenium suite. After a code dive through these Selenium tests it turned out that lots of them were just checking things \(like Dom elements, displayed data, cookies, etc\) without the need of interacting with a web browser.

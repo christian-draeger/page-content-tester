@@ -56,3 +56,5 @@ if you want to setup jUnit and surefire yourself just don't use the parent pom a
 {% endtab %}
 {% endtabs %}
 
+
+
