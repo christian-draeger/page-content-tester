@@ -24,7 +24,9 @@
 {% endtab %}
 
 {% tab title="Gradle" %}
+```groovy
 
+```
 {% endtab %}
 {% endtabs %}
 
@@ -38,16 +40,18 @@ if you want to setup jUnit and surefire yourself just don't use the parent pom a
 
 {% tabs %}
 {% tab title="Maven" %}
-
-{% endtab %}
-
-{% tab title="Gradle" %}
 ```markup
 <dependency>
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
     <version>${version.from.maven.central.badge}</version>
 </dependency>
+```
+{% endtab %}
+
+{% tab title="Gradle" %}
+```groovy
+
 ```
 {% endtab %}
 {% endtabs %}
