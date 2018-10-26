@@ -6,7 +6,7 @@
 
 ### why?
 
-The motivation of bringing this little buffed out guy to live have been the need of having a robust and fast solution to relieve a long running and unstable Selenium suite. After a code dive through these Selenium tests it turned out that lots of them were just checking things \(like Dom elements, displayed data, cookies, etc\) without the need of interacting with a web browser.
+The motivation to bring this little savvy guy to life was the need to have a robust and fast solution to relieve a long-running and unstable Selenium suite. After a code dive through these Selenium tests it turned out that many of them only checked things \(like Dom elements, displayed data, cookies, etc.\) without interacting with a web browser.
 
 ### Benefits
 
