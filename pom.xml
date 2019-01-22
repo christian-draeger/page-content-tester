@@ -47,7 +47,7 @@
         <urlPrefix/>
         <port/>
 
-        <version.jSoup>1.10.3</version.jSoup>
+        <version.jSoup>1.11.3</version.jSoup>
         <version.jUnitToolbox>2.4</version.jUnitToolbox>
         <version.junit>4.12</version.junit>
         <version.lombok>1.18.4</version.lombok>
@@ -60,6 +60,7 @@
         <jansi.version>1.17.1</jansi.version>
         <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
         <surefire.plugin.version>2.22.1</surefire.plugin.version>
+        <mockito-core.version>2.23.4</mockito-core.version>
 
         <surefire.rerunFailingTestsCount>2</surefire.rerunFailingTestsCount>
     </properties>
@@ -127,7 +128,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.23.4</version>
+            <version>${mockito-core.version}</version>
         </dependency>
 
     </dependencies>
