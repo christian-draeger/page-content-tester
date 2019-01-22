@@ -6,7 +6,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester</artifactId>
-    <version>1.8.6</version>
+    <version>1.9.0</version>
 
     <name>Paco (the page content tester)</name>
     <description>A framework for non-blocking and highly parallelized Dom testing.</description>

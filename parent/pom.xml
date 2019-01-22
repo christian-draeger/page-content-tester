@@ -5,7 +5,7 @@
 
     <groupId>io.github.christian-draeger</groupId>
     <artifactId>page-content-tester-parent</artifactId>
-    <version>1.8.6</version>
+    <version>1.9.0</version>
 
     <packaging>pom</packaging>
 
