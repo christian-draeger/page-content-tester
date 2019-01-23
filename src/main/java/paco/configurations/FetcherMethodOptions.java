@@ -11,6 +11,10 @@ public class FetcherMethodOptions { //NOSONAR
 
     private static GlobalConfig config = new GlobalConfig();
 
+    /**
+     * this will return a build that is pre-filled with data from GlobalConfig
+     * @return Parameters.ParametersBuilder
+     */
     public static Parameters.ParametersBuilder params() {
         return Parameters.builder()
                 .urlToFetch("")
