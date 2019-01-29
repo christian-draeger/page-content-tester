@@ -41,13 +41,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
         <protocol/>
         <urlPrefix/>
         <port/>
 
-        <version.jSoup>1.11.3</version.jSoup>
+        <version.jSoup>1.10.3</version.jSoup>
         <version.jUnitToolbox>2.4</version.jUnitToolbox>
         <version.junit>4.12</version.junit>
         <version.lombok>1.18.4</version.lombok>
@@ -142,6 +142,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -190,7 +191,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler.plugin.version}</version>
                     <configuration>
-                        <release>11</release>
+                        <source>1.8</source>
+                        <target>1.8</target>
                         <forceJavacCompilerUse>true</forceJavacCompilerUse>
                     </configuration>
                 </plugin>
