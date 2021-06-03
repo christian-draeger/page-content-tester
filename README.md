@@ -1,5 +1,7 @@
 # Introduction
 
+# Dperectated: use [skrape{it}](https://github.com/skrapeit/skrape.it) instead
+
 > ### Paco is a Java based framework for non-blocking and highly parallelized Dom testing.
 
 ![](.gitbook/assets/paco.png)
